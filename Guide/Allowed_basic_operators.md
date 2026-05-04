@@ -1,3 +1,4 @@
+# Allowed basic operators
 Following basic arithmetic and logical operators can be used along with parentheses.
 - Additive: + (addition), - (subtraction)
 - Multiplicative: * (multiplication), / (division), % (modulus)
