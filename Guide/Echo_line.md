@@ -1,3 +1,4 @@
+# Echo line
 Line starting with '$P' becomes an echo line.
 Used for printing out variable values in desired order.    
 - **Grammar 1**: `$P 'variable name1' 'variable name2' ...`
