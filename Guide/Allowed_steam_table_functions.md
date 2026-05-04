@@ -1,4 +1,4 @@
-following IAPWS-IF97 functions can be used (case-sensitive).
+Following IAPWS-IF97 functions can be used (case-sensitive).
 - Properties in regions 1 (subcooled) and 2 (vapor) and 4 (saturated) are available.
 - Applicable pressure ranges are: 0.000611~16.529 MPa
 - For example, "ps1 = H2O.psat(300.0)" calculates saturation pressure in Pa, corresponding to temperature 300.0K, and stores the value to variable "ps1".       
