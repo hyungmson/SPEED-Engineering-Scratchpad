@@ -33,3 +33,9 @@ Following features are currently supported.
 - Other useful functions
 
 Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED) and Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz).
+
+## Repository folder structure
+- Guide
+  - contains user guide
+- Example/Applying_Statistics
+  - contains SPEED inputs for solving examples in the textbook
