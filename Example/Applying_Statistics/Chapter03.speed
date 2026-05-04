@@ -1,0 +1,33 @@
+# 3.3 The pie chart
+## Example 3.1 Energy source distribution
+$M Tbl31[0] {313,227,172,100,98,34,19} > OK (7[0~6])
+$TP Tbl31;Coal,Gas,Dual fired,Nuclear,Hydroelectric,Petroleum,Other;Pie chart derived from Table 3.1;Y;Y;N;F;0.59;0.7;UL > OK
+# 3.5 The bar chart
+## Example 3.2 Monthly rejects of fuel rods
+$M Tbl32[0] {5,4,4,2,4,7,6,2,2,5,4,4} > OK (12[0~11])
+$TB Tbl32;Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec;Series1;Bar chart for monthly fuel rod rejects;Months;Rejects;Y;UL > OK
+$M Tbl33[0,0] {5,4,4,2,4,7,6,2,2,5,4,4;3,2,3,2,4,4,6,7,8,9,6,10} > OK (2[0~1] × 12[0~11])
+$TB Tbl33;Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec;Year1,Year2;Bar chart for monthly fuel rod rejects;Months;Rejects;Y;UL > OK
+# 3.7 The histogram
+## Example 3.3 Water impurity measurements
+$M Tbl34[0] {42.31,42.32,42.40,42.42,42.45,42.45,42.48,42.49,42.50,42.59,42.61,42.61,42.62,42.63,42.65,42.67,42.72,42.82,42.83,42.83,42.85,42.91,42.93,42.97,43.17} > OK (25[0~24])
+/$TI ArrT;Histogram;X;Count;20;0.95;1;11;0;YC;3;UL
+$TI Tbl34;Histogram for data in Table 3.4;Class markers for water impurities;Count;10;1;42.3;43.2;1;N;1;UL > OK
+# 3.9 The box plot
+! minimum
+min = ARR.MIN(Tbl34) = 42.31
+! lower quartile
+lqr = MATH.QRT.LWR(Tbl34) = 42.47
+! median
+med = MATH.MED(Tbl34) = 42.62
+! upper quartile
+uqr = MATH.QRT.UPR(Tbl34) = 42.83
+! maximum
+max = ARR.MAX(Tbl34) = 43.17
+## Example 3.4 Shipper and receiver reported weights
+$M Tbl35a[0] {1471.22,1470.98,1470.82,1470.46,1469.42,1468.98,1469.1,1470.22,1470.86,1470.38} > OK (10[0~9])
+$M Tbl35b[0] {1468.12,1469.52,1469.22,1469.26,1465.96,1470.8,1467.89,1472.28,1469.02,1470.16} > OK (10[0~9])
+$TX Tbl35a,Tbl35b;Shipper,Receiver;Box plots of shipper's and receiver's weights of UF6 cylinders;Role;Shipment weight, in kg;Y;UL > OK
+# 3.11 The stem-and-leaf display
+## Example 3.5 Stem-and-leaf display
+$TF Tbl34;Stem-and-leaf display for data in Table 3.4 
