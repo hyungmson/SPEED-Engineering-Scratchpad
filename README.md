@@ -1,4 +1,4 @@
-# SPEED: Enginnering Scratchpad
+# SPEED: Engineering Scratchpad
 SPEED, which stands for '**S**cratch **P**aper for **E**fficient **E**ngineering **D**eduction' is a powerful visual notepad.
 
 It is an equation-based line-by-line interpreter where equations and results are displayed simultaneously. Variable names can be utilized and re-used. Array variable is allowed which enables iterative calculation. It is also equipped with CoolProp library and IAPWS-IF97 water property function. Last, it works on plain ASCII text files which can be read and shared easily with others.
