@@ -1,3 +1,4 @@
+# Allowed math functions
 Following functions can be used (case-sensitive).
 - For example, "sq1 = Sqrt(0.5)" stores square-root of 0.5 to variable "sq1".
   - Abs(v1), Acos(v1), Asin(v1), Atan(v1), Ceiling(v1), Cos(v1), Exp(v1), Floor(v1), 
