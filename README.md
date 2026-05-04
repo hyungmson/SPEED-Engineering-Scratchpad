@@ -14,6 +14,14 @@ Following features are currently supported.
 - 5 level depth repetition loop
 - Text output (echo) manipulation
 - 1D, 2D linear interpolation
+- Plotting
+  - 1D scatter plot
+  - 2D heatmap plot
+  - Histogram
+  - Pie chart
+  - Bar chart
+  - Box plot
+  - Stem and leaf plot
 - CoolProp fluid property functions
 - IAPWS-IF97 light water property calculation
 - Linear equation solver (A*x=b)
