@@ -3,13 +3,13 @@ Line starting with '#', '*', '+', '/' or '!' becomes comment line.
 In "Style" mode (for Windows version only), comment lines can be colored other than black using below command. 
 Default value is red, brown, magenta, orange and blue, respectively. On wrong command, black color is used.
 
-- GRAMMAR: `$0 COLOR.{start character}:{color}`
+- Grammar: `$0 COLOR.{start character}:{color}`
   - available {start character} values: #, /, *, +, !
   - available {color} values: RED, GREEN, BLUE, MAGENTA, SKYBLUE, ORANGE, BROWN, PINK, CYAN, BLACK
 
 Also, the color of line starting with $ can be changed using below command. 
 Default value is green.  On wrong command, black color is used.
-- GRAMMAR: `$0 COLOR.$:{color}`
+- Grammar: `$0 COLOR.$:{color}`
   - Comment line contents are ignored in calculation and will remain as-is after update. 
   - Texts following these comment characters won't have any effect on calculation.
 
