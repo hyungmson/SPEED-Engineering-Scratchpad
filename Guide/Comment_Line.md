@@ -1,5 +1,5 @@
 # Comment line
-Line starting with '#', '*', '+', '/' or '!' becomes comment line.
+Line starting with '#', '*', '+', '/' or '!' becomes comment line which are ignored in update.
 In "Style" mode (for Windows version only), comment lines can be colored other than black using below command. 
 Default value is red, brown, magenta, orange and blue, respectively. On wrong command, black color is used.
 
