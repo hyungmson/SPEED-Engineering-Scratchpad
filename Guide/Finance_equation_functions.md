@@ -1,3 +1,4 @@
+# Finance equation functions
 - `FINA.TAV(P, r, n, t)`: Total accumulated value
   - A = P*(1 + r/n)^(t*n)
   - A: final amount
