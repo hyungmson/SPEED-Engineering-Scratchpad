@@ -81,3 +81,13 @@ Currently available for Android- [Google Play](https://play.google.com/store/app
   - https://github.com/Fody/
 - WPF.MDI
   - https://github.com/dutts/wpfmdi
+
+## Wkikpedia
+- https://en.wikipedia.org/wiki/Greek_letters_used_in_mathematics,_science,_and_engineering
+- https://en.wikipedia.org/wiki/Mathematical_operators_and_symbols_in_Unicode
+- https://en.wikipedia.org/wiki/List_of_conversion_factors
+- https://en.wikipedia.org/wiki/Proton
+- https://en.wikipedia.org/wiki/Neutron
+- https://en.wikipedia.org/wiki/Compound_interest
+- https://en.wikipedia.org/wiki/Weighted_average_cost_of_capital
+- https://en.wikipedia.org/wiki/Time_value_of_money
