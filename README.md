@@ -38,7 +38,7 @@ Currently available for Android- [Google Play](https://play.google.com/store/app
 - [Guide](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Guide)
   - contains user guide
 - Example
-  - Applying_Statistics
+  - [Applying_Statistics](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Example/Applying_Statistics)
     - contains SPEED inputs for solving examples in the textbook
 
 ## References
