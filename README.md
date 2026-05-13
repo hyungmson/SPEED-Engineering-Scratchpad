@@ -42,7 +42,7 @@ Currently available for Android- [Google Play](https://play.google.com/store/app
     - contains SPEED inputs for solving examples in the textbook
 
 ## References
-- W. Wagner, H.-J. Kretzschmar, International Steam Tables- Properties of Water and Steam Based on the Industrial Formulation IAPWS-IF97</Bold>, 2nd Ed., Springer, 2008.
+- H.-J. Kretzschmar, W. Wagner, International Steam Tables- Properties of Water and Steam Based on the Industrial Formulation IAPWS-IF97</Bold>, 3rd Ed., Springer, 2018.
 - P. Blasius, Das Aehnlichkeitsgesetz bei Reibungsvorgangen in Flüssigkeiten, Forschungsheft, Vol. 131, p.1, 1913.
 - F. Colebrook, Turbulent Flow in Pipes, with Particular Reference to the Transition Region between Smooth and Round Pipe Laws</Bold>, Journal of the Institution of Civil Engineers, 
   Vol. 11, p.133, 1939.
