@@ -3,7 +3,8 @@
   - Only compatible with CoolProp.dll provided with SPEED program.
   - Installed automatically when installed from Microsoft Store or Google Play Store.
 - Grammar: `FLUID.PROP({output property name},{input property#1 name},{input property#1 value},{input property#2 name},{input property#2 value},{fluid name})`
-  - property name and fluid name follow that of CoolProp.
+  - Property name and fluid name follow that of CoolProp.
+  - Variable names cannot be same as property names inside the function.
 - for fluid names, see below or: [link](https://coolprop.org/fluid_properties/PurePseudoPure.html#list-of-fluids)
 ```
 //ref.: https://coolprop.org/fluid_properties/PurePseudoPure.html#list-of-fluids
