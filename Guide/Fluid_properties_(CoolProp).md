@@ -118,11 +118,15 @@ Z : Compressibility factor [] - Output only
 ```
 - Example:
 ```
-(FLUID.PROP(T,P,101325,Q,0,Water))
+pp = 101325
+qq = 0
+(FLUID.PROP(T,P,pp,Q,qq,Water))
 sig = FLUID.PROP(I,P,101325,Q,0,HeavyWater)
 ```
 - After the update:
 ```
-(FLUID.PROP(T,P,101325,Q,0,Water)) = 373.124295847666
+pp = 101325 = 101325
+qq = 0 = 0
+(FLUID.PROP(T,P,pp,Q,qq,Water)) = 373.124295847666
 sig = FLUID.PROP(I,P,101325,Q,0,HeavyWater) = 0.0586588999934768
 ```
