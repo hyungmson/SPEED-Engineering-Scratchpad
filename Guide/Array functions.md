@@ -58,10 +58,10 @@
     - same as OPEL.B, but element-wise operation is done with element of A and value B
 
 - Cumulative distribution
-  - ARR.CDF({1D matrix name})
+  - `ARR.CDF({1D matrix name})`
     - returns cumulative sum of given matrix (F(y))
 - Complementary cumulative distribution
-  - ARR.CDFC({1D matrix name})
+  - `ARR.CDFC({1D matrix name})`
     - returns complementary cumulative sum of given matrix (1-F(y))
       
 - 1D array creation with random values with distribution
