@@ -1,0 +1,185 @@
+# 7. Continuous distributions
+## Example 7.1 Fuel pump gauge
+a = -0.005 = -0.005
+b = 0.005 = 0.005
+μ = (a+b)/2 = 0
+σ² = (a-b)^2/12 = 8.33333333333333E-06
+σ = Sqrt(σ²) = 0.00288675134594813
+## Example 7.3 UO₂ enrichment
+μ = 87.5 = 87.5
+σ = 0.4 = 0.4
+! Pr{Y≤88.0}=Pr{Z≤1.25}
+Pr = MATH.CDF.NRM(μ,σ,88.0) = 0.894350226333145
+Z = (88.0-μ)/σ = 1.25
+Pr = MATH.CDF.NRM(0,1,Z) = 0.894350226333145
+! Pr{Y>88.0}=Pr{Z>1.25}
+Pr = 1.0 - MATH.CDF.NRM(μ,σ,88.0) = 0.105649773666855
+Pr = 1.0 - MATH.CDF.NRM(0,1,Z) = 0.105649773666855
+! Pr{87.0<Y≤88.1}=Pr{-1.25<Z≤1.50}
+Pr = MATH.CDF.NRM(μ,σ,88.1) - MATH.CDF.NRM(μ,σ,87.0) = 0.827543025064285
+Pr = MATH.CDF.NRM(0,1,1.5) - MATH.CDF.NRM(0,1,-1.25) = 0.827543025064287
+# 7.7 Spreadsheet functions for normal probabilities
+! Table 7.1 Selected values for the standard normal distribution
+$M q[0] {0.005,0.01,0.025,0.05,0.01,0.02,0.8,0.9,0.95,0.975,0.99,0.995} > OK (12[0~11])
+cnt = ARR.CNT(q) = 12
+$PN "Table 7.1 Selected values for the standard normal distribution" > Table 7.1 Selected values for the standard normal distribution
+$PN "Quantile" "z-value" > Quantile z-value
+i = -1 = -1
+$L1 12
+i = i + 1 = 11
+z = MATH.ICDF.NRM(0,1,q[i]) = 2.5758293035489
+$PN {4:F3 7:F3} q[i] z >0.995  2.576
+$L1
+# 7.9 Lognormal distribution
+y = ARR.INIT.LINE1D(100,0.00001,0.004) = OK: y (101[0~100])
+f1 = ARR.INIT1D(101,0.0) = OK: f1 (101[0~100])
+f2 = ARR.INIT1D(101,0.0) = OK: f2 (101[0~100])
+f3 = ARR.INIT1D(101,0.0) = OK: f3 (101[0~100])
+i = -1 = -1
+$L1 101
+i = i + 1 = 100
+f1[i] = MATH.PDF.LOGNRM(-7,1.4,y[i]) = 40.7875641796978
+f2[i] = MATH.PDF.LOGNRM(-7,0.67,y[i]) = 13.0406650221474
+f3[i] = MATH.PDF.LOGNRM(-6.5,0.67,y[i]) = 51.236948787617
+$L1
+f1 = ARR.CAT.COL(f1,f2) = OK: f1 (202[0~100,0~1])
+f1 = ARR.CAT.COL(f1,f3) = OK: f1 (303[0~100,0~2])
+! Figure 7.11 Three lognormal densities
+$TS y;f1;Three lognormal densities;y;f(y);0;UR > OK
+(MATH.CDF.LOGNRM(-7,4,0.001)) = 0.509199264443116
+ln_y = Ln(0.001) = -6.90775527898214
+(MATH.CDF.NRM(-7,4,ln_y)) = 0.509199264443116
+# 7.10 Chi-square distribution
+y = ARR.INIT.LINE1D(100,0.00001,20.0) = OK: y (101[0~100])
+f1 = ARR.INIT1D(101,0.0) = OK: f1 (101[0~100])
+f2 = ARR.INIT1D(101,0.0) = OK: f2 (101[0~100])
+f3 = ARR.INIT1D(101,0.0) = OK: f3 (101[0~100])
+f4 = ARR.INIT1D(101,0.0) = OK: f4 (101[0~100])
+i = -1 = -1
+$L1 101
+i = i + 1 = 100
+f1[i] = MATH.PDF.CHI(2,y[i]) = 2.26999648812424E-05
+f2[i] = MATH.PDF.CHI(3,y[i]) = 8.0999109560891E-05
+f3[i] = MATH.PDF.CHI(5,y[i]) = 0.000539994063739273
+f4[i] = MATH.PDF.CHI(10,y[i]) = 0.00945831870051763
+$L1
+f1 = ARR.CAT.COL(f1,f2) = OK: f1 (202[0~100,0~1])
+f1 = ARR.CAT.COL(f1,f3) = OK: f1 (303[0~100,0~2])
+f1 = ARR.CAT.COL(f1,f4) = OK: f1 (404[0~100,0~3])
+! Figure 7.12 Chi-square density for 2,5, and 10 degrees of freedom
+$TS y;f1;Chi-square density for 2,3,5, and 10 degrees of freedom;y;f(y);0;UR > OK
+(MATH.CDF.CHI(5,1.11)) = 0.0467852868678818
+(MATH.ICDF.CHI(5,0.95)) = 11.0704976935163
+# 7.11 Student's t-distribution
+y = ARR.INIT.LINE1D(100,-5,5) = OK: y (101[0~100])
+f1 = ARR.INIT1D(101,0.0) = OK: f1 (101[0~100])
+f2 = ARR.INIT1D(101,0.0) = OK: f2 (101[0~100])
+f3 = ARR.INIT1D(101,0.0) = OK: f3 (101[0~100])
+i = -1 = -1
+$L1 101
+i = i + 1 = 100
+f1[i] = MATH.PDF.STU(0,1,1,y[i]) = 0.0122426879301458
+f2[i] = MATH.PDF.STU(0,1,4,y[i]) = 0.00264963621655723
+f3[i] = MATH.PDF.STU(0,1,100,y[i]) = 5.08005823472628E-06
+$L1
+f1 = ARR.CAT.COL(f1,f2) = OK: f1 (202[0~100,0~1])
+f1 = ARR.CAT.COL(f1,f3) = OK: f1 (303[0~100,0~2])
+! Figure 7.14 Student's t density for v=1,4, and 100
+$TS y;f1;Student's t density for v=1,4, and 100;y;f(y);0;UR > OK
+(MATH.ICDF.STU(0,1,30,0.975)) = 2.04227245629731
+(MATH.CDF.STU(0,1,30,2.04)) = 0.974880212630453
+# 7.12 F-distribution
+y = ARR.INIT.LINE1D(100,0.01,5.0) = OK: y (101[0~100])
+f1 = ARR.INIT1D(101,0.0) = OK: f1 (101[0~100])
+f2 = ARR.INIT1D(101,0.0) = OK: f2 (101[0~100])
+f3 = ARR.INIT1D(101,0.0) = OK: f3 (101[0~100])
+f4 = ARR.INIT1D(101,0.0) = OK: f4 (101[0~100])
+i = -1 = -1
+$L1 101
+i = i + 1 = 100
+f1[i] = MATH.PDF.FIS(1,1,y[i]) = 0.0237254181139059
+f2[i] = MATH.PDF.FIS(1,10,y[i]) = 0.0187104253904045
+f3[i] = MATH.PDF.FIS(10,1,y[i]) = 0.0312114997317225
+f4[i] = MATH.PDF.FIS(10,10,y[i]) = 0.00651190510211856
+$L1
+f1 = ARR.CAT.COL(f1,f2) = OK: f1 (202[0~100,0~1])
+f1 = ARR.CAT.COL(f1,f3) = OK: f1 (303[0~100,0~2])
+f1 = ARR.CAT.COL(f1,f4) = OK: f1 (404[0~100,0~3])
+! Figure 7.16 Density function of the F-distribution for selected combinations of degrees of freedom
+$TS y;f1;Density function of the F-dist. for selected combinations of degrees of freedom;y;f(y);0;UR > OK
+(MATH.ICDF.FIS(5,20,0.95)) = 2.71088983720968
+(MATH.ICDF.FIS(20,5,0.95)) = 4.55813149738816
+(1.0-MATH.CDF.FIS(24,2,9.45)) = 0.099996162541872
+(1.0-MATH.CDF.FIS(4,30,1.8)) = 0.154916757743158
+(1.0-MATH.CDF.FIS(30,4,1.8)) = 0.303468907581323
+(MATH.ICDF.FIS(24,2,0.9)) = 9.44961588680574
+(MATH.ICDF.FIS(1,100,0.95)) = 3.9361429863123
+# 7.13 Exponential distribution
+y = ARR.INIT.LINE1D(100,0,3) = OK: y (101[0~100])
+f1 = ARR.INIT1D(101,0.0) = OK: f1 (101[0~100])
+f2 = ARR.INIT1D(101,0.0) = OK: f2 (101[0~100])
+i = -1 = -1
+$L1 101
+i = i + 1 = 100
+f1[i] = MATH.PDF.EXP(1.0,y[i]) = 0.0497870683678639
+f2[i] = MATH.PDF.EXP(3.0,y[i]) = 0.000370229412260039
+$L1
+f1 = ARR.CAT.COL(f1,f2) = OK: f1 (202[0~100,0~1])
+! Figure 7.17 Two exponential densities
+$TS y;f1;Two exponential densities;y;f(y);0;UR > OK
+# 7.14 Gamma distribution
+y = ARR.INIT.LINE1D(100,0.05,6) = OK: y (101[0~100])
+f1 = ARR.INIT1D(101,0.0) = OK: f1 (101[0~100])
+f2 = ARR.INIT1D(101,0.0) = OK: f2 (101[0~100])
+f3 = ARR.INIT1D(101,0.0) = OK: f3 (101[0~100])
+f4 = ARR.INIT1D(101,0.0) = OK: f4 (101[0~100])
+i = -1 = -1
+$L1 101
+i = i + 1 = 100
+f1[i] = MATH.PDF.GAM(0.5,1,y[i]) = 0.000570929583351716
+f2[i] = MATH.PDF.GAM(1.0,1,y[i]) = 0.00247875217666638
+f3[i] = MATH.PDF.GAM(2.0,1,y[i]) = 0.0148725130599983
+f4[i] = MATH.PDF.GAM(3.0,1,y[i]) = 0.0446175391799946
+$L1
+f1 = ARR.CAT.COL(f1,f2) = OK: f1 (202[0~100,0~1])
+f1 = ARR.CAT.COL(f1,f3) = OK: f1 (303[0~100,0~2])
+f1 = ARR.CAT.COL(f1,f4) = OK: f1 (404[0~100,0~3])
+! Figure 7.18 Gamma density distributions for β=1 with four shape parameters
+$TS y;f1;Gamma density distributions for β=1 with four shape parameters;y;f(y);0;UR > OK
+# 7.15 Beta distribution
+y = ARR.INIT.LINE1D(100,0.002,0.998) = OK: y (101[0~100])
+f1 = ARR.INIT1D(101,0.0) = OK: f1 (101[0~100])
+f2 = ARR.INIT1D(101,0.0) = OK: f2 (101[0~100])
+f3 = ARR.INIT1D(101,0.0) = OK: f3 (101[0~100])
+f4 = ARR.INIT1D(101,0.0) = OK: f4 (101[0~100])
+i = -1 = -1
+$L1 101
+i = i + 1 = 100
+f1[i] = MATH.PDF.BTA(0.5,0.5,y[i]) = 7.12475375386757
+f2[i] = MATH.PDF.BTA(1.0,1.0,y[i]) = 1
+f3[i] = MATH.PDF.BTA(2.0,2.0,y[i]) = 0.011976000000006
+f4[i] = MATH.PDF.BTA(6.0,6.0,y[i]) = 8.78205010709938E-11
+$L1
+f1 = ARR.CAT.COL(f1,f2) = OK: f1 (202[0~100,0~1])
+f1 = ARR.CAT.COL(f1,f3) = OK: f1 (303[0~100,0~2])
+f1 = ARR.CAT.COL(f1,f4) = OK: f1 (404[0~100,0~3])
+! Figure 7.19 Four beta distribution with mean 0.5
+$TS y;f1;Four beta distribution with mean 0.5;y;f(y);0;UC > OK
+y = ARR.INIT.LINE1D(100,0.002,0.5) = OK: y (101[0~100])
+f1 = ARR.INIT1D(101,0.0) = OK: f1 (101[0~100])
+f2 = ARR.INIT1D(101,0.0) = OK: f2 (101[0~100])
+f3 = ARR.INIT1D(101,0.0) = OK: f3 (101[0~100])
+f4 = ARR.INIT1D(101,0.0) = OK: f4 (101[0~100])
+i = -1 = -1
+$L1 101
+i = i + 1 = 100
+f1[i] = MATH.PDF.BTA(0.5,4.5,y[i]) = 0.145513090826876
+f2[i] = MATH.PDF.BTA(1.0,9.0,y[i]) = 0.0351562499999997
+f3[i] = MATH.PDF.BTA(2.0,18,y[i]) = 0.00130462646484364
+f4[i] = MATH.PDF.BTA(4.0,36,y[i]) = 1.19690957944842E-06
+$L1
+f1 = ARR.CAT.COL(f1,f2) = OK: f1 (202[0~100,0~1])
+f1 = ARR.CAT.COL(f1,f3) = OK: f1 (303[0~100,0~2])
+f1 = ARR.CAT.COL(f1,f4) = OK: f1 (404[0~100,0~3])
+! Figure 7.20 Four beta distribution with mean 0.1
+$TS y;f1;Four beta distribution with mean 0.1;y;f(y);0;UR > OK
