@@ -29,6 +29,7 @@ Following features are currently supported.
   - Bisection method
   - Golden-section maximization method
   - Particle swarm optimization (PSO) method for minimization
+- Extensive statistical functions
 - Extensive unit conversion factors
 - Other useful functions
 
