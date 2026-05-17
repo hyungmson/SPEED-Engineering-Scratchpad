@@ -81,6 +81,12 @@
     - initialize numbers from Poisson distribution
   - `ARR.GEN.FIS({size},{1st degree of freedom},{2nd degree of freedom})`
     - initialize numbers from F-distribution
+  - ARR.GEN.LOGNRM({size},{mean},{standard deviation}) 
+    - initialize numbers from lognormal distribution
+  - ARR.GEN.EXP({size},{rate})
+    - initialize numbers from exponential distribution
+  - ARR.GEN.BTA({size},{alpha},{beta})
+    - initialize numbers from beta distribution
                         
 - Column-wise 1D/2D matrix concatenation
   - `ARR.CAT.COL({matrix name, A},{matrix name, B})`
