@@ -67,7 +67,19 @@ Following functions can be used (case-sensitive).
     - `MATH.PDF.FIS(1st degree of freedom,2nd degree of freedom,location)`
     - `MATH.CDF.FIS(1st degree of freedom,2nd degree of freedom,location)`
     - `MATH.ICDF.FIS(1st degree of freedom,2nd degree of freedom,probability)`
-                        
+  - Lognormal distribution
+    - MATH.PDF.LOGNRM(mean,standard deviation,location)
+    - MATH.CDF.LOGNRM(mean,standard deviation,location)
+    - MATH.ICDF.LOGNRM(mean,standard deviation,probability)
+  - Exponential distribution
+    - MATH.PDF.EXP(rate,location)
+    - MATH.CDF.EXP(rate,location)
+    - MATH.ICDF.EXP(rate,probability)
+  - Beta distribution
+    - MATH.PDF.BTA(alpha,beta,location)
+    - MATH.CDF.BTA(alpha,beta,location)
+    - MATH.ICDF.BTA(alpha,beta,probability)
+                       
   - Critical F_max value (Hartley’s test)
     - `MATH.FMAX.CRIT(number of groups, degree of freedom, quantile, number of samples)`
     - approximation using Monte Carlo simulation, at least 5000000 samples recommended
