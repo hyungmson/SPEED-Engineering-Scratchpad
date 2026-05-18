@@ -1,0 +1,98 @@
+# 8. Discrete distributions
+# 8.6 Hypergeometric distribution
+$M Y[0] {0,1,2,3,4,5} > OK (6[0~5])
+F = ARR.INIT1D(6,0.0) = OK: F (6[0~5])
+N = 25 = 25
+M = 5 = 5
+n = 10 = 10
+i = -1 = -1
+$L1 6
+i = i + 1 = 5
+F[i] = MATH.PMF.HYPGEO(N,M,n,Y[i]) = 0.00474308300395257
+$L1
+! Figure 8.4. Hypergeometric pf, N = 25, M = 5, n = 10
+$TB F;0,1,2,3,4,5;Series1;Hypergeometric pf, N=25, M=5, n=10;y;f(y);N;UR > OK
+n = 5 = 5
+i = -1 = -1
+$L1 6
+i = i + 1 = 5
+F[i] = MATH.PMF.HYPGEO(N,M,n,Y[i]) = 1.88217579521927E-05
+$L1
+! Figure 8.5. Hypergeometric pf, N = 25, M = 5, n = 5
+$TB F;0,1,2,3,4,5;Series1;Hypergeometric pf, N=25, M=5, n=5;y;f(y);N;UR > OK
+# 8.7 Binomial distribution
+pi = 0.1 = 0.1
+n = 10 = 10
+$M Y[0] {0,1,2,3,4,5,6,7,8,9,10} > OK (11[0~10])
+F = ARR.INIT1D(11,0.0) = OK: F (11[0~10])
+i = -1 = -1
+$L1 11
+i = i + 1 = 10
+F[i] = MATH.PMF.BIN(pi,n,Y[i]) = 1E-10
+$L1
+! Figure 8.6. Binomial pf: π = 0.1, n = 10
+$TB F;0,1,2,3,4,5,6,7,8,9,10;Series1;Binomial pf: π=0.1, n=10;y;f(y);N;UR > OK
+pi = 0.5 = 0.5
+n = 10 = 10
+$M Y[0] {0,1,2,3,4,5,6,7,8,9,10} > OK (11[0~10])
+F = ARR.INIT1D(11,0.0) = OK: F (11[0~10])
+i = -1 = -1
+$L1 11
+i = i + 1 = 10
+F[i] = MATH.PMF.BIN(pi,n,Y[i]) = 0.0009765625
+$L1
+! Figure 8.7. Binomial pf: π = 0.5, n = 10
+$TB F;0,1,2,3,4,5,6,7,8,9,10;Series1;Binomial pf: π=0.1, n=10;y;f(y);N;UR > OK
+# 8.8 Geometric distribution
+pi = 0.2 = 0.2
+Y = ARR.INIT.LINE1D(20,0,20) = OK: Y (21[0~20])
+F = ARR.INIT1D(21,0.0) = OK: F (21[0~20])
+i = -1 = -1
+$L1 21
+i = i + 1 = 20
+y = Y[i]+1 = 21
+F[i] = MATH.PMF.GEO(pi,y) = 0.0023058430092137
+$L1
+! Figure 8.8. Geometric pf: π = 0.2
+$TB F;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20;Series1;Geometric pf: π = 0.2;y;f(y);N;UR > OK
+pi = 0.4 = 0.4
+i = -1 = -1
+$L1 21
+i = i + 1 = 20
+y = Y[i]+1 = 21
+F[i] = MATH.PMF.GEO(pi,y) = 1.46246337602519E-05
+$L1
+! Figure 8.9. Geometric pf: π = 0.4
+$TB F;0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20;Series1;Geometric pf: π = 0.4;y;f(y);N;UR > OK
+# 8.9 Negative binomial distribution
+$M Y[0] {3,4,5,6,7,8,9,10,11,12,13,14,15} > OK (13[0~12])
+F = ARR.INIT1D(13,0.0) = OK: F (13[0~12])
+pi = 0.5 = 0.5
+s = 3 = 3
+i = -1 = -1
+$L1 13
+i = i + 1 = 12
+y = Y[i] - s = 12
+F[i] = MATH.PMF.NEGBIN(s,pi,y) = 0.0027770996093747
+$L1
+! Figure 8.10. Negative binomial pf: π = 0.5, s = 3
+$TB F;3,4,5,6,7,8,9,10,11,12,13,14,15;Series1;Negative binomial pf: π=0.5, s=3;y;f(y);N;UR > OK
+# 8.10 Poisson distribution
+Y = ARR.INIT.LINE1D(12,0,12) = OK: Y (13[0~12])
+F = ARR.INIT1D(13,0.0) = OK: F (13[0~12])
+lam = 1 = 1
+i = -1 = -1
+$L1 13
+i = i + 1 = 12
+F[i] = MATH.PMF.PSS(lam,Y[i]) = 7.68012969416893E-10
+$L1
+! Figure 8.11. Poisson pf: λ = 1
+$TB F;0,1,2,3,4,5,6,7,8,9,10,11,12;Series1;Poisson pf: λ=1;y;f(y);N;UR > OK
+lam = 5 = 5
+i = -1 = -1
+$L1 13
+i = i + 1 = 12
+F[i] = MATH.PMF.PSS(lam,Y[i]) = 0.00343424028557232
+$L1
+! Figure 8.12. Poisson pf: λ = 5
+$TB F;0,1,2,3,4,5,6,7,8,9,10,11,12;Series1;Poisson pf: λ=5;y;f(y);N;UR > OK
