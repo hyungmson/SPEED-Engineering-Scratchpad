@@ -79,6 +79,18 @@ Following functions can be used (case-sensitive).
     - `MATH.PDF.BTA(alpha,beta,location)`
     - `MATH.CDF.BTA(alpha,beta,location)`
     - `MATH.ICDF.BTA(alpha,beta,probability)`
+  - Hypergeometric distribution
+    - `MATH.PMF.HYPGEO(population size,no. of success states in population,number of draws,no. of successes)`
+    - `MATH.CDF.HYPGEO(population size,no. of success states in population,number of draws,location)`
+  - Binomial distribution
+    - `MATH.PMF.BIN(success probability for each trial,number of trials,number of successes)`
+    - `MATH.CDF.BIN(success probability for each trial,number of trials,location)`
+  - Geometric distribution
+    - `MATH.PMF.GEO(success probability for each trial,number of successes)`
+    - `MATH.CDF.GEO(success probability for each trial,location)`
+  - Negative binomial distribution
+    - `MATH.PMF.NEGBIN(no. of successes until experiment is stopped,success probability for each trial,number of successes)`
+    - `MATH.CDF.NEGBIN(no. of successes until experiment is stopped,success probability for each trial,location)`
                        
   - Critical F_max value (Hartley’s test)
     - `MATH.FMAX.CRIT(number of groups, degree of freedom, quantile, number of samples)`
