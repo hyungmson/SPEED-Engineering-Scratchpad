@@ -39,8 +39,8 @@
     - RN: Rain
                         
 ## Histogram
-- Grammar: `$TI {Arr name};{Plot title};{X-axis title};{Y-axis title};{#bins};{min. value of X-axis};{max. value of X-axis};{border width};{stats:YN|YS|N};{distribution curve width};{Legend position}`
-  - border width: if 0, width are automatically set
+- Grammar: `$TI {Arr name};{Plot title};{X-axis title};{Y-axis title};{#bins};{bar width};{min. value of X-axis};{max. value of X-axis};{border width};{stats:YN|YS|N};{distribution curve width};{Legend position}`
+  - bar width: if 0, width are automatically set
   - stats: 
     - YN - show stats (sample count, mean, sample standard deviation) on legend, with normal distribution curve
     - YS - show stats on legend, with Student's t distribution curve
