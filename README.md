@@ -34,7 +34,9 @@ Following features are currently supported.
 - Other useful functions
 
 Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED) and Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz).
-Latest version: 1.0.15 (Build src 101500)
+- Latest version: 
+  - Windows: 1.0.16
+  - Android: Build src 101500
 
 ## Repository folder structure
 - [Guide](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Guide)
