@@ -1,0 +1,90 @@
+# 9. Estimation
+## Example 9.1 Natural uranium concentration
+$M tpl9p1[0] {0.012,0.012,0.074,0.090,0.099,0.103,0.109,0.117,0.127,0.139,0.148,0.156,0.159,0.165,0.189,0.197,0.200,0.209,0.220,0.223,0.250,0.255,0.261,0.268,0.283,0.286,0.292,0.293,0.309,0.310,0.320,0.346,0.366,0.402,0.425,0.436,0.440,0.611,0.661,0.689,0.750} > OK (41[0~40])
+mean = ARR.AVG(tpl9p1) = 0.268317073170732
+med = MATH.MED(tpl9p1) = 0.25
+max = ARR.MAX(tpl9p1) = 0.75
+min = ARR.MIN(tpl9p1) = 0.012
+midrange = 0.5*(max+min) = 0.381
+s2 = {MATH.SDVS(tpl9p1)}^2 = 0.0305033219512194
+# 9.8 Two-sided 95% confidence intervals for a mean
+! 0.975 quantile
+z_0p975 = MATH.ICDF.NRM(0,1,0.975) = 1.95996398454005
+z_0p025 = MATH.ICDF.NRM(0,1,0.025) = -1.95996398454005
+## Example 9.2 Beam momentun measurements
+$M mom[0] {18.87,19.55,19.32,18.70,19.41,19.37,18.84,19.40,18.78,18.76} > OK (10[0~9])
+sig = 0.3 = 0.3
+mean = ARR.AVG(mom) = 19.1
+n = ARR.CNT(mom) = 10
+lower = mean+z_0p025*sig/Sqrt(n) = 18.9140614903086
+upper = mean+z_0p975*sig/Sqrt(n) = 19.2859385096914
+! -> 95% confidence interval for mean: (18.9,19.3)
+# 9.9 One-sided 95% confidence intervals for a mean
+z_0p95 = MATH.ICDF.NRM(0,1,0.95) = 1.64485362695147
+z_0p05 = MATH.ICDF.NRM(0,1,0.05) = -1.64485362695147
+# 9.10 Confidence intervals with an arbitrary confidence level
+z_0p995 = MATH.ICDF.NRM(0,1,0.995) = 2.5758293035489
+z_0p99 = MATH.ICDF.NRM(0,1,0.99) = 2.32634787404084
+z_0p90 = MATH.ICDF.NRM(0,1,0.9) = 1.2815515655446
+# 9.11 Confidence intervals for unknown sigma
+t_0p975_9 = MATH.ICDF.STU(0,1,9,0.975) = 2.2621571627982
+t_0p975_40 = MATH.ICDF.STU(0,1,40,0.975) = 2.02107539030436
+t_0p95_40 = MATH.ICDF.STU(0,1,40,0.95) = 1.68385101333566
+## Example 9.3 Weight of ice baskets
+$M tbl9p2[0] {892,893,894,900,901,901,913,914,916,924,931,932,932,932,935,936,938,941,942,943,943,946,950,951,963} > OK (25[0~24])
+mean = ARR.AVG(tbl9p2) = 926.52
+s = MATH.SDVS(tbl9p2) = 20.5063404828848
+n = ARR.CNT(tbl9p2) = 25
+t_0p95_24 = MATH.ICDF.STU(0,1,24,0.95) = 1.71088207990748
+! 95% lower limit for mean
+lower = mean - t_0p95_24*s/Sqrt(n) = 919.50321390867
+# 9.12 Statistical tolerance limits for a normal population
+n = 10 = 10
+v = n-1 = 9
+y_bar = 120.5 = 120.5
+s = 8.8 = 8.8
+gam = 0.95 = 0.95
+pie = 0.90 = 0.9
+! 95/90 two-sided tolerance interval
+k2 = MATH.TOL.K2(n,pie,gam) = 2.85631084862813
+lower = y_bar - k2*s = 95.3644645320724
+upper = y_bar + k2*s = 145.635535467928
+! 95/90 one-sided tolerance limit
+k1 = MATH.TOL.K1(n,pie,gam) = 2.35464013182837
+lower = y_bar - k1*s = 99.7791668399103
+upper = y_bar + k1*s = 141.22083316009
+## Example 9.4 Tolerance limit for the critical power ratio
+mean = 1.0211 = 1.0211
+s = 0.0061 = 0.0061
+k1 = MATH.TOL.K1(150,0.95,0.95) = 1.86983886015722
+upper = mean + k1*s = 1.03250601704696
+# 9.13 Confidence intervals for a variance
+n = 10 = 10
+v = n - 1 = 9
+s = 1.47 = 1.47
+p = 0.95 = 0.95
+q = 1 - p = 0.05
+kai2 = MATH.ICDF.CHI(v,q) = 3.32511284306682
+upper = Sqrt(v*s^2/kai2) = 2.4184404343595
+# 9.14 Sample size determination: σ known
+## Example 9.5 Travel voucher error
+d = 10.0 = 10
+sig = 50.0 = 50
+alpha = 0.05 = 0.05
+p = 1-alpha/2 = 0.975
+z = MATH.ICDF.NRM(0,1,p) = 1.95996398454005
+n = z^2*(sig/d)^2 = 96.0364705173527
+# 9.15 Sample size determination: σ unknown
+## Example 9.5, continued
+! Stage 1
+n1 = 15 = 15
+v1 = n1-1 = 14
+y1_bar = 30.43 = 30.43
+S1 = 28.33 = 28.33
+d = 10 = 10
+t = MATH.ICDF.STU(0,1,v1,0.975) = 2.1447866879178
+n0 = Ceiling{(S1*t/d)^2} = 37
+! Stage 2
+n2 = n0 - n1 = 22
+y2_bar = 38.07 = 38.07
+y_bar = (15*y1_bar + n2*y2_bar)/(n1+n2) = 34.9727027027027
