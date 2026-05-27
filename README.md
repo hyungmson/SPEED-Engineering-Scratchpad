@@ -69,6 +69,7 @@ Currently available for Android- [Google Play](https://play.google.com/store/app
 - J. Kennedy and R. Eberhart, Particle Swarm Optimization, Proceedings of the IEEE International Conference on Neural Networks,Vol. 4, pp. 1942–1948. 1995.
 - J. McCaffrey, Artificial Intelligence: Particle Swarm Optimization, MSDN Magazine, Vol. 26, no. 8, Aug. 2011.
   - https://learn.microsoft.com/en-us/archive/msdn-magazine/2011/august/artificial-intelligence-particle-swarm-optimization (accessed Mar. 14, 2026).
+- D.S. Young, tolerance: An R Package for Estimating Tolerance Intervals, Journal of Statistical Software, Vol. 36(5), pp. 1-39, 2010.
 
 ## Libraries
 - Below libraries are used without any modifications.
