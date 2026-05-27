@@ -97,8 +97,7 @@ Following functions can be used (case-sensitive).
     - approximation using Monte Carlo simulation, at least 5000000 samples recommended
                         
   - Tolerance factors
-    - `MATH.TOL.K2(number of samples,proportion,confidence)` - calculates k factor for 2-sided tolerance limit for a normal distribution using an approximate formula by Howe (1969).
-      - k_2 = z_(1+p)/2 * Sqrt{nu*(1+1/N)/Chi^2_(1-alpha,nu)}
+    - `MATH.TOL.K2(number of samples,proportion,confidence)` - calculates k factor for 2-sided tolerance limit for a normal distribution using a method by D.S. Young (2010).      
     - `MATH.TOL.K1(number of samples,proportion,confidence)` - calculates k factor for 1-sided tolerance limit for a normal distribution using an inverse cumulative distribution function for the non-central t-distribution.
       - k_1 = t_(alpha,N-1,delta)/Sqrt(N)
       - delta = z_p*Sqrt(N)
