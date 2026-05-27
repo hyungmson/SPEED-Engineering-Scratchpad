@@ -30,6 +30,9 @@ Following features are currently supported.
   - Golden-section maximization method
   - Particle swarm optimization (PSO) method for minimization
 - Extensive statistical functions
+  - Check for normality
+  - Transformation
+  - Tolerance limit factor
 - Extensive unit conversion factors
 - Other useful functions
 
