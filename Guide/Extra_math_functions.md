@@ -135,11 +135,16 @@ Following functions can be used (case-sensitive).
       - no. of censored data: values that exist conceptually but are not observed because they fall beyond some cutoff (usually right‑censoring in survival analysis).
     - `MATH.SWK.P({1D matrix name},{no. of censored data})` - returns P value
       - Same as the above.
+    - `MATH.SWK.QNT({sample size},{probability})` - returns quantile value
                         
   - P-value calculation functions by Expanded Shapiro-Wilk test of normality by Royston (1995)
     - `MATH.TRF.BOC.P({array name},{lambda})` - p-value from array data after Box-Cox (1964) transformation
     - `MATH.TRF.YEJ.P({array name},{lambda})` - p-value from array data after Yeo-Johnson (2000) transformation
-                        
+
+  - Kolmogorov-Smirnov test of normality
+    - `MATH.KMV.D({1D matrix name},{mean of normal distribution},{standard deviation of normal distrbution})` - returns D test statistic
+    - `MATH.KMV.QNT({sample size},{probability})` - returns quantile value
+  
   - Auxilliary functions         
     - `MATH.SDVP({1D array name})` - calculates population standard deviation of 1D array
     - `MATH.SDVS({1D array name})` - calculates sample standard deviation of 1D array
