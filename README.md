@@ -73,7 +73,8 @@ Currently available for Android- [Google Play](https://play.google.com/store/app
 - J. McCaffrey, Artificial Intelligence: Particle Swarm Optimization, MSDN Magazine, Vol. 26, no. 8, Aug. 2011.
   - https://learn.microsoft.com/en-us/archive/msdn-magazine/2011/august/artificial-intelligence-particle-swarm-optimization (accessed Mar. 14, 2026).
 - D.S. Young, tolerance: An R Package for Estimating Tolerance Intervals, Journal of Statistical Software, Vol. 36(5), pp. 1-39, 2010.
-
+- G. Marsaglia, W.W. Tsang, J. Wang, Evaluating Kolmogorov’s Distribution, Journal of Statistical Software, Vol. 8(18), pp. 1–4. 2003.
+  
 ## Libraries
 - Below libraries are used without any modifications.
 - CoolProp
