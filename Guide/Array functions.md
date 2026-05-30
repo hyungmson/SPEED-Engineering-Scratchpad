@@ -30,7 +30,11 @@
 - Array sort
   - `ARR.SORT.ASC({1D matrix name})` - returns 1D array of elements sorted in ascending order
   - `ARR.SORT.DEC({1D matrix name})` - returns 1D array of elements sorted in descending order
-                        
+
+- Binning
+  - `ARR.BIN.CNT({1d matrix name},{1d bin boundary array name},{remove duplicate in boundary array (0:no|1:yes)})` - returns 1D array of counts per bin
+    - number of bins = size(1d matrix) + 1
+
 - Matrix slicing to lower dimension
     - `ARR.SLICE2D({2D matrix name},{i-th dimension to be fixed: 0 or 1},{index j to be fixed at})`
       - creates 1D array where its elements coresponds to j-th index of i-th dimension
