@@ -1,0 +1,184 @@
+# 11. Goodness-of-fit tests
+# 11.3 Chi-square test for discrete distributions
+## Example 11.1 Rolling a die
+n = 600 = 600
+n_face = 6 = 6
+v = n_face - 1 = 5
+p_i = 1/6 = 0.166666666666667
+f_exp = n*p_i = 100
+! Table 11.1 Observed and expected frequencies of rolling a die
+$M O[0] {123,131,84,95,96,71} > OK (6[0~5])
+E = ARR.INIT1D(n_face,f_exp) = OK: E (6[0~5])
+D = ARR.OPEL.B(O,E,-) = OK: D (6[0~5])
+(ARR.SUM(D)) = 0
+X2_temp = ARR.OPEL.B(D,D,*) = OK: X2_temp (6[0~5])
+X2_temp = ARR.OPEL.U(X2_temp,100,/) = OK: X2_temp (6[0~5])
+X2 = ARR.SUM(X2_temp) = 26.28
+alpha = 0.05 = 0.05
+p = 1 - alpha = 0.95
+X2_crit = MATH.ICDF.CHI(v,p) = 11.0704976935163
+rejected = X2 > X2_crit = 1
+! -> reject the H0
+## Example 11.2 Grading a class
+$M pie[0] {0.1,0.2,0.55,0.1,0.05} > OK (5[0~4])
+$M O[0] {4,8,54,10,5} > OK (5[0~4])
+$M E[0] {8.1,16.2,44.55,8.1,4.05} > OK (5[0~4])
+tot = ARR.SUM(O) = 81
+D = ARR.OPEL.B(O,E,-) = OK: D (5[0~4])
+(ARR.SUM(D)) = 4.44089209850063E-15
+X2_temp = ARR.OPEL.B(D,D,*) = OK: X2_temp (5[0~4])
+X2_temp = ARR.OPEL.U(X2_temp,tot,/) = OK: X2_temp (5[0~4])
+X2 = ARR.SUM(X2_temp) = 2.19586419753087
+n = 5 = 5
+v = n - 1 = 4
+X2_crit = MATH.ICDF.CHI(v,p) = 9.48772903678115
+rejected = X2 > X2_crit = 0
+! -> cannot reject the H0
+## Example 11.3 Random selection
+n = 150 = 150
+N_tot = 1491 = 1491
+$M C[0] {310,253,177,163,244,268,76} > OK (7[0~6])
+$M pie[0] {0.21,0.17,0.12,0.11,0.16,0.18,0.05} > OK (7[0~6])
+$M O[0] {28,24,19,23,30,16,10} > OK (7[0~6])
+$M E[0] {31.19,25.45,17.81,16.40,24.55,26.96,7.65} > OK (7[0~6])
+D = ARR.OPEL.B(O,E,-) = OK: D (7[0~6])
+X2_temp = ARR.OPEL.B(D,D,*) = OK: X2_temp (7[0~6])
+X2_temp = ARR.OPEL.B(X2_temp,E,/) = OK: X2_temp (7[0~6])
+X2 = ARR.SUM(X2_temp) = 9.53180584694732
+n_bins = 7 = 7
+v = n_bins-1 = 6
+X2_crit = MATH.ICDF.CHI(v,p) = 12.591587243744
+rejected = X2 > X2_crit = 0
+! ? cannot reject the H0
+# 11.5 Chi-square test for normality: known parameters
+## Example 11.4 Uranium content of air filters
+! Table 11.4 Uranium count per minute
+$M tbl11p4[0] {267,270,278,280,283,284,287,296,299,300,300,304,306,313,314,314,315,316,316,316,317,317,319,321,325,326,331,342,351,354} > OK (30[0~29])
+mu = 310 = 310
+sig2 = 100 = 100
+$M cls[0] {303.3,310.0,316.7} > OK (3[0~2])
+O = ARR.BIN.CNT(tbl11p4,cls,1) = OK: O (4[0~3])
+E = ARR.INIT1D(4,7.5) = OK: E (4[0~3])
+D = ARR.OPEL.B(O,E,-) = OK: D (4[0~3])
+X2_temp = ARR.OPEL.B(D,D,*) = OK: X2_temp (4[0~3])
+X2_temp = ARR.OPEL.B(X2_temp,E,/) = OK: X2_temp (4[0~3])
+X2 = ARR.SUM(X2_temp) = 6.53333333333333
+X2_crit = MATH.ICDF.CHI(3,0.95) = 7.81472790325117
+rejected = X2 > X2_crit = 0
+! -> cannot reject H0
+# 11.6 Chi-square test for normality: unknown parameters
+## Example 11.5 Uranium content for air filters: unknown parameters
+! Table 11.6 Class selection
+$M cls[0] {260,285,310,335,360} > OK (5[0~4])
+$M M[0] {272.5,297.5,322.5,347.5} > OK (4[0~3])
+$M O[0] {6,7,14,3} > OK (4[0~3])
+n = 30 = 30
+! sample weighted mean
+Y_W_temp = ARR.OPEL.B(O,M,*) = OK: Y_W_temp (4[0~3])
+Y_W_temp = ARR.OPEL.U(Y_W_temp,n,/) = OK: Y_W_temp (4[0~3])
+Y_W = ARR.SUM(Y_W_temp) = 309.166666666667
+! sample weighted variance
+m2 = ARR.OPEL.B(M,M,*) = OK: m2 (4[0~3])
+S2_W_temp = ARR.OPEL.B(O,m2,*) = OK: S2_W_temp (4[0~3])
+S2_W_temp = ARR.OPEL.U(S2_W_temp,n,/) = OK: S2_W_temp (4[0~3])
+S2_W = ARR.SUM(S2_W_temp) - Y_W^2 = 530.5555555553
+s_W = Sqrt(S2_W) = 23.0337916018032
+! Table 11.7 Class boundaries and expected counts
+$M cls[0] {260,285,310,335,360} > OK (5[0~4])
+/$M pie[0] {0.0164,0.1306,0.3674,0.3546,0.1173,0.0137}
+/$M E[0] {0.49,3.92,11.02,10.64,3.52,0.41} > OK (6[0~5])
+pie = ARR.INIT1D(6,0.0) = OK: pie (6[0~5])
+z_cls = ARR.OPEL.U(cls,Y_W,-) = OK: z_cls (5[0~4])
+z_cls = ARR.OPEL.U(z_cls,s_W,/) = OK: z_cls (5[0~4])
+Pr = ARR.INIT1D(5,0.0) = OK: Pr (5[0~4])
+$PM z_cls > OK
+idx = -1 = -1
+$L1 5
+idx = idx + 1 = 4
+Pr[idx] = MATH.CDF.NRM(0,1,z_cls[idx]) = 0.986339565742289
+$L1
+! probability
+pie[0] = Pr[0] = 0.0163990935742379
+pie[1] = Pr[1]-Pr[0] = 0.130647816191546
+pie[2] = Pr[2]-Pr[1] = 0.367383167396769
+pie[3] = Pr[3]-Pr[2] = 0.354541021084491
+pie[4] = Pr[4]-Pr[3] = 0.117368467495245
+pie[5] = 1-Pr[4] = 0.013660434257711
+! expected count
+E = ARR.OPEL.U(pie,n,*) = OK: E (6[0~5])
+$PM E > OK
+! Table 11.8 Class boundaries and counts (revised)
+$M cls_r[0] {285,310,335} > OK (3[0~2])
+O_r = ARR.BIN.CNT(tbl11p4,cls_r,1) = OK: O_r (4[0~3])
+$PM O_r > OK
+E_r = ARR.INIT1D(4,0.0) = OK: E_r (4[0~3])
+E_r[0] = (pie[0]+pie[1])*n = 4.41140729297352
+E_r[1] = pie[2]*n = 11.0214950219031
+E_r[2] = pie[3]*n = 10.6362306325347
+E_r[3] = (pie[4]+pie[5])*n = 3.93086705258868
+! Table 11.9 Testing normality: unknown parameters
+D_r = ARR.OPEL.B(O_r,E_r,-) = OK: D_r (4[0~3])
+D_r = ARR.OPEL.B(D_r,D_r,*) = OK: D_r (4[0~3])
+D_r = ARR.OPEL.B(D_r,E_r,/) = OK: D_r (4[0~3])
+X2 = ARR.SUM(D_r) = 3.32367101864981
+v = 4-2-1 = 1
+X2_crit = MATH.ICDF.CHI(1,0.95) = 3.84145882069413
+rejected = X2 > X2_crit = 0
+! -> cannot reject H0
+# 11.8 Kolmogorov-Smirnov goodness-of-fit test
+## Example 11.6 Example 11.4 revisited
+O = ARR.SORT.ASC(tbl11p4) = OK: O (30[0~29])
+cnt = ARR.CNT(O) = 30
+freq = ARR.BIN.CNT(O,O,0) = OK: freq (31[0~30])
+freq = ARR.OPEL.U(freq,cnt,/) = OK: freq (31[0~30])
+F = ARR.CDF(freq) = OK: F (31[0~30])
+$PM O > OK
+$PM F > OK
+Fs = ARR.INIT1D(30,0.0) = OK: Fs (30[0~29])
+dFsFn = ARR.INIT1D(30,0.0) = OK: dFsFn (30[0~29])
+idx = -1 = -1
+$L1 30
+idx = idx + 1 = 29
+Fs[idx] = MATH.CDF.NRM(310,10,O[idx]) = 0.999994587456092
+dFsFn[idx] = Abs(Fs[idx] - F[idx]) = 5.41254390795665E-06
+$L1
+$PM Fs > OK
+$PN "|F*(y_i)-Fn(y_i)|" > |F*(y_i)-Fn(y_i)|
+$PM dFsFn > OK
+idx = 0 = 0
+dFsiFnim1 = ARR.INIT1D(30,0.0) = OK: dFsiFnim1 (30[0~29])
+dFsiFnim1[0] = 0.0 = 0
+$L1 29
+idx = idx + 1 = 29
+im1 = idx - 1 = 28
+dFsiFnim1[idx] = Abs(Fs[idx]-F[im1]) = 0.033327920789425
+$L1
+$PN "|F*(y_i)-Fn(y_i-1)|" > |F*(y_i)-Fn(y_i-1)|
+$PM dFsiFnim1 > OK
+D1 = ARR.MAX(dFsFn) = 0.222609223311657
+D2 = ARR.MAX(dFsiFnim1) = 0.20801141273521
+Dmax = Max(D1,D2) = 0.222609223311657
+! same value obtained using interal function
+(MATH.KMV.D(tbl11p4,310,10)) = 0.222609223311658
+! critical value
+Dcrit = MATH.KMV.QNT(30,0.95) = 0.241703469306231
+rejected = Dmax > Dcrit = 0
+! -> cannot reject H0
+# 11.9 Shapiro-Wilk test for normality
+## Example 11.7 Testing normality with the W-test
+$M tbl11p11[0] {35.5,79.4,35.2,4.1,25.0,78.5,78.2,37.1,48.4,28.6,75.5,34.3,29.4,29.8,28.4,23.4,77.0} > OK (17[0~16])
+! same w, p values as R's shapiro.test() -> W = 0.84291, p-value = 0.008376
+w_test = MATH.SWK.W(tbl11p11,0) = 0.842908094891501
+w_crit = MATH.SWK.QNT(17,0.05) = 0.89200308881118
+p_test = MATH.SWK.P(tbl11p11,0) = 0.00837577102718612
+rejected = w_test < w_crit = 1
+! H0 is rejected
+# 11.10 D'Agostino test for normality
+## Example 11.8 Testing normality with the D' test
+! Table 11.13 Data for Example 11.8
+$M tbl11p13[0] {3.15,4.48,8.27,10.52,10.52,11.09,11.2,11.2,11.2,13.5,15.1,15.2,15.3,15.7,15.89,16.1,17.66,19.85,20,20.2,20.2,20.2,20.4,20.4,20.4,20.4,22.4,22.6,22.98,23.27,25.1,25.2,27.2,27.2,27.5,27.7,29.3,29.7,33.7,35,35.5,38.1,39.5,44.2,44.2,46.71,50.84,52.96,53.8,55.65,63.3,70.1,71.6,74.5,74.9,81.1,90.9,149,163.84,204.7,251.3,306.6,311.83,327.42,356.66,445.15,462.21,502.97} > OK (68[0~67])
+D_test = MATH.DAGO.D(tbl11p13) = 116.137488430022
+D_crit1 = MATH.DAGO.D.CRIT(68,0.025,500000) = 152.767939681678
+D_crit2 = MATH.DAGO.D.CRIT(68,0.975,500000) = 160.555876441013
+accepted = (D_test > D_crit1)&&(D_test < D_crit2) = 0
+! H0 is rejected
