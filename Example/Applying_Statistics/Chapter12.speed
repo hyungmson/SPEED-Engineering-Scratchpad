@@ -1,0 +1,146 @@
+# 12. Contingency tables
+# 12.5 Testing independence
+! Table 12.3 Calculations for the 3x2 contingency table for Example 12.1
+$M O[0] {24,6,16,14,7,13} > OK (6[0~5])
+$M E[0] {17.625,12.375,17.625,12.375,11.750,8.250} > OK (6[0~5])
+O_E = ARR.OPEL.B(O,E,-) = OK: O_E (6[0~5])
+O_E2 = ARR.OPEL.B(O_E,O_E,*) = OK: O_E2 (6[0~5])
+O_E2_E = ARR.OPEL.B(O_E2,E,/) = OK: O_E2_E (6[0~5])
+O2 = ARR.OPEL.B(O,O,*) = OK: O2 (6[0~5])
+O2_E = ARR.OPEL.B(O2,E,/) = OK: O2_E (6[0~5])
+$PN "(O-E)²/E=" > (O-E)²/E=
+$PM O_E2_E > OK
+$PN "O²/E=" > O²/E=
+$PM O2_E > OK
+Sum_E = ARR.SUM(E) = 80
+Sum_O_E2_E = ARR.SUM(O_E2_E) = 10.6082097571459
+Sum_O2_E = ARR.SUM(O2_E) = 90.6082097571459
+! Chi-square using Eq. (12.5)
+X2_1 = Sum_O_E2_E = 10.6082097571459
+! Chi-square using Eq. (12.6)
+X2_2 = Sum_O2_E - Sum_E = 10.6082097571459
+v = (3-1)*(2-1) = 2
+a = 0.05 = 0.05
+q = 1-a = 0.95
+! Critical value
+X2_crit = MATH.ICDF.CHI(v,q) = 5.99146454710798
+rejectH0 = X2_2 > X2_crit = 1
+! reject H0
+# 12.6 Special case: 2x2 contingency tables
+## Example 12.2 Weld inspection
+! Table 12.4 A 2x2 contingency table for weld inspections
+$M data[0,0] {30,0;50,20} > OK (2[0~1] × 2[0~1])
+$PM data > OK
+n = ARR.SUM(data) = 100
+O1p = data[0,0]+data[0,1] = 30
+O2p = data[1,0]+data[1,1] = 70
+Op1 = data[0,0]+data[1,0] = 80
+Op2 = data[0,1]+data[1,1] = 20
+! Eq. (12.8) is incorrect
+X2 = n*(data[0,0]*data[1,1] - data[0,1]*data[1,0])^2/(O1p*O2p*Op1*Op2) = 10.7142857142857
+X2_crit = MATH.ICDF.CHI(1,0.95) = 3.84145882069413
+rejectH0 = X2 > X2_crit = 1
+! reject H0
+## Example 12.3 Mastering technical material
+$M data[0,0] {46,14;19,91} > OK (2[0~1] × 2[0~1])
+n = ARR.SUM(data) = 170
+O1p = data[0,0]+data[0,1] = 60
+O2p = data[1,0]+data[1,1] = 110
+Op1 = data[0,0]+data[1,0] = 65
+Op2 = data[0,1]+data[1,1] = 105
+! Eq. (12.8) is incorrect
+X2 = n*(data[0,0]*data[1,1] - data[0,1]*data[1,0])^2/(O1p*O2p*Op1*Op2) = 57.9928515928516
+X2_crit = MATH.ICDF.CHI(1,0.95) = 3.84145882069413
+rejectH0 = X2 > X2_crit = 1
+! reject H0
+## Example 12.4 Age discrimination
+$M data[0,0] {44,104;32,109} > OK (2[0~1] × 2[0~1])
+n = ARR.SUM(data) = 289
+O1p = data[0,0]+data[0,1] = 148
+O2p = data[1,0]+data[1,1] = 141
+Op1 = data[0,0]+data[1,0] = 76
+Op2 = data[0,1]+data[1,1] = 213
+! Eq. (12.8) is incorrect
+X2 = n*(data[0,0]*data[1,1] - data[0,1]*data[1,0])^2/(O1p*O2p*Op1*Op2) = 1.84363918513722
+X2_crit = MATH.ICDF.CHI(1,0.95) = 3.84145882069413
+rejectH0 = X2 > X2_crit = 0
+! cannot reject H0
+# 12.7 Fisher's exact probability test
+## Example 12.5 Paint adhesion
+$M data[0,0] {2,8;13,5} > OK (2[0~1] × 2[0~1])
+n = ARR.SUM(data) = 28
+O1p = data[0,0]+data[0,1] = 10
+O2p = data[1,0]+data[1,1] = 18
+Op1 = data[0,0]+data[1,0] = 15
+Op2 = data[0,1]+data[1,1] = 13
+! Probability
+pie1 = MATH.FACT(O1p)*MATH.FACT(O2p)*MATH.FACT(Op1)*MATH.FACT(Op2)/{MATH.FACT(n)*MATH.FACT(data[0,0])*MATH.FACT(data[0,1])*MATH.FACT(data[1,0])*MATH.FACT(data[1,1])} = 0.0102974828375286
+! Table 12.8a Testing paint adhesion, cell (1,1) count = 1
+$M data[0,0] {1,9;14,4} > OK (2[0~1] × 2[0~1])
+O1p = data[0,0]+data[0,1] = 10
+O2p = data[1,0]+data[1,1] = 18
+Op1 = data[0,0]+data[1,0] = 15
+Op2 = data[0,1]+data[1,1] = 13
+! Probability
+pie2 = MATH.FACT(O1p)*MATH.FACT(O2p)*MATH.FACT(Op1)*MATH.FACT(Op2)/{MATH.FACT(n)*MATH.FACT(data[0,0])*MATH.FACT(data[0,1])*MATH.FACT(data[1,0])*MATH.FACT(data[1,1])} = 0.000817260542661
+! Table 12.8b Testing paint adhesion, cell (1,1) count = 0
+$M data[0,0] {0,10;15,3} > OK (2[0~1] × 2[0~1])
+O1p = data[0,0]+data[0,1] = 10
+O2p = data[1,0]+data[1,1] = 18
+Op1 = data[0,0]+data[1,0] = 15
+Op2 = data[0,1]+data[1,1] = 13
+! Probability
+pie3 = MATH.FACT(O1p)*MATH.FACT(O2p)*MATH.FACT(Op1)*MATH.FACT(Op2)/{MATH.FACT(n)*MATH.FACT(data[0,0])*MATH.FACT(data[0,1])*MATH.FACT(data[1,0])*MATH.FACT(data[1,1])} = 2.179361447096E-05
+! Sum of probabilies
+Sum_pie = pie1 + pie2 + pie3 = 0.0111365369946606
+rejectH0 = Sum_pie < 0.05 = 1
+! reject H0
+# 12.8 Simpson's paradox - better watch out!
+## Example 12.6 Admission records in two schools
+! Table 12.9 Admission records aggregated for two schools
+$M data[0,0] {250.0,300.0;250.0,400.0} > OK (2[0~1] × 2[0~1])
+n = ARR.SUM(data) = 1200
+O1p = data[0,0]+data[0,1] = 550
+O2p = data[1,0]+data[1,1] = 650
+Op1 = data[0,0]+data[1,0] = 500
+Op2 = data[0,1]+data[1,1] = 700
+! 1.0 multiplied in denominator to avert integer overflow
+X2 = n*(data[0,0]*data[1,1] - data[0,1]*data[1,0])^2/(1.0*O1p*O2p*Op1*Op2) = 5.99400599400599
+X2_crit = MATH.ICDF.CHI(1,0.95) = 3.84145882069413
+rejectH0 = X2 > X2_crit = 1
+! H0 rejected
+! Table 12.9a Admission records for School A
+$M data[0,0] {200.0,200.0;100.0,100.0} > OK (2[0~1] × 2[0~1])
+n = ARR.SUM(data) = 600
+O1p = data[0,0]+data[0,1] = 400
+O2p = data[1,0]+data[1,1] = 200
+Op1 = data[0,0]+data[1,0] = 300
+Op2 = data[0,1]+data[1,1] = 300
+! 1.0 multiplied in denominator to avert integer overflow
+X2 = n*(data[0,0]*data[1,1] - data[0,1]*data[1,0])^2/(1.0*O1p*O2p*Op1*Op2) = 0
+X2_crit = MATH.ICDF.CHI(1,0.95) = 3.84145882069413
+rejectH0 = X2 > X2_crit = 0
+! cannot reject H0
+! Table 12.9b Admission records for School B
+$M data[0,0] {50.0,100.0;150.0,300.0} > OK (2[0~1] × 2[0~1])
+n = ARR.SUM(data) = 600
+O1p = data[0,0]+data[0,1] = 150
+O2p = data[1,0]+data[1,1] = 450
+Op1 = data[0,0]+data[1,0] = 200
+Op2 = data[0,1]+data[1,1] = 400
+! 1.0 multiplied in denominator to avert integer overflow
+X2 = n*(data[0,0]*data[1,1] - data[0,1]*data[1,0])^2/(1.0*O1p*O2p*Op1*Op2) = 0
+X2_crit = MATH.ICDF.CHI(1,0.95) = 3.84145882069413
+rejectH0 = X2 > X2_crit = 0
+! cannot reject H0
+# 12.9 A contingency table look-alike: McNemar's test statistic
+## Example 12.7 Effect of laundering on protective mask filters
+! Table 12.11 Laundering effect on protective mask filters
+a = 24 = 24
+b = 16 = 16
+c = 13 = 13
+d = 17 = 17
+X2 = {Abs(b-c)}^2/(b+c) = 0.310344827586207
+X2_crit = MATH.ICDF.CHI(1,0.95) = 3.84145882069413
+rejectH0 = X2 > X2_crit = 0
+! cannot reject H0
