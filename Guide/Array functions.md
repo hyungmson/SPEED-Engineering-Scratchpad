@@ -57,9 +57,11 @@
   - `ARR.OPEL.B({matrix name, A},{matrix name, B},{operator})`
     - matrix A and B can be 1D, 2D or 3D matrix.
     - dimensions and shapes (# of rows, columns, or depths) of A and B should be same.
-    - allowed operator strings: + (add), - (subtract), * (multiply), / (division), ^ (power)
+    - allowed operator strings: + (add), - (subtract), * (multiply), / (division), ^ (power), log (logarithm with B as base value), rem (remainder of A/B)
   - `ARR.OPEL.U({matrix name, A},{double value, B},{operator})`
     - same as OPEL.B, but element-wise operation is done with element of A and value B
+    - additional allowed operator strings (only A value is used, enter 0 for B): 
+      - exp (exponential), ln (natural log), sin (sine), cos (cosine), tan (tangent), ! (factorial), abs (absolute)
 
 - Cumulative distribution
   - `ARR.CDF({1D matrix name})`
