@@ -1,0 +1,113 @@
+# 13. Tests of statistical hypotheses: One mean
+# 13.2 A test of the mean: σ known
+## Example 13.1 Response time to alarm
+sig = 3 = 3
+n = 100 = 100
+y_mean = 10.4 = 10.4
+mu_0 = 10.0 = 10
+z = (y_mean - mu_0)/(sig/Sqrt(n)) = 1.33333333333333
+z_crit = MATH.ICDF.NRM(0,1,0.95) = 1.64485362695147
+rejectH0 = z > z_crit = 0
+! do not reject H0
+## Example 13.2 Inventory differences
+sig = 0.4 = 0.4
+mu_0 = 1.0 = 1
+n = 12 = 12
+y_bar = 0.66 = 0.66
+z = (y_bar - mu_0)/(sig/Sqrt(n)) = -2.94448637286709
+rejectH0 = z < z_crit = 1
+! reject H0
+# 13.4 Power of a test of hypothesis
+! returning to Example 13.1
+mu_0 = 10.0 = 10
+sig = 3.0 = 3
+n = 100 = 100
+y0_bar = mu_0 + z_crit*sig/Sqrt(n) = 10.4934560880854
+! reject H0 if y_bar > y0_bar
+! critical value is chosen that Type I error probability is 0.05
+! power of test
+mu = 10.8 = 10.8
+! Pr{10.494<Y_bar}
+Z_crit = (y0_bar-mu)/(sig/mu_0) = -1.02181303971533
+Pr = 1.0 - MATH.CDF.NRM(0,1,Z_crit) = 0.846565301749222
+! probability of Type II error
+beta = 1 - Pr = 0.153434698250778
+! Power(μ) = Pr{Z > Z_1-α + (μ₀-μ)√n/σ}
+! Table 13.1 Power of the test for Example 13.1
+$M mu_arr[0] {8.4,8.6,8.8,9.0,9.2,9.4,9.6,9.8,10.0,10.2,10.4,10.494,10.6,10.8,11.0,11.2,11.4,11.6,11.8,12.0} > OK (20[0~19])
+cnt = ARR.CNT(mu_arr) = 20
+Pwr = ARR.INIT1D(cnt,0.0) = OK: Pwr (20[0~19])
+Beta = ARR.INIT1D(cnt,0.0) = OK: Beta (20[0~19])
+z_1mA = MATH.ICDF.NRM(0,1,0.95) = 1.64485362695147
+i = -1 = -1
+$L1 20
+i = i + 1 = 19
+Zc = z_1mA + (mu_0-mu_arr[i])*Sqrt(n)/sig = -5.0218130397152
+Pwr[i] = 1.0 - MATH.CDF.NRM(0,1,Zc) = 0.999999744070023
+Beta[i] = 1-Pwr[i] = 2.55929976988867E-07
+$L1
+$PM Pwr > OK
+! Figure 13.2 Power curve for Example 13.1
+$TS mu_arr;Pwr;Power curve for Example 13.1;μ;Power=1-β(μ);0;UL > OK
+# 13.5 Operating characteristic curve
+! Figure 13.3 Operating characteristic curve for Example 13.1
+$TS mu_arr;Beta;Operating characteristic curve for Example 13.1;μ;Operating characteristics (OC), β(μ);0;UR > OK
+# 13.7 Testing a mean when σ is unknown
+## Example 13.3 Fuel pellets and solid lubricant additive
+$M data[0] {1.13,0.93,1.06,1.08,1.11,1.19,0.97} > OK (7[0~6])
+mu = 1.0 = 1
+alpha = 0.05 = 0.05
+p = 1-alpha = 0.95
+n = 7 = 7
+df = n-1 = 6
+t_crit = MATH.ICDF.STU(0,1,df,p) = 1.94318028052835
+y_bar = ARR.AVG(data) = 1.06714285714286
+s = MATH.SDVS(data) = 0.0906852221908814
+t = (y_bar-mu)/(s/Sqrt(n)) = 1.95890022676933
+rejectH0 = t > t_crit = 1
+! H0 rejected
+## Example 13.4 Ice weight in an ice condenser reactor
+$M tbl9p2[0] {892,893,894,900,901,901,913,914,916,924,931,932,932,932,935,936,938,941,942,943,943,946,950,951,963} > OK (25[0~24])
+y_bar = ARR.AVG(tbl9p2) = 926.52
+s = MATH.SDVS(tbl9p2) = 20.5063404828848
+n = ARR.CNT(tbl9p2) = 25
+dof = n-1 = 24
+t_crit = MATH.ICDF.STU(0,1,dof,p) = 1.71088207990748
+mu = 900.0 = 900
+t = (y_bar-mu)/(s/Sqrt(n)) = 6.46629271130418
+rejectH0 = t > t_crit = 1
+! H0 rejected
+# 13.8 Hypotheses with two-sided alternatives
+## Example 13.5 Piston diameter
+$M Obs[0] {7.7,7.9,8.4,8.0,8.1,8.3,7.9,8.2,8.4,7.8,8.0,8.0} > OK (12[0~11])
+mu = 8.0 = 8
+y_bar = ARR.AVG(Obs) = 8.05833333333333
+s = MATH.SDVS(Obs) = 0.227469611690055
+n = ARR.CNT(Obs) = 12
+dof = n-1 = 11
+! assume sig = 0.25
+sig = 0.25 = 0.25
+z = (y_bar-mu)/(sig/Sqrt(n)) = 0.80829037686543
+p = 1-alpha/2 = 0.975
+z_crit = MATH.ICDF.NRM(0,1,p) = 1.95996398454005
+acceptH0 = Abs(z) < z_crit = 1
+! do not reject H0
+! sig not known
+t = (y_bar-mu)/(s/Sqrt(n)) = 0.888349844689132
+t_crit = MATH.ICDF.STU(0,1,dof,p) = 2.20098516009477
+acceptH0 = Abs(t) < t_crit = 1
+! do not reject H0
+# 13.9 Required sample size to test a mean: σ known
+## Example 13.6 Response time to alarm, continued
+! determine n so that power at μ₁ = 10.4 is 0.95
+mu_0 = 10.0 = 10
+mu_1 = 10.4 = 10.4
+alpha = 0.05 = 0.05
+beta = 0.05 = 0.05
+sig = 3.0 = 3
+p = 1-alpha = 0.95
+z1a = MATH.ICDF.NRM(0,1,p) = 1.64485362695147
+z1b = MATH.ICDF.NRM(0,1,p) = 1.64485362695147
+! Corrected Eq. (13.13): n = (z_1-α + z_1-β)²σ²/(μ₁-μ₀)²
+n = (z1a + z1b)^2*sig^2/{(mu_1 - mu_0)^2} = 608.747277171465
+n = Ceiling(n) = 609
