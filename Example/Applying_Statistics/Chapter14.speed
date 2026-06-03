@@ -1,0 +1,120 @@
+# 14. Tests for statistical hypotheses: Variances
+# 14.3 Testing a single variance
+! Example 14.1 Testing a single variance
+* H_0: σ^2 = 100, H_1: σ^2 > 100
+* χ^2(n-1) = (n-1)S^2/(σ_0^2) Eq(14.3)
+σ = 10 = 10
+n = 20 = 20
+S2 = 177.13 = 177.13
+dof = n - 1 = 19
+χ2 = (n-1)*S2/(σ^2) = 33.6547
+χ2_crit = MATH.ICDF.CHI(dof,0.95) = 30.1435272056462
+reject_H0 = χ2 > χ2_crit = 1
+/ statistical evidence does not support claim that σ^2 ≤ 100
+* alternative: construct confidence interval
+(MATH.ICDF.CHI(dof,0.975)) = 32.8523268617298
+(MATH.ICDF.CHI(dof,0.025)) = 8.90651648198795
+χ2_lo = dof*S2/(MATH.ICDF.CHI(dof,0.975)) = 102.44236318982
+χ2_hi = dof*S2/(MATH.ICDF.CHI(dof,0.025)) = 377.866027285319
+include_σ0 = (χ2_lo < σ^2) && (χ2_hi > σ^2) = 0
+/ since confidence interval does not include σ^2, H0 is rejected
+# 14.4 Testing equality of two variances
+! Example 14.2 Testing equality of two variances
+/ Table 14.1 Testing equality of variance for two populations
+m_A = 18.5 = 18.5
+var_A = 207 = 207
+n_A = 16 = 16
+ν_A = n_A - 1 = 15
+m_B = 21.6 = 21.6
+var_B = 317 = 317
+n_B = 25 = 25
+ν_B = n_B - 1 = 24
+/
+S2_max = Max(var_A,var_B) = 317
+S2_min = Min(var_A,var_B) = 207
+ν_max = Max(ν_A,ν_B) = 24
+ν_min = Min(ν_A,ν_B) = 15
+f = S2_max/S2_min = 1.53140096618357
+f_crit = MATH.ICDF.FIS(24,15,0.975) = 2.70063967802588
+rejectH0 = f > f_crit = 0
+/ we don't have sufficient evidence to conclude that variances are different
+! Example 14.3 Warehouse temperature variation
+n_L = 50 = 50
+ν_L = n_L - 1 = 49
+S2_L = 43.56 = 43.56
+n_R = 60 = 60
+ν_R = n_R - 1 = 59
+S2_R = 11.56 = 11.56
+* H_0: σ_L^2 = σ_R^2, H_1: σ_L^2 > σ_R^2, α=0.05
+f = S2_L/S2_R = 3.7681660899654
+quantile = 1-0.05 = 0.95
+f_crit = MATH.ICDF.FIS(ν_L,ν_R,quantile) = 1.56539547340844
+rejectH0 = f > f_crit = 1
+/ reject H_0 and accept H_1
+## 14.5 Testing homoscedasticity with samples of equal size
+* provides a test for a balanced experiment (all sample sizes are the same)
+* homoscedasticity: equality of variances
+* heteroscedasticity: inequiality of variances
+* Hartley's test: tests homoscedasticity of k (≥2) populations where sample sizes are equal
+* H_0: σ_1^2 = σ_2^2 = ... = σ_k^2 Eq.(14.7)
+* H_1: σ_i^2 =/= σ_j^2 for at least one pair
+* α = 0.05
+! Example 14.4 Testing equality of uranium concentration variances
+/ Table 14.2 Uranium concentration (percent) in UO2 samples
+$M arr_m[0] {86.2,88.1,87.3,89.9,86.2,89.2} > OK (6[0~5])
+$M arr_s[0] {0.40,1.49,3.20,1.93,2.35,1.58} > OK (6[0~5])
+n_supplier = 6 = 6
+n = 8 = 8
+ν = n - 1 = 7
+quantile = 0.95 = 0.95
+f_max = ARR.MAX(arr_s)/ARR.MIN(arr_s) = 8
+f_max_crit = MATH.FMAX.CRIT(n_supplier,ν,quantile,200000) = 10.7944104535176
+rejectH0 = f_max > f_max_crit = 0
+/ do not reject H_0, statistical evidence is insufficient to conclude that population variances are different
+## 14.6 Pooling variances
+* wish to combine, or pool, all the sample variances to obtain a single estimate of the common population variance
+* weighted average of the sample variances: weights are dof
+* S^2 = {Σ_i=1~k ((n_i-1)*S_i^2)}/{Σ_i=1~k (n_i-1)}
+* ν = Σ_i=1~k (n_i-1)
+! Example 14.5 Pooling variances
+/ Table 14.3
+$M arr_s[0] {0.026,0.054,0.063,0.031} > OK (4[0~3])
+$M arr_n[0] {11,15,14,16} > OK (4[0~3])
+$M arr_ν[0] {10,14,13,15} > OK (4[0~3])
+s2_pool = 0.0 = 0
+idx = -1 = -1
+$L1 4
+idx = idx + 1 = 3
+s2_pool = s2_pool + (arr_n[idx]-1)*arr_s[idx] = 2.3
+$L1
+s2_pool = s2_pool/ARR.SUM(arr_ν) = 0.0442307692307692
+## 14.7 Testing equality of variances with unequal sample sizes
+* Bartlett's test: sensitive to departures from normality
+* Levene's test: not sensitive to departures from normality
+* Bartlett's test statistic,
+* B = {(N-k)*ln(S^2)-(Σ_i=1~k (n_i-1))*ln(S_i^2)}
+*     /{1+1/(3*(k-1))*{(Σ_i=1~k 1/(n_i-1)) - 1/(N-k)}}       Eq.(14.12)
+* S^2, pooled variance, defined in Eq.(14.10)
+* critical value = χ_(1-α)^2 (k-1), H_0 rejected if B > B_crit
+! Example 14.6 Continuation of Example 14.5
+k = ARR.CNT(arr_s) = 4
+dof = k - 1 = 3
+N = ARR.SUM(arr_n) = 56
+quantile = 0.95 = 0.95
+Sig_n1lnS2 = 0 = 0
+Sig_1_n1 = 0 = 0
+idx = -1 = -1
+$L1 4
+idx = idx + 1 = 3
+Sig_n1lnS2 = Sig_n1lnS2 + (arr_n[idx]-1)*Ln(arr_s[idx]) = -165.405972964589
+Sig_1_n1 = Sig_1_n1 + 1/(arr_n[idx]-1) = 0.315018315018315
+$L1
+B = {(N-k)*Ln(s2_pool) - Sig_n1lnS2}/{1+1/(3*(k-1))*{Sig_1_n1 - 1/(N-k)}} = 3.14907863100709
+B_crit = MATH.ICDF.CHI(dof,quantile) = 7.81472790325117
+reject_H0 = B > B_crit = 0
+/ B does not exceed B_crit, do not reject H0, conclude that there is no statistical evidence of heteroscedasticity
+dof = (N-k)/k = 13
+f_max = ARR.MAX(arr_s)/ARR.MIN(arr_s) = 2.42307692307692
+f_max_crit = MATH.FMAX.CRIT(k,dof,quantile,200000) = 4.45338449070602
+reject_H0 = f_max > f_max_crit = 0
+/ f_max does not exceed critical value, do not reject H0, conclude that there is no statistical evidence of heteroscedasticity
