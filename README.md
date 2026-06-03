@@ -38,7 +38,7 @@ Following features are currently supported.
 
 Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED) and Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz).
 - Latest version: 
-  - Windows: 1.0.19
+  - Windows: 1.0.20
   - Android: Build src 101900
 
 ## Repository folder structure
