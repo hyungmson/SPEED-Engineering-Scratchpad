@@ -1,0 +1,110 @@
+# 15. Tests of statistical hypotheses: Two means
+# 15.3 Procedure 1: Paired observations
+## Example 15.1 Paired scale measurements
+n = 10 = 10
+v = n - 1 = 9
+c = 0 = 0
+$M Scale1[0] {25.6,21.3,21.3,28.4,29.9,30,23.4,29.5,27.7,21.3} > OK (10[0~9])
+$M Scale2[0] {25.4,21.1,21.7,28.4,30,29.9,23.1,29.6,27.5,21.1} > OK (10[0~9])
+Diff = ARR.OPEL.B(Scale2,Scale1,-) = OK: Diff (10[0~9])
+d_m = ARR.AVG(Diff) = -0.0599999999999998
+s_d = MATH.SDVS(Diff) = 0.211869981094276
+t = (d_m - c)/{s_d/Sqrt(n)} = -0.895533471188987
+t_crit = MATH.ICDF.STU(0,1,v,0.975) = 2.2621571627982
+rejectH0 = Abs(t) > t_crit = 0
+/ H0 not rejected
+# 15.4 Procedure 2: Variances known
+## Example 15.2 Mean percent uranium in UO2 pellets
+n_A = 8 = 8
+n_B = 12 = 12
+$M ProcA[0] {88.056,88.088,88.044,88.015,87.897,88.039,87.950,88.113} > OK (8[0~7])
+$M ProcB[0] {87.939,87.883,88.005,88.064,88.001,87.977,87.881,87.946,88.107,87.970,87.923,88.119} > OK (12[0~11])
+m_A = ARR.AVG(ProcA) = 88.02525
+m_B = ARR.AVG(ProcB) = 87.9845833333333
+V_A = 0.0071 = 0.0071
+V_B = 0.0066 = 0.0066
+z = (m_A - m_B)/Sqrt(V_A/n_A + V_B/n_B) = 1.07259223672456
+z_crit = MATH.ICDF.NRM(0,1,0.975) = 1.95996398454005
+rejectH0 = Abs(z) > z_crit = 0
+/ cannot reject H0
+# 15.5 Procedure 3: Variances unknown but assumed equal
+## Example 15.3 Measuring radiaological contamination
+c = 0 = 0
+m_S = 1988 = 1988
+m_W = 2008 = 2008
+S2_S = 2051 = 2051
+S2_W = 2447 = 2447
+n_S = 36 = 36
+n_W = 39 = 39
+v_S = n_S - 1 = 35
+v_W = n_W - 1 = 38
+S2 = (v_S*S2_S + v_W*S2_W)/(n_S+n_W-2) = 2257.13698630137
+T = (m_S - m_W - c)/Sqrt(S2_S/n_S + S2_W/n_W) = -1.82790759746634
+dof = n_S + n_W - 2 = 73
+t_crit = MATH.ICDF.STU(0,1,dof,0.975) = 1.99299712588925
+rejectH0 = Abs(T) > t_crit = 0
+/ cannot reject H0
+# 15.6 Procedure 4: Variances unknown and unequal
+## Example 15.4 Yield stress of stainless steel pipes
+n_A = 5 = 5
+n_B = 8 = 8
+v_A = n_A - 1 = 4
+v_B = n_B - 1 = 7
+m_A = 82.3 = 82.3
+m_B = 71.4 = 71.4
+varA = 108.16 = 108.16
+varB = 7.84 = 7.84
+s_A = 10.4 = 10.4
+s_B = 2.8 = 2.8
+t = (m_A - m_B - c)/Sqrt(varA/n_A + varB/n_B) = 2.29222375819875
+dof = (varA/n_A + varB/n_B)^2/{(varA/n_A)^2/v_A + (varB/n_B)^2/v_B} = 4.3655157358599
+dof = Floor(dof) = 4
+t_crit = MATH.ICDF.STU(0,1,dof,0.975) = 2.77644510519779
+rejectH0 = t > t_crit = 0
+/ do not reject H0
+# 15.7 An example to summarize the four procedures
+$M Shp[0] {1471.22,1470.98,1470.82,1470.46,1469.42,1468.98,1469.1,1470.22,1470.86,1470.38} > OK (10[0~9])
+$M Rcv[0] {1468.12,1469.52,1469.22,1469.26,1465.96,1470.8,1467.89,1472.28,1469.02,1470.16} > OK (10[0~9])
+n = ARR.CNT(Shp) = 10
+Diff = ARR.OPEL.B(Shp,Rcv,-) = OK: Diff (10[0~9])
+m_D = ARR.AVG(Diff) = 1.021
+s_D = MATH.SDVS(Diff) = 1.81790141524658
+! Table 15.8a Procedure 1: Paired observations
+t = (m_D - c)/{s_D/Sqrt(n)} = 1.77605092550851
+t_crit = MATH.ICDF.STU(0,1,v,0.975) = 2.2621571627982
+rejectH0 = Abs(t) > t_crit = 0
+/ do not reject H0
+! Table 15.8b Procedure 2: Variances known
+m_A = ARR.AVG(Shp) = 1470.244
+m_B = ARR.AVG(Rcv) = 1469.223
+V_A = 0.75 = 0.75
+V_B = 1.75 = 1.75
+n_A = ARR.CNT(Shp) = 10
+n_B = ARR.CNT(Rcv) = 10
+z = (m_A - m_B)/Sqrt(V_A/n_A + V_B/n_B) = 2.04199999999992
+z_crit = MATH.ICDF.NRM(0,1,0.975) = 1.95996398454005
+rejectH0 = Abs(z) > z_crit = 1
+/ cannot reject H0
+! Table 15.8c Procedure 3: Variances unknown but equal
+m_A = ARR.AVG(Shp) = 1470.244
+m_B = ARR.AVG(Rcv) = 1469.223
+S2_A = MATH.SDVS(Shp)^2 = 0.65073777777763
+S2_B = MATH.SDVS(Rcv)^2 = 2.94240111111108
+n_A = ARR.CNT(Shp) = 10
+n_B = ARR.CNT(Rcv) = 10
+v_A = n_A - 1 = 9
+v_B = n_B - 1 = 9
+S2 = (v_A*S2_A + v_B*S2_B)/(n_A+n_B-2) = 1.79656944444436
+T = (m_A - m_B - c)/Sqrt(S2_A/n_A + S2_B/n_B) = 1.70329056101529
+dof = n_A + n_B - 2 = 18
+t_crit = MATH.ICDF.STU(0,1,dof,0.975) = 2.10092204022426
+rejectH0 = Abs(T) > t_crit = 0
+/ cannot reject H0
+! Table 15.8d Procedure 4: Variances unknown and unequal
+t = (m_A - m_B - c)/Sqrt(S2_A/n_A + S2_B/n_B) = 1.70329056101529
+dof = (S2_A/n_A + S2_B/n_B)^2/{(S2_A/n_A)^2/v_A + (S2_B/n_B)^2/v_B} = 12.7952284923385
+/ rounded down
+dof = Floor(dof) = 12
+t_crit = MATH.ICDF.STU(0,1,dof,0.975) = 2.17881282967213
+rejectH0 = t > t_crit = 0
+/ cannot reject H0
