@@ -171,6 +171,9 @@ Following functions can be used (case-sensitive).
                          
     - `MATH.NPR(n,r)` - calculates permutation of getting r elements from n elements
     - `MATH.NCR(n,r)` - calculates combination of getting r elements from n elements
+   
+    - `MATH.CtoF({temperature in Celcius})` - converts Celcius to Fahrenheit
+    - `MATH.FtoC({temperature in Fahrenheit})` - converts Fahrenheit to Celcius
 
 - Example:
 ```
