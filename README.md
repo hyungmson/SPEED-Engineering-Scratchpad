@@ -38,7 +38,7 @@ Following features are currently supported.
 
 Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED) and Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz).
 - Latest version: 
-  - Windows: 1.0.20
+  - Windows: 1.0.21
   - Android: Build src 101900
 
 ## Repository folder structure
@@ -74,6 +74,10 @@ Currently available for Android- [Google Play](https://play.google.com/store/app
   - https://learn.microsoft.com/en-us/archive/msdn-magazine/2011/august/artificial-intelligence-particle-swarm-optimization (accessed Mar. 14, 2026).
 - D.S. Young, tolerance: An R Package for Estimating Tolerance Intervals, Journal of Statistical Software, Vol. 36(5), pp. 1-39, 2010.
 - G. Marsaglia, W.W. Tsang, J. Wang, Evaluating Kolmogorov’s Distribution, Journal of Statistical Software, Vol. 8(18), pp. 1–4. 2003.
+- R. E. Lund, J. R. Lund, Algorithm AS 190: Probabilities and Upper Quantiles for the Studentized Range, Vol. 32(2), pp. 204-210 Journal of the Royal Statistical Society, 1983.
+- M. D. Copenhaver, B. S. Holland, Multiple comparisons of simple effects in the two-way analysis of variance with fixed effects, Journal of Statistical Computation and Simulation, Vol. 30, pp. 1-15, 1988.
+- M. Abramowitz, I. A. Stegun, Handbook of Mathematical Functions, Dover publications, Inc. NY, 1970.
+- A. H. Stroud, D. Secrest, Gaussian Quadrature Formulas, Prentice-Hall, Inc, NJ, 1966.
   
 ## Libraries
 - Below libraries are used without any modifications.
