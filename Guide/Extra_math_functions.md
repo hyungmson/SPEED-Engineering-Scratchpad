@@ -91,6 +91,13 @@ Following functions can be used (case-sensitive).
   - Negative binomial distribution
     - `MATH.PMF.NEGBIN(no. of successes until experiment is stopped,success probability for each trial,number of successes)`
     - `MATH.CDF.NEGBIN(no. of successes until experiment is stopped,success probability for each trial,location)`
+  - Studentized range distribution     
+    - `MATH.PDF.STU.RNG(number of groups,number of treatments,dof,location)`                
+    - `MATH.CDF.STU.RNG(number of groups,number of treatments,dof,location)`                
+    - `MATH.ICDF.STU.RNG(number of groups,number of treatments,dof,probability)`
+      - number of groups - (rows) number of independent ranges being considered, usually 1
+      - number of treatments  - (columns)number of meanis being compared in a standard one‑way ANOVA with k groups: nTreats = k
+      - dof — degrees of freedom of the error term, denominator degrees of freedom from ANOVA: df = N - nTreats
                        
   - Critical F_max value (Hartley’s test)
     - `MATH.FMAX.CRIT(number of groups, degree of freedom, quantile, number of samples)`
