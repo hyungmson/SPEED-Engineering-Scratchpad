@@ -152,6 +152,7 @@
   - `UNT.eng.kWh()`: kilowatt-hour; Board of Trade Unit
   - `UNT.eng.toe()`: tonne of oil equivalent
   - `UNT.eng.Wh()`: watt-hour
+  - `UNT.eng.pcu_BTU()` : pound centigrade unit (pcu) to BTU
 - Power [W] (default unit otherwise mentioned)
   - `UNT.pwr.W()`: watt (SI unit)
   - `UNT.pwr.hp_el()`: horsepower (electrical)
