@@ -1,0 +1,164 @@
+# 17 Two-way ANOVA
+# 17.3 Randomized complete block design
+## Example 17.1. Ice sublimation
+! Table 17.2. Ice weight loss (kg) in 1 year
+$M data[0,0] {50,54;22,26;24,25} > OK (3[0~2] × 2[0~1])
+D_C1 = ARR.SLICE2D(data,1,0) = OK: D_C1 (3[0~2])
+D_C2 = ARR.SLICE2D(data,1,1) = OK: D_C2 (3[0~2])
+D_R1 = ARR.SLICE2D(data,0,0) = OK: D_R1 (2[0~1])
+D_R2 = ARR.SLICE2D(data,0,1) = OK: D_R2 (2[0~1])
+D_R3 = ARR.SLICE2D(data,0,2) = OK: D_R3 (2[0~1])
+/ SS, adjusted
+SSJ_C1 = MATH.SUM.SQA.ADJ(D_C1) = 488
+SSJ_C2 = MATH.SUM.SQA.ADJ(D_C2) = 542
+SSJ_R1 = MATH.SUM.SQA.ADJ(D_R1) = 8
+SSJ_R2 = MATH.SUM.SQA.ADJ(D_R2) = 8
+SSJ_R3 = MATH.SUM.SQA.ADJ(D_R3) = 0.5
+SSJ = MATH.SUM.SQA.ADJ(data) = 1043.5
+# 17.6 Excel calculations for the ANOVA table: No replication
+! Table 17.4. Excel’s summary statistics for Example 17.1
+n_R1 = ARR.CNT(D_R1) = 2
+n_R2 = ARR.CNT(D_R2) = 2
+n_R3 = ARR.CNT(D_R3) = 2
+n_C1 = ARR.CNT(D_C1) = 3
+n_C2 = ARR.CNT(D_C2) = 3
+S_R1 = ARR.SUM(D_R1) = 104
+S_R2 = ARR.SUM(D_R2) = 48
+S_R3 = ARR.SUM(D_R3) = 49
+S_C1 = ARR.SUM(D_C1) = 96
+S_C2 = ARR.SUM(D_C2) = 105
+m_R1 = ARR.AVG(D_R1) = 52
+m_R2 = ARR.AVG(D_R2) = 24
+m_R3 = ARR.AVG(D_R3) = 24.5
+m_C1 = ARR.AVG(D_C1) = 32
+m_C2 = ARR.AVG(D_C2) = 35
+var_R1 = MATH.SDVS(D_R1)^2 = 8
+var_R2 = MATH.SDVS(D_R2)^2 = 8
+var_R3 = MATH.SDVS(D_R3)^2 = 0.500000000000001
+var_C1 = MATH.SDVS(D_C1)^2 = 244
+var_C2 = MATH.SDVS(D_C2)^2 = 270.999999999999
+! Table 17.5. Excel’s ANOVA table for Example 17.1
+ARR_A = ARR.AVG2D(data,0) = OK: ARR_A (3[0~2])
+ARR_B = ARR.AVG2D(data,1) = OK: ARR_B (2[0~1])
+m_tot = ARR.AVG(data) = 33.5
+A_m = ARR.OPEL.U(ARR_A,m_tot,-) = OK: A_m (3[0~2])
+B_m = ARR.OPEL.U(ARR_B,m_tot,-) = OK: B_m (2[0~1])
+SSA = 2*MATH.SUM.SQA(A_m) = 1027
+SSB = 3*MATH.SUM.SQA(B_m) = 13.5
+SSE = SSJ - SSA - SSB = 3
+MSA = SSA/2 = 513.5
+MSB = SSB/1 = 13.5
+MSE = SSE/2 = 1.5
+FA = MSA/MSE = 342.333333333333
+FB = MSB/MSE = 9
+F_crit_A = MATH.ICDF.FIS(2,2,0.95) = 19
+F_crit_B = MATH.ICDF.FIS(1,2,0.95) = 18.5128205128205
+rejectH0_A = FA > F_crit_A = 1
+/ H0 rejected, there is a row effect and that proximity to the reactor affect the sublimation rate
+rejectH0_B = FB > F_crit_B = 0
+/ H0 not rejected, no statistical evidence to claim that ice sublimation varies among the selected columns
+# 17.7 Balanced two-way factorial designs with replication
+## Example 17.2. Ice sublimation with interaction
+! Figure 17.1 Sublimation in the absence of interaction
+$M x[0] {1,2,3} > OK (3[0~2])
+$TS x;data;Sublimation in the absence of interaction;Row number;Sublimation (kg);5;UR > OK
+! Figure 17.2 Sublimation with of interaction
+$M data2[0,0] {50,54;22,26;25,24} > OK (3[0~2] × 2[0~1])
+$TS x;data2;Sublimation with interaction;Row number;Sublimation (kg);5;UR > OK
+## Example 17.3. Lathe and coolant interacti
+$M CoolA[0,0] {0.125,0.118,0.123,0.126,0.118;0.127,0.122,0.125,0.128,0.129;0.125,0.12,0.125,0.126,0.127;0.126,0.124,0.124,0.127,0.12;0.128,0.119,0.126,0.129,0.121} > OK (5[0~4] × 5[0~4])
+$M CoolB[0,0] {0.124,0.116,0.122,0.126,0.125;0.128,0.125,0.121,0.129,0.123;0.127,0.119,0.124,0.125,0.114;0.126,0.125,0.126,0.13,0.124;0.129,0.12,0.125,0.124,0.117} > OK (5[0~4] × 5[0~4])
+rep = 5 = 5
+SumA = ARR.SUM2D(CoolA,1) = OK: SumA (5[0~4])
+AvgA = ARR.AVG2D(CoolA,1) = OK: AvgA (5[0~4])
+VarA = ARR.VARS2D(CoolA,1) = OK: VarA (5[0~4])
+SumB = ARR.SUM2D(CoolB,1) = OK: SumB (5[0~4])
+AvgB = ARR.AVG2D(CoolB,1) = OK: AvgB (5[0~4])
+VarB = ARR.VARS2D(CoolB,1) = OK: VarB (5[0~4])
+CoolAt = ARR.TRN(CoolA) = OK: CoolAt (25[0~4,0~4])
+CoolBt = ARR.TRN(CoolB) = OK: CoolBt (25[0~4,0~4])
+CoolTt = ARR.CAT.COL(CoolAt,CoolBt) = OK: CoolTt (50[0~4,0~9])
+CoolT = ARR.TRN(CoolTt) = OK: CoolT (50[0~9,0~4])
+SumT = ARR.SUM2D(CoolT,1) = OK: SumT (5[0~4])
+AvgT = ARR.AVG2D(CoolT,1) = OK: AvgT (5[0~4])
+VarT = ARR.VARS2D(CoolT,1) = OK: VarT (5[0~4])
+! Table 17.9 ANOV for Example 17.3
+m_tot = ARR.AVG(CoolT) = 0.12404
+/ Coolant
+AvgAvgA = ARR.AVG(AvgA) = 0.12432
+AvgAvgB = ARR.AVG(AvgB) = 0.12376
+SSA = rep*5*{(AvgAvgA-m_tot)^2 + (AvgAvgB-m_tot)^2} = 3.92000000000007E-06
+vA = 2 - 1 = 1
+MSA = SSA/vA = 3.92000000000007E-06
+/ Lathes
+AvgL = ARR.AVG2D(CoolT,1) = OK: AvgL (5[0~4])
+L_m = ARR.OPEL.U(AvgL,m_tot,-) = OK: L_m (5[0~4])
+SSB = rep*2*MATH.SUM.SQA(L_m) = 0.000303319999999999
+vB = 5 - 1 = 4
+MSB = SSB/vB = 7.58299999999998E-05
+/ Between
+A_m = ARR.OPEL.U(AvgA,m_tot,-) = OK: A_m (5[0~4])
+B_m = ARR.OPEL.U(AvgB,m_tot,-) = OK: B_m (5[0~4])
+SSbtw = rep*(MATH.SUM.SQA(A_m) + MATH.SUM.SQA(B_m)) = 0.00032192
+/ Interaction
+SSI = SSbtw - SSA - SSB = 1.46800000000009E-05
+vI = 5 - 1 = 4
+MSI = SSI/vI = 3.67000000000022E-06
+/ Error
+CoolA0 = ARR.SLICE2D(CoolA,1,0) = OK: CoolA0 (5[0~4])
+CoolA1 = ARR.SLICE2D(CoolA,1,1) = OK: CoolA1 (5[0~4])
+CoolA2 = ARR.SLICE2D(CoolA,1,2) = OK: CoolA2 (5[0~4])
+CoolA3 = ARR.SLICE2D(CoolA,1,3) = OK: CoolA3 (5[0~4])
+CoolA4 = ARR.SLICE2D(CoolA,1,4) = OK: CoolA4 (5[0~4])
+mA0 = ARR.AVG(CoolA0) = 0.1262
+mA1 = ARR.AVG(CoolA1) = 0.1206
+mA2 = ARR.AVG(CoolA2) = 0.1246
+mA3 = ARR.AVG(CoolA3) = 0.1272
+mA4 = ARR.AVG(CoolA4) = 0.123
+A_m0 = ARR.OPEL.U(CoolA0,mA0,-) = OK: A_m0 (5[0~4])
+A_m1 = ARR.OPEL.U(CoolA1,mA1,-) = OK: A_m1 (5[0~4])
+A_m2 = ARR.OPEL.U(CoolA2,mA2,-) = OK: A_m2 (5[0~4])
+A_m3 = ARR.OPEL.U(CoolA3,mA3,-) = OK: A_m3 (5[0~4])
+A_m4 = ARR.OPEL.U(CoolA4,mA4,-) = OK: A_m4 (5[0~4])
+SSEi = ARR.INIT1D(10,0.0) = OK: SSEi (10[0~9])
+SSEi[0] = MATH.SUM.SQA(A_m0) = 6.80000000000001E-06
+SSEi[1] = MATH.SUM.SQA(A_m1) = 2.32E-05
+SSEi[2] = MATH.SUM.SQA(A_m2) = 5.20000000000001E-06
+SSEi[3] = MATH.SUM.SQA(A_m3) = 6.80000000000001E-06
+SSEi[4] = MATH.SUM.SQA(A_m4) = 9.00000000000002E-05
+CoolB0 = ARR.SLICE2D(CoolB,1,0) = OK: CoolB0 (5[0~4])
+CoolB1 = ARR.SLICE2D(CoolB,1,1) = OK: CoolB1 (5[0~4])
+CoolB2 = ARR.SLICE2D(CoolB,1,2) = OK: CoolB2 (5[0~4])
+CoolB3 = ARR.SLICE2D(CoolB,1,3) = OK: CoolB3 (5[0~4])
+CoolB4 = ARR.SLICE2D(CoolB,1,4) = OK: CoolB4 (5[0~4])
+mB0 = ARR.AVG(CoolB0) = 0.1268
+mB1 = ARR.AVG(CoolB1) = 0.121
+mB2 = ARR.AVG(CoolB2) = 0.1236
+mB3 = ARR.AVG(CoolB3) = 0.1268
+mB4 = ARR.AVG(CoolB4) = 0.1206
+B_m0 = ARR.OPEL.U(CoolB0,mB0,-) = OK: B_m0 (5[0~4])
+B_m1 = ARR.OPEL.U(CoolB1,mB1,-) = OK: B_m1 (5[0~4])
+B_m2 = ARR.OPEL.U(CoolB2,mB2,-) = OK: B_m2 (5[0~4])
+B_m3 = ARR.OPEL.U(CoolB3,mB3,-) = OK: B_m3 (5[0~4])
+B_m4 = ARR.OPEL.U(CoolB4,mB4,-) = OK: B_m4 (5[0~4])
+SSEi[5] = MATH.SUM.SQA(B_m0) = 1.48E-05
+SSEi[6] = MATH.SUM.SQA(B_m1) = 6.2E-05
+SSEi[7] = MATH.SUM.SQA(B_m2) = 1.72E-05
+SSEi[8] = MATH.SUM.SQA(B_m3) = 2.68E-05
+SSEi[9] = MATH.SUM.SQA(B_m4) = 9.31999999999999E-05
+SSE = ARR.SUM(SSEi) = 0.000346
+vE = 40 - 0 = 40
+MSE = SSE/vE = 8.65E-06
+/ F
+FA = MSA/MSE = 0.453179190751453
+FcritA = MATH.ICDF.FIS(vA,40,0.95) = 4.08474573330165
+rejectH0 = FA > FcritA = 0
+* coolant effect not significant
+FB = MSB/MSE = 8.76647398843928
+FcritB = MATH.ICDF.FIS(vB,40,0.95) = 2.60597494912388
+rejectH0 = FB > FcritB = 1
+* lathe effect statistically significant
+FI = MSI/MSE = 0.424277456647424
+FcritI = MATH.ICDF.FIS(vI,40,0.95) = 2.60597494912388
+rejectH0 = FI > FcritI = 0
+* interaction effect is not significant
