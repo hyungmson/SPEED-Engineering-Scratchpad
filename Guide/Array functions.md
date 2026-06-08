@@ -4,9 +4,13 @@
 
 - Following functions are applicable to 1D and 2D arrays.
 - Average value calculation
-  - `ARR.AVG({matrix name})`             
+  - `ARR.AVG({matrix name})`
+  -  `ARR.AVG2D({2D matrix name},{calculation direction: 0 - row, 1 - column})` - create 1D array where each element is row- or column-wise average
 - Sum value calculation
-  - `ARR.SUM({matrix name})`     
+  - `ARR.SUM({matrix name})`
+  - `ARR.SUM2D({2D matrix name},{calculation direction: 0 - row, 1 - column})` - create 1D array where each element is row- or column-wise sum
+- Variance calculation
+  - `ARR.VARS2D({2D matrix name},{calculation direction: 0 - row, 1 - column})` - create 1D array where each element is row- or column-wise sample variance
 - Number of elements (ignores blank element) calculation
   - `ARR.CNT({matrix name})`       
 - Maximum value calculation
