@@ -172,6 +172,12 @@ Following functions can be used (case-sensitive).
     - `MATH.NPR(n,r)` - calculates permutation of getting r elements from n elements
     - `MATH.NCR(n,r)` - calculates combination of getting r elements from n elements
    
+    - `MATH.SUM.SQA({array name})` - sum of squares
+    - `MATH.SUM.CUB({array name})` - sum of cubes
+    - `MATH.AVG.SQA({array name})` - average of squares
+    - `MATH.AVG.CUB({array name})` - average of cubes
+    - `MATH.AVG.SQA.ADJ({array name})` - adjusted sum of squares (sum of squares - correction)
+   
     - `MATH.CtoF({temperature in Celcius})` - converts Celcius to Fahrenheit
     - `MATH.FtoC({temperature in Fahrenheit})` - converts Fahrenheit to Celcius
 
