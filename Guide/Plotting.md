@@ -118,6 +118,14 @@ $M arr[0] {100,50,20}
 $TB arr;Item1,Item2,Item3;Series1;Bar chart;Items;Values;Y;UL
 $M arr2[0,0] {1,2,3,4;2,4,6,8;3,6,9,12}
 $TB arr2;Item1,Item2,Item3,Item4;Series1,Series2,Series3;Bar chart;Items;Values;Y;UL
+// Isometric plot
+$M arr[0,0] {1,2,3;4,5,6;7,8,9;10,11,12;13,14,15;16,17,18}
+arr3 = ARR.2DTO3D(arr,1,2)
+$PN "2D"
+$PM arr
+$PN "3D"
+$PM arr3
+$TZ arr3;title;x;y;z;30;0.8;40;JT
 ```
 - After the update, plots are shown on Plot tab:
 ```
@@ -161,4 +169,12 @@ $M arr[0] {100,50,20} > OK (3[0~2])
 $TB arr;Item1,Item2,Item3;Series1;Bar chart;Items;Values;Y;UL > OK
 $M arr2[0,0] {1,2,3,4;2,4,6,8;3,6,9,12} > OK (3[0~2] × 4[0~3])
 $TB arr2;Item1,Item2,Item3,Item4;Series1,Series2,Series3;Bar chart;Items;Values;Y;UL > OK
+// Isometric plot
+$M arr[0,0] {1,2,3;4,5,6;7,8,9;10,11,12;13,14,15;16,17,18} > OK (6[0~5] × 3[0~2])
+arr3 = ARR.2DTO3D(arr,1,2) = OK: arr3 (18[0~1,0~2,0~2])
+$PN "2D" > 2D
+$PM arr > OK
+$PN "3D" > 3D
+$PM arr3 > OK
+$TZ arr3;title;x;y;z;30;0.8;40;JT > OK
 ```
