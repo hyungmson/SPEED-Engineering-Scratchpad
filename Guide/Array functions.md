@@ -117,6 +117,20 @@
     - if file doesn't exist or the contents doesn't contain search string, "Not OK" is printed\
     - ex. `arr = ARR.FNDL.STR@output temperature@D:\output.dat`
 
+- Obtain 2D data from texts containing series of multiline data (chunk) separated by spaces
+  - `ARR.READ.STR.2D(file path, start lines, lines read per chunk, start column)`
+
+- Obtain reduced 2D data
+  - `ARR.CHOP2D(2D matrix name, start row, end row, start column, end column)`
+    - selects data bound by 4 bound argument (start row, end row, start column, end column) and returns as 2D array 
+    - all 4 bound arguments are zero based indices
+    - if start row or start column is -1, it defaults to 0 (start index)
+    - if end row or end column is -1, it defaults to row and column size of input 2D matrix, respectively
+
+- Convert 2D to 3D data
+  - `ARR.2DTO3D(2D matrix name, 1:collect by rows|0:by columns, collection size)`
+    - collects 2D data by constant number of rows or columns and stacks to return 3D array
+
 - Example:
 ```
 $M mat0[0] {1,2,3,4,5,6,7,8,9,10} 
