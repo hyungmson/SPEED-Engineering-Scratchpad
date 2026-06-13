@@ -71,6 +71,11 @@
   - Value array:
     - data in 1D only
 
+## 3D isometric plot
+- Grammar: `$TZ {3D array name};{Plot title};{X-axis title};{Y-axis title};{Z-axis title};{Voxel size};{azimuthal angle, deg.};{transparency: 0.1-1.0};{colormap:JT}`
+  - Colormap
+    - currently only JT (Jet) colormap is supported
+
 - Example:
 ```
 // Plot of X:1D, Y:1D array pair
