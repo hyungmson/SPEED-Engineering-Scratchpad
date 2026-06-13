@@ -17,6 +17,7 @@ Following features are currently supported.
 - Plotting
   - 1D scatter plot
   - 2D heatmap plot
+  - 3D isometric plot
   - Histogram
   - Pie chart
   - Bar chart
@@ -38,8 +39,8 @@ Following features are currently supported.
 
 Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED) and Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz).
 - Latest version: 
-  - Windows: 1.0.22
-  - Android: Build src 102200 (see Help tab)
+  - Windows: 1.0.24
+  - Android: Build src 102400 (see Help tab)
 
 ## Repository folder structure
 - [Guide](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Guide)
