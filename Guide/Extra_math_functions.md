@@ -151,6 +151,11 @@ Following functions can be used (case-sensitive).
   - Kolmogorov-Smirnov test of normality
     - `MATH.KMV.D({1D matrix name},{mean of normal distribution},{standard deviation of normal distrbution})` - returns D test statistic
     - `MATH.KMV.QNT({sample size},{probability})` - returns quantile value
+
+  - Simple Linear Regression
+    - `FIT.LIN.ICT({X 1D matrix name},{Y 1D matrix name})` - calculates intercept of regression line
+    - `FIT.LIN.SLP({X 1D matrix name},{Y 1D matrix name})` - calculates slope of regression line
+    - `FIT.LIN.R2({X 1D matrix name},{Y 1D matrix name})` - calculates coefficient of determination (R^2) of regression line
   
   - Auxilliary functions         
     - `MATH.SDVP({1D array name})` - calculates population standard deviation of 1D array
