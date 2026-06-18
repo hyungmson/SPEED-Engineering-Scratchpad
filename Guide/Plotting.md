@@ -3,10 +3,11 @@
 ## Global configuration
 - Grammar: `$T0 {Param}:{Value}`
   - Example of Supported Param:Value pairs
-  - zoom:0.5 - 50% zoom level
+  - `zoom:0.5` - 50% zoom level
+  - `size:640,480` - plot size set to 640 (width), 480 (height)
                         
 ## 1D Scatter Plot
-- Grammar: `$TS {ArrX};{ArrY};{Plot title};{X-axis title};{Y-axis title};{Marker size};{Legend position}`
+- Grammar (simple): `$TS {ArrX};{ArrY};{Plot title};{X-axis title};{Y-axis title};{Marker size};{Legend position}`
   - ArrX: 1D array for X values
   - ArrY: 1D or 2D array for Y values. For 2D array, the length of rows should be equal to length of ArrX.
   - Plot title: title of plot, shown on top of plot.
@@ -23,6 +24,13 @@
     - LL: LowerLeft
     - LC: LowerCenter
     - LR: LowerRight
+- Grammar (new): `$TS {X array names};{Y array names};{Plot title};{X-axis title};{Y-axis title};{Label names};{Line widths};{Marker sizes};{Legend position}`
+  - X array names: 1D array names separated by comma
+  - Y array names: 1D or 2D array names separated by comma. For 2D array, the length of Y array rows should be equal to length of corresponding X array
+  - Number of names in X and Y array should be equal
+  - Label names: names separated by comma
+  - Line widths: line thicknesses separated by comma
+  - Marker sizes: marker sizes separated by comma
                         
 ## 2D Heatmap Plot
 - Grammar: `$TH {Arr};{Plot title};{X-axis title};{Y-axis title};{Color map}`
@@ -78,6 +86,7 @@
 
 - Example:
 ```
+$T0 size:800,480
 // Plot of X:1D, Y:1D array pair
 $M ArrX[0] {1,2,3,4,5}
 $M ArrY[0] {2,4,6,8,10}
@@ -85,6 +94,7 @@ $TS ArrX;ArrY;Plot of X:1D Y:1D array pair;X;Y;5;LR
 // Plot of X:1D, Y:2D array pair
 $M Arr2D[0,0] {1,2,3;2,4,6;3,6,9;4,8,12;5,10,15}
 $TS ArrX;Arr2D;Plot of X:1D Y:2D array pair;X;Y;0;UL
+$TS ArrX;Arr2D;Plot of X:1D Y:2D array pair;X;Y;data;2;10;UL
 // Plot of 2D heatmap
 $TH Arr2D;Plot of 2D heatmap;X;Y;JT
 // Histogram from uniform distribution
@@ -125,10 +135,11 @@ $PN "2D"
 $PM arr
 $PN "3D"
 $PM arr3
-$TZ arr3;title;x;y;z;30;0.8;40;JT
+$TZ arr3;3D isometric plot;x;y;z;30;0.8;50;JT
 ```
 - After the update, plots are shown on Plot tab:
 ```
+$T0 size:800,480 > OK
 // Plot of X:1D, Y:1D array pair
 $M ArrX[0] {1,2,3,4,5} > OK (5[0~4])
 $M ArrY[0] {2,4,6,8,10} > OK (5[0~4])
@@ -136,6 +147,7 @@ $TS ArrX;ArrY;Plot of X:1D Y:1D array pair;X;Y;5;LR > OK
 // Plot of X:1D, Y:2D array pair
 $M Arr2D[0,0] {1,2,3;2,4,6;3,6,9;4,8,12;5,10,15} > OK (5[0~4] × 3[0~2])
 $TS ArrX;Arr2D;Plot of X:1D Y:2D array pair;X;Y;0;UL > OK
+$TS ArrX;Arr2D;Plot of X:1D Y:2D array pair;X;Y;data;2;10;UL > OK
 // Plot of 2D heatmap
 $TH Arr2D;Plot of 2D heatmap;X;Y;JT > OK
 // Histogram from uniform distribution
@@ -176,5 +188,5 @@ $PN "2D" > 2D
 $PM arr > OK
 $PN "3D" > 3D
 $PM arr3 > OK
-$TZ arr3;title;x;y;z;30;0.8;40;JT > OK
+$TZ arr3;3D isometric plot;x;y;z;30;0.8;50;JT > OK
 ```
