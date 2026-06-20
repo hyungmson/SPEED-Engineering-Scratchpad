@@ -1,0 +1,123 @@
+# 19. Simple Linear Correlation
+# 19.3 The correlation coefficient
+## Example 19.1. Cost of crude oil and gasoline
+! Table 19.1. Fuel cost at the source and at the pump
+$M X[0] {19,24,31,32,33,28,30,23} > OK (8[0~7])
+$M Y[0] {0.82,0.97,1.15,1.33,1.3,1.15,1.35,1.29} > OK (8[0~7])
+xb = ARR.AVG(X) = 27.5
+yb = ARR.AVG(Y) = 1.17
+x_xb = ARR.OPEL.U(X,xb,-) = OK: x_xb (8[0~7])
+y_yb = ARR.OPEL.U(Y,yb,-) = OK: y_yb (8[0~7])
+Sxx = MATH.SUM.SQA(x_xb) = 174
+Syy = MATH.SUM.SQA(y_yb) = 0.2526
+xxb_by_yyb = ARR.OPEL.B(x_xb,y_yb,*) = OK: xxb_by_yyb (8[0~7])
+Sxy = ARR.SUM(xxb_by_yyb) = 4.94
+* correlation coefficient
+rxy = Sxy/Sqrt(Sxx*Syy) = 0.745136181107363
+(MATH.Rxy(X,Y)) = 0.745136181107362
+# 19.4 Excel’s routines for calculating correlation
+! Figure 19.5. Excel’s correlation input and output
+$M W[0] {91,45,33,99,41,104,110,98,11,98} > OK (10[0~9])
+$M X[0] {34,77,72,22,73,39,27,68,61,73} > OK (10[0~9])
+$M Y[0] {60,126,105,133,104,138,100,68,104,78} > OK (10[0~9])
+$M Z[0] {0.964,0.936,0.633,0.733,0.164,0.515,0.550,0.666,0.627,0.341} > OK (10[0~9])
+Rwx = MATH.Rxy(W,X) = -0.601442981326433
+Rwy = MATH.Rxy(W,Y) = -0.154381370304047
+Ryx = MATH.Rxy(Y,X) = -0.1762720226289
+Rzw = MATH.Rxy(Z,W) = 0.0282932259147679
+Rzx = MATH.Rxy(Z,X) = -0.269457528053752
+Rzy = MATH.Rxy(Z,Y) = -0.0473193891301901
+# 19.5 Testing the correlation coefficient
+## Example 19.2. Testing ρ = 0
+n = 10 = 10
+v = n - 2 = 8
+r = 0.25 = 0.25
+alpha = 0.05 = 0.05
+p = 1-alpha/2 = 0.975
+t = r*Sqrt((n-2)/(1-r^2)) = 0.730296743340221
+t_crit = MATH.ICDF.STU(0,1,v,p) = 2.30600413520417
+rejectH0 = Abs(t) > t_crit = 0
+/ insufficient evidence to reject H0
+n = 63 = 63
+v = n - 2 = 61
+t = r*Sqrt((n-2)/(1-r^2)) = 2.01659779496722
+t_crit = MATH.ICDF.STU(0,1,v,p) = 1.99962358499417
+rejectH0 = Abs(t) > t_crit = 1
+/ reject H0
+! Fisher's Z transformation
+rho = 0.80 = 0.8
+n = 8 = 8
+r = 0.7451 = 0.7451
+E_Z = 0.5*Ln((1+rho)/(1-rho)) = 1.09861228866811
+SE_Z = 1/Sqrt(n-3) = 0.447213595499958
+z = 0.5*Ln((1+r)/(1-r)) = 0.961847914101378
+w = (z-E_Z)/SE_Z = -0.305814438431456
+z_crit = MATH.ICDF.NRM(0,1,0.975) = 1.95996398454005
+rejectH0 = (-z_crit < w) && (w < z_crit) = 1
+/ do not reject H0
+* one-sided
+z_crit = MATH.ICDF.NRM(0,1,0.95) = 1.64485362695147
+rejectH0 = Abs(w) > z_crit = 0
+/ do not reject H0
+# 19.6 Confidence interval for the correlation coefficient
+r = 0.7451 = 0.7451
+n = 8 = 8
+z = 0.9618 = 0.9618
+alpha = 0.05 = 0.05
+p = 1-alpha/2 = 0.975
+z_crit = MATH.ICDF.NRM(0,1,p) = 1.95996398454005
+L1 = z - z_crit*Sqrt(1/(n-3)) = 0.0852774594234202
+L2 = z + z_crit*Sqrt(1/(n-3)) = 1.83832254057658
+r1 = (Exp(2*L1)-1)/(Exp(2*L1)+1) = 0.0850713394562263
+r2 = (Exp(2*L2)-1)/(Exp(2*L2)+1) = 0.950633869152189
+## Example 19.3. Time and instrument drift
+! Table 19.2. Selected 95% two-sided confidence intervals
+$M R[0] {0.25,0.2,0.15,0.1,0.05,0.01} > OK (6[0~5])
+$M N[0] {1316,340,157,91,61,46} > OK (6[0~5])
+one_p_R = ARR.OPEL.U(R,1,+) = OK: one_p_R (6[0~5])
+one_m_R = ARR.OPEL.U(R,1,-) = OK: one_m_R (6[0~5])
+one_m_R = ARR.OPEL.U(one_m_R,-1,*) = OK: one_m_R (6[0~5])
+arrZ = ARR.OPEL.B(one_p_R,one_m_R,/) = OK: arrZ (6[0~5])
+arrZ = ARR.OPEL.U(arrZ,0,ln) = OK: arrZ (6[0~5])
+arrZ = ARR.OPEL.U(arrZ,0.5,*) = OK: arrZ (6[0~5])
+$PN "Table 19.2. Selected 95% two-sided confidence intervals" > Table 19.2. Selected 95% two-sided confidence intervals
+$PN "Fisher's z" > Fisher's z
+$PM arrZ > OK
+arrSE = ARR.OPEL.U(N,3,-) = OK: arrSE (6[0~5])
+arrSE = ARR.OPEL.U(arrSE,-0.5,^) = OK: arrSE (6[0~5])
+$PN "SE(z)" > SE(z)
+$PM arrSE > OK
+arrSE_Zc = ARR.OPEL.U(arrSE,z_crit,*) = OK: arrSE_Zc (6[0~5])
+arrL1 = ARR.OPEL.B(arrZ,arrSE_Zc,-) = OK: arrL1 (6[0~5])
+arrL2 = ARR.OPEL.B(arrZ,arrSE_Zc,+) = OK: arrL2 (6[0~5])
+$PN "L1" > L1
+$PM arrL1 > OK
+$PN "L2 > L2
+$PM arrL2 > OK
+exp2L1 = ARR.OPEL.U(arrL1,2,*) = OK: exp2L1 (6[0~5])
+exp2L1 = ARR.OPEL.U(exp2L1,0,Exp) = OK: exp2L1 (6[0~5])
+r1m1 = ARR.OPEL.U(exp2L1,1,-) = OK: r1m1 (6[0~5])
+r1p1 = ARR.OPEL.U(exp2L1,1,+) = OK: r1p1 (6[0~5])
+arrR1 = ARR.OPEL.B(r1m1,r1p1,/) = OK: arrR1 (6[0~5])
+$PN "R1" > R1
+$PM arrR1 > OK
+exp2L2 = ARR.OPEL.U(arrL2,2,*) = OK: exp2L2 (6[0~5])
+exp2L2 = ARR.OPEL.U(exp2L2,0,Exp) = OK: exp2L2 (6[0~5])
+r2m1 = ARR.OPEL.U(exp2L2,1,-) = OK: r2m1 (6[0~5])
+r2p1 = ARR.OPEL.U(exp2L2,1,+) = OK: r2p1 (6[0~5])
+arrR2 = ARR.OPEL.B(r2m1,r2p1,/) = OK: arrR2 (6[0~5])
+$PN "R2" > R2
+$PM arrR2 > OK
+# 19.7 Testing equality of two correlation coefficient
+## Example 19.4. Comparing correlations
+n1 = 80 = 80
+r1 = 0.65 = 0.65
+n2 = 50 = 50
+r2 = 0.80 = 0.8
+z1 = 0.5*Ln{(1+r1)/(1-r1)} = 0.775298706205583
+var1 = 1/(n1-3) = 0.012987012987013
+z2 = 0.5*Ln{(1+r2)/(1-r2)} = 1.09861228866811
+var2 = 1/(n2-3) = 0.0212765957446809
+w = (z1-z2)/Sqrt(var1 + var2) = -1.74665607513652
+rejectH0 = Abs(w) > z_crit = 0
+/ no statistical evidence that correlations are different

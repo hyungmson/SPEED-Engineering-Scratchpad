@@ -1,0 +1,103 @@
+# 20. Bayesian probability inference
+# 20.5 Conjugate distributions
+## Example 20.1. Loss of offsite power
+a_prior = 1.737 = 1.737
+b_prior = 52.47 = 52.47
+* prior mean, occurrences/year
+m_prior = a_prior/b_prior = 0.0331046312178388
+* y occurences in t year
+y = 1 = 1
+t = 9 = 9
+int_cred = 0.9 = 0.9
+* posterior mean
+a_post = a_prior+y = 2.737
+b_post = b_prior+t = 61.47
+m_post = a_post/b_post = 0.044525784935741
+* 90% credible interval
+** 0.05, 0.95 quantile
+int1 = MATH.ICDF.GAM(a_post,b_post,0.05) = 0.0111578724811425
+int2 = MATH.ICDF.GAM(a_post,b_post,0.95) = 0.0959655647758026
+## Example 20.2. Cable fires
+a_prior = 0.5 = 0.5
+m_prior = 0.2 = 0.2
+$M arrT[0] {2,2.5,5,10} > OK (4[0~3])
+* find second parameter
+b_prior = a_prior/m_prior = 2.5
+t_tot = ARR.SUM(arrT) = 19.5
+cnt = ARR.CNT(arrT) = 4
+* posterior distribution
+a_post = a_prior + cnt = 4.5
+b_post = b_prior + t_tot = 22
+** 0.05, 0.95 quantile
+int1 = MATH.ICDF.GAM(a_post,b_post,0.05) = 0.0755707464333369
+int2 = MATH.ICDF.GAM(a_post,b_post,0.95) = 0.384522218286828
+## Example 20.3. Emergency diesel generators
+a_prior = 0.957 = 0.957
+b_prior = 190 = 190
+n = 26 = 26
+y = 0 = 0
+* posterior distribution
+a_post = a_prior + y = 0.957
+b_post = b_prior + n - y = 216
+m_post = a_post/(a_post+b_post) = 0.00441101232041372
+* 90% credible interval
+** 0.05, 0.95 quantile
+int1 = MATH.ICDF.BTA(a_post,b_post,0.05) = 0.000203132987477414
+int2 = MATH.ICDF.BTA(a_post,b_post,0.95) = 0.0133918714555535
+# 20.8 Bayesian hypothesis testing
+## Example 20.4. EDG performance
+a_pr = 0.92 = 0.92
+b_pr = 17.55 = 17.55
+m_pr = a_pr/(a_pr+b_pr) = 0.0498105035192204
+* 90% credible interval
+** 0.05, 0.95 quantile
+int1_pr = MATH.ICDF.BTA(a_pr,b_pr,0.05) = 0.00216598054290294
+int2_pr = MATH.ICDF.BTA(a_pr,b_pr,0.95) = 0.149659244271154
+* H0 probability, p ≤ 0.025
+p_H0 = MATH.CDF.BTA(a_pr,b_pr,0.025) = 0.398232750429478
+y = 2 = 2
+n = 15 = 15
+a_po = a_pr + y = 2.92
+b_po = b_pr + n - y = 30.55
+* posterior mean
+m_po = a_po/(a_po+b_po) = 0.087242306543173
+* 90% credible interval
+** 0.05, 0.95 quantile
+int1_po = MATH.ICDF.BTA(a_po,b_po,0.05) = 0.02436478197262
+int2_po = MATH.ICDF.BTA(a_po,b_po,0.95) = 0.178114786498142
+* H0 probability, p ≤ 0.025
+p_H0_po = MATH.CDF.BTA(a_po,b_po,0.025) = 0.0531703741543581
+# 20.9 Bayes factors
+* prior odds against H0
+Pr_pr = (1-p_H0)/p_H0 = 1.51109432592257
+* posterior odds against H0
+Pr_po = (1-p_H0_po)/p_H0_po = 17.8074659226003
+* Bayes factor against H0
+Bf = Pr_po/Pr_pr = 11.7844833489983
+/ have positive evidence against H0
+# 20.10 Consistency of the prior with the observed data
+## Example 20.5. Tossing a coin
+* prior probability
+Pr_H1 = 0.75 = 0.75
+Pr_H2 = 1-Pr_H1 = 0.25
+* likelihood
+p1 = 0.5 = 0.5
+p2 = 1 = 1
+Pr_D = Pr_H1*p1 + Pr_H2*p2 = 0.625
+* posterior probabilities
+Pr_H1 = Pr_H1*p1/Pr_D = 0.6
+Pr_H2 = Pr_H2*p2/Pr_D = 0.4
+! turn into plot
+arrP1 = ARR.INIT1D(10,0.75) = OK: arrP1 (10[0~9])
+arrP2 = ARR.INIT1D(10,0.25) = OK: arrP2 (10[0~9])
+idx = 0 = 0
+$L1 9
+idx = idx + 1 = 9
+Pr_D = arrP1[idx-1]*p1 + arrP2[idx-1]*p2 = 0.994208494208495
+arrP1[idx] = arrP1[idx-1]*p1/Pr_D = 0.00582524271844661
+arrP2[idx] = arrP2[idx-1]*p2/Pr_D = 0.994174757281553
+$L1
+nHead = ARR.INIT.LINE1D(10,0,10) = OK: nHead (11[0~10])
+! Figure 20.3. Posterior probability of a fair coin as a function of the number of consecutive heads
+$T0 size:800,480 > OK
+$TS nHead;arrP1;Posterior probability of a fair coin as a function of the number of consecutive heads;Number of Consecutive Heads;P(θ=0.5);data;2;10;UR > OK

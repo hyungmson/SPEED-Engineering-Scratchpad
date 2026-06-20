@@ -1,0 +1,304 @@
+# 18. Regression
+# 18.2 Concepts and terms from algebra and geometry
+! Table 18.1. Ordered pairs (x, y) for the function y = 3x + 2
+$M arrX[0] {-2,0,1,2,5} > OK (5[0~4])
+$M arrY[0] {-4,2,5,8,17} > OK (5[0~4])
+! Figure 18.1 Graph of the function y = 3x + 2
+$TS arrX;arrY;Graph of the function y=3x+2;x;y;5;UL > OK
+# 18.3 The concept of regression
+## Example 18.1. Five points in search of a trend
+! Table 18.2. Five ordered pairs (x, y)
+$M arrX[0] {1,2,3,5,7} > OK (5[0~4])
+$M arrY[0] {4,3,4,8,9} > OK (5[0~4])
+! Figure 18.2. Graph of the data in Table 18.2
+$TS arrX;arrY;Graph of the data in Table 18.2;x;y;data;0;10;UL > OK
+# 18.6 Fitting a line to data
+y_bar = ARR.AVG(arrY) = 5.6
+arrLn1 = ARR.INIT1D(5,y_bar) = OK: arrLn1 (5[0~4])
+! Figure 18.4. Five points from Table 18.2 and the line y=y_bar
+$TS arrX,arrX;arrY,arrLn1;Five points from Table 18.2 and the line y=y_bar;x;y;data,Line 1: y=y_bar=5.6;0,1;10,0;UL > OK
+arrLn2 = ARR.OPEL.U(arrX,2,*) = OK: arrLn2 (5[0~4])
+arrLn2 = ARR.OPEL.U(arrLn2,-2,+) = OK: arrLn2 (5[0~4])
+arrLn3 = ARR.OPEL.U(arrX,8/9,*) = OK: arrLn3 (5[0~4])
+arrLn3 = ARR.OPEL.U(arrLn3,2,+) = OK: arrLn3 (5[0~4])
+$TS arrX,arrX,arrX,arrX;arrY,arrLn1,arrLn2,arrLn3;Three candidate lines for fitting the data in Table 18.2;x;y;data,Line 1: y=y_bar=5.6,Line 2: y=-2+2x,Line 3: y=2+(8/9)x;0,1,1,1;10,0,0,0;UL > OK
+# 18.7 The method of least squares and the regression line
+! Table 18.3 Sums of squared deviations for the three lines in Figure 18.5
+y_Y1 = ARR.OPEL.B(arrY,arrLn1,-) = OK: y_Y1 (5[0~4])
+y_Y2 = ARR.OPEL.B(arrY,arrLn2,-) = OK: y_Y2 (5[0~4])
+y_Y3 = ARR.OPEL.B(arrY,arrLn3,-) = OK: y_Y3 (5[0~4])
+SS1 = MATH.SUM.SQA(y_Y1) = 29.2
+SS2 = MATH.SUM.SQA(y_Y2) = 26
+SS3 = MATH.SUM.SQA(y_Y3) = 5.30864197530864
+! construct least squares line for Example 18.1
+xb = ARR.AVG(arrX) = 3.6
+x_xb = ARR.OPEL.U(arrX,xb,-) = OK: x_xb (5[0~4])
+Sxx = MATH.SUM.SQA(x_xb) = 23.2
+yb = ARR.AVG(arrY) = 5.6
+y_yb = ARR.OPEL.U(arrY,yb,-) = OK: y_yb (5[0~4])
+Syy = MATH.SUM.SQA(y_yb) = 29.2
+xxb_yyb = ARR.OPEL.B(x_xb,y_yb,*) = OK: xxb_yyb (5[0~4])
+Sxy = ARR.SUM(xxb_yyb) = 24.2
+! regression coefficients
+B = Sxy/Sxx = 1.04310344827586
+A = yb - B*xb = 1.8448275862069
+(MATH.FIT.LIN.ICT(arrX,arrY)) = 1.8448275862069
+(MATH.FIT.LIN.SLP(arrX,arrY)) = 1.04310344827586
+(MATH.FIT.LIN.R2(arrX,arrY)) = 0.864489844119037
+! Table 18.3 The least squares line and sum of squares for Example 18.1
+arrLS = ARR.OPEL.U(arrX,B,*) = OK: arrLS (5[0~4])
+arrLS = ARR.OPEL.U(arrLS,A,+) = OK: arrLS (5[0~4])
+y_YLS = ARR.OPEL.B(arrY,arrLS,-) = OK: y_YLS (5[0~4])
+SSLS = MATH.SUM.SQA(y_YLS) = 3.95689655172414
+# 18.8 Geometric interpretation of regression components
+dev_total = arrY[3] - yb = 2.4
+dev_regression = arrLS[3] - yb = 1.4603448275862
+residual = arrY[3] - arrLS[3] = 0.9396551724138
+# 18.10 Regression ANOVA for a single independent variable
+! Table 18.6 Regression ANOVA table for Example 18.1
+SS_Total = Syy = 29.2
+SS_Reg = Sxy^2/Sxx = 25.2431034482759
+SS_Error = SS_Total - SS_Reg = 3.9568965517241
+n = ARR.CNT(arrX) = 5
+v_Reg = 1 = 1
+v_Total = n - 1 = 4
+v_Error = n - 2 = 3
+MS_Reg = SS_Reg/v_Reg = 25.2431034482759
+MS_Error = SS_Error/v_Error = 1.31896551724137
+F = MS_Reg/MS_Error = 19.1385620915034
+F_crit = MATH.ICDF.FIS(1,3,0.95) = 10.1279644860148
+rejectH0 = F > F_crit = 1
+/ reject H0 and conclude that β =/= 0
+# 18.11 Using Excel to construct the regression line
+## Example 18.2. Containment pressure stabilization
+! Table 18.7. Dataset for Example 18.2
+$M Time[0] {0,7,14,32,45,66,80,103,124,151,180} > OK (11[0~10])
+$M Temp[0] {82,79.1,91.1,95.4,78.7,66.6,85.3,77.7,86.3,89.9,74.3} > OK (11[0~10])
+$M Pres[0] {35,33.5,35.5,36,34,32.5,34,35,34.5,35,32} > OK (11[0~10])
+ict_a = (MATH.FIT.LIN.ICT(Time,Pres)) = 34.8284807810244
+ict_b = (MATH.FIT.LIN.ICT(Temp,Pres)) = 24.0783313738574
+slp_a = (MATH.FIT.LIN.SLP(Time,Pres)) = -0.00762255435320184
+slp_b = (MATH.FIT.LIN.SLP(Temp,Pres)) = 0.123718396830945
+! Figure 18.8. Pressure vs. time for Example 18.2a
+y_a = ARR.OPEL.U(Time,slp_a,*) = OK: y_a (11[0~10])
+y_a = ARR.OPEL.U(y_a,ict_a,+) = OK: y_a (11[0~10])
+$TS Time,Time;Pres,y_a;Pressure vs. time for Example 18.2a;x=Time (hours);y=Pressure (psi);data,y=-0.0076x+34.83;0,1;10,0;UL > OK
+! Figure 18.9. Pressure vs. time for Example 18.2b
+y_b = ARR.OPEL.U(Temp,slp_b,*) = OK: y_b (11[0~10])
+y_b = ARR.OPEL.U(y_b,ict_b,+) = OK: y_b (11[0~10])
+$TS Temp,Temp;Pres,y_b;Pressure vs. temperature for Example 18.2b;x=temperature (F);y=Pressure (psi);data,y=0.1237x+24.078;0,1;10,0;UL > OK
+# 18.12 Using Excel for regression analysis
+! Table 18.8. Regression ANOVA: Pressure vs. time (Example 18.2a)
+xb = ARR.AVG(Time) = 72.9090909090909
+x_xb = ARR.OPEL.U(Time,xb,-) = OK: x_xb (11[0~10])
+Sxx = MATH.SUM.SQA(x_xb) = 36762.9090909091
+yb = ARR.AVG(Pres) = 34.2727272727273
+y_yb = ARR.OPEL.U(Pres,yb,-) = OK: y_yb (11[0~10])
+Syy = MATH.SUM.SQA(y_yb) = 15.1818181818182
+xxb_yyb = ARR.OPEL.B(x_xb,y_yb,*) = OK: xxb_yyb (11[0~10])
+Sxy = ARR.SUM(xxb_yyb) = -280.227272727273
+SS_Total = Syy = 15.1818181818182
+SS_Reg = (Sxy)^2/Sxx = 2.13604761761316
+SS_Error = SS_Total - SS_Reg = 13.045770564205
+n = ARR.CNT(Time) = 11
+v_Reg = 1 = 1
+v_Total = n - 1 = 10
+v_Error = n - 2 = 9
+MS_Reg = SS_Reg/v_Reg = 2.13604761761316
+MS_Error = SS_Error/v_Error = 1.44953006268944
+F = MS_Reg/MS_Error = 1.47361387845242
+F_crit = MATH.ICDF.FIS(v_Reg,v_Error,0.95) = 5.11735502924557
+rejectH0 = F > F_crit = 0
+/ cannot reject H0 and cannot conclude that β =/= 0
+S_A = Sqrt(MS_Error*(1/n + xb^2/Sxx)) = 0.584269086985588
+S_B = Sqrt(MS_Error/Sxx) = 0.00627926307101311
+t_A = (ict_a - 0)/S_A = 59.6103431737499
+t_B = (slp_a - 0)/S_B = -1.21392498880796
+t_B_abs = Abs(t_B) = 1.21392498880796
+pValue_A = 2*(1-MATH.CDF.STU(0,1,v_Error,t_A)) = 5.3002047195605E-13
+pValue_B = 2*(1-MATH.CDF.STU(0,1,v_Error,t_B_abs)) = 0.255669028137834
+A_lower95 = ict_a - MATH.ICDF.STU(0,1,v_Error,0.975)*S_A = 33.5067722808984
+A_upper95 = ict_a + MATH.ICDF.STU(0,1,v_Error,0.975)*S_A = 36.1501892811504
+B_lower95 = slp_a - MATH.ICDF.STU(0,1,v_Error,0.975)*S_B = -0.0218272342863884
+B_upper95 = slp_a + MATH.ICDF.STU(0,1,v_Error,0.975)*S_B = 0.00658212557998469
+! Table 18.9. Regression ANOVA: Pressure vs. time (Example 18.2b)
+xb = ARR.AVG(Temp) = 82.4
+x_xb = ARR.OPEL.U(Temp,xb,-) = OK: x_xb (11[0~10])
+Sxx = MATH.SUM.SQA(x_xb) = 686.64
+yb = ARR.AVG(Pres) = 34.2727272727273
+y_yb = ARR.OPEL.U(Pres,yb,-) = OK: y_yb (11[0~10])
+Syy = MATH.SUM.SQA(y_yb) = 15.1818181818182
+xxb_yyb = ARR.OPEL.B(x_xb,y_yb,*) = OK: xxb_yyb (11[0~10])
+Sxy = ARR.SUM(xxb_yyb) = 84.95
+SS_Total = Syy = 15.1818181818182
+SS_Reg = (Sxy)^2/Sxx = 10.5098778107888
+SS_Error = SS_Total - SS_Reg = 4.6719403710294
+n = ARR.CNT(Temp) = 11
+v_Reg = 1 = 1
+v_Total = n - 1 = 10
+v_Error = n - 2 = 9
+MS_Reg = SS_Reg/v_Reg = 10.5098778107888
+MS_Error = SS_Error/v_Error = 0.519104485669933
+F = MS_Reg/MS_Error = 20.2461702815479
+F_crit = MATH.ICDF.FIS(v_Reg,v_Error,0.95) = 5.11735502924557
+rejectH0 = F > F_crit = 1
+/ reject H0 and conclude that β =/= 0
+S_A = Sqrt(MS_Error*(1/n + xb^2/Sxx)) = 2.2760263212554
+S_B = Sqrt(MS_Error/Sxx) = 0.0274955772043703
+t_A = (ict_b - 0)/S_A = 10.5791093666159
+t_B = (slp_b - 0)/S_B = 4.49957445560665
+t_B_abs = Abs(t_B) = 4.49957445560665
+pValue_A = 2*(1-MATH.CDF.STU(0,1,v_Error,t_A)) = 2.23529836596015E-06
+pValue_B = 2*(1-MATH.CDF.STU(0,1,v_Error,t_B_abs)) = 0.00148986052587397
+A_lower95 = ict_b - MATH.ICDF.STU(0,1,v_Error,0.975)*S_A = 18.9296021285123
+A_upper95 = ict_b + MATH.ICDF.STU(0,1,v_Error,0.975)*S_A = 29.2270606192025
+B_lower95 = slp_b - MATH.ICDF.STU(0,1,v_Error,0.975)*S_B = 0.0615190799128078
+B_upper95 = slp_b + MATH.ICDF.STU(0,1,v_Error,0.975)*S_B = 0.185917713749082
+# 18.13 Hypothesis testing and confidence intervals for the slope
+## Example 18.3. Coefficient of expansion of metal rods
+n = 20 = 20
+b = 8.03E-6 = 8.03E-06
+beta0 = 1.23E-5 = 1.23E-05
+s2 = 1.3E-6 = 1.3E-06
+Sxx = 280810.0 = 280810
+S_B = Sqrt(s2/Sxx) = 2.15161910259481E-06
+t = (b - beta0)/S_B = -1.98455200311731
+t_abs = Abs(t) = 1.98455200311731
+v = n - 2 = 18
+t_crit = MATH.ICDF.STU(0,1,v,0.95) = 1.73406360661752
+rejectH0 = t_abs > t_crit = 1
+/ reject H0 and conclude statistical evidence supports the claim that coef. is at most beta0
+# 18.15 Regression through the origin
+## Example 18.4. Home size and heating cost
+! Table 18.11. Home size and heating cost
+$M Size[0] {900,1250,1410,1449,1670,1880,2050,2135,2660,2905} > OK (10[0~9])
+$M Cost[0] {1050,1535,1617,1940,1714,2020,2333,2440,2736,3012} > OK (10[0~9])
+! Table 18.12. Excel’s ANOVA for regression through the origin
+n = ARR.CNT(Size) = 10
+v_Reg = 1 = 1
+v_Total = n = 10
+v_Error = n - 1 = 9
+SS_Total = MATH.SUM.SQA(Cost) = 44809539
+xy = ARR.OPEL.B(Size,Cost,*) = OK: xy (10[0~9])
+xx = ARR.OPEL.B(Size,Size,*) = OK: xx (10[0~9])
+Sxy = ARR.SUM(xy) = 40634430
+Sxx = ARR.SUM(xx) = 37058851
+slp = Sxy/Sxx = 1.09648380625724
+Cost_pred = ARR.OPEL.U(Size,slp,*) = OK: Cost_pred (10[0~9])
+y_yp = ARR.OPEL.B(Cost,Cost_pred,-) = OK: y_yp (10[0~9])
+SS_Error = MATH.SUM.SQA(y_yp) = 254544.528506537
+SS_Reg = SS_Total - SS_Error = 44554994.4714935
+MS_Reg = SS_Reg/v_Reg = 44554994.4714935
+MS_Error = SS_Error/v_Error = 28282.7253896152
+F = MS_Reg/MS_Error = 1575.34303564158
+F_crit = MATH.ICDF.FIS(v_Reg,v_Error,0.95) = 5.11735502924557
+rejectH0 = F > F_crit = 1
+/ reject H0 and conclude that β =/= 0
+S_B = Sqrt(MS_Error/Sxx) = 0.027625786643012
+t_B = (slp - 0)/S_B = 39.6905912735194
+pValue_B = 2*(1-MATH.CDF.STU(0,1,v_Error,t_B)) = 2.03499439521693E-11
+B_lower95 = slp - MATH.ICDF.STU(0,1,v_Error,0.975)*S_B = 1.03398993512482
+B_upper95 = slp + MATH.ICDF.STU(0,1,v_Error,0.975)*S_B = 1.15897767738966
+! Table 18.13. Excel’s ANOVA for unrestricted simple linear regression
+xb = ARR.AVG(Size) = 1830.9
+x_xb = ARR.OPEL.U(Size,xb,-) = OK: x_xb (10[0~9])
+Sxx = MATH.SUM.SQA(x_xb) = 3536902.9
+yb = ARR.AVG(Cost) = 2039.7
+y_yb = ARR.OPEL.U(Cost,yb,-) = OK: y_yb (10[0~9])
+Syy = MATH.SUM.SQA(y_yb) = 3205778.1
+xxb_yyb = ARR.OPEL.B(x_xb,y_yb,*) = OK: xxb_yyb (10[0~9])
+Sxy = ARR.SUM(xxb_yyb) = 3289562.7
+SS_Total = Syy = 3205778.1
+SS_Reg = (Sxy)^2/Sxx = 3059519.32048553
+SS_Error = SS_Total - SS_Reg = 146258.77951447
+n = ARR.CNT(Size) = 10
+v_Reg = 1 = 1
+v_Total = n - 1 = 9
+v_Error = n - 2 = 8
+MS_Reg = SS_Reg/v_Reg = 3059519.32048553
+MS_Error = SS_Error/v_Error = 18282.3474393087
+F = MS_Reg/MS_Error = 167.348275742057
+F_crit = MATH.ICDF.FIS(v_Reg,v_Error,0.95) = 5.31765507159473
+rejectH0 = F > F_crit = 1
+/ reject H0 and conclude that β =/= 0
+ict_a = (MATH.FIT.LIN.ICT(Size,Cost)) = 336.83720797085
+slp_a = (MATH.FIT.LIN.SLP(Size,Cost)) = 0.930068705024387
+S_A = Sqrt(MS_Error*(1/n + xb^2/Sxx)) = 138.404555685041
+S_B = Sqrt(MS_Error/Sxx) = 0.0718959473205792
+t_A = (ict_a - 0)/S_A = 2.43371474518057
+t_B = (slp_a - 0)/S_B = 12.9363161580899
+pValue_A = 2*(1-MATH.CDF.STU(0,1,v_Error,t_A)) = 0.0409641690553779
+pValue_B = 2*(1-MATH.CDF.STU(0,1,v_Error,t_B)) = 1.20696746996884E-06
+A_lower95 = ict_a - MATH.ICDF.STU(0,1,v_Error,0.975)*S_A = 17.6757302300496
+A_upper95 = ict_a + MATH.ICDF.STU(0,1,v_Error,0.975)*S_A = 655.99868571165
+B_lower95 = slp_a - MATH.ICDF.STU(0,1,v_Error,0.975)*S_B = 0.76427635319871
+B_upper95 = slp_a + MATH.ICDF.STU(0,1,v_Error,0.975)*S_B = 1.09586105685006
+# 18.16 Multiple linear regression
+! Table 18.14. ANOVA for MLR with two independent variables
+n = ARR.CNT(Temp) = 11
+v_Reg = 2 = 2
+v_Total = n - 1 = 10
+v_Error = n - v_Reg - 1 = 8
+arr1 = ARR.INIT1D(n,1.0) = OK: arr1 (11[0~10])
+arrX = ARR.CAT.COL(arr1,Time) = OK: arrX (22[0~10,0~1])
+arrX = ARR.CAT.COL(arrX,Temp) = OK: arrX (33[0~10,0~2])
+arrP = ARR.SOLVE(arrX,Pres) = OK: arrP (3[0~2])
+ict = arrP[0] = 24.931833955473
+slp_Time = arrP[1] = -0.0050941763301826
+slp_Temp = arrP[2] = 0.117867780126439
+time_x_slp = ARR.OPEL.U(Time,slp_Time,*) = OK: time_x_slp (11[0~10])
+temp_x_slp = ARR.OPEL.U(Temp,slp_Temp,*) = OK: temp_x_slp (11[0~10])
+Pres_pred = ARR.OPEL.B(time_x_slp,temp_x_slp,+) = OK: Pres_pred (11[0~10])
+Pres_pred = ARR.OPEL.U(Pres_pred,ict,+) = OK: Pres_pred (11[0~10])
+y_yp = ARR.OPEL.B(Pres,Pres_pred,-) = OK: y_yp (11[0~10])
+SS_Error = MATH.SUM.SQA(y_yp) = 3.74142312027829
+yb = ARR.AVG(Pres) = 34.2727272727273
+y_yb = ARR.OPEL.U(Pres,yb,-) = OK: y_yb (11[0~10])
+SS_Total = MATH.SUM.SQA(y_yb) = 15.1818181818182
+SS_Reg = SS_Total - SS_Error = 11.4403950615399
+MS_Reg = SS_Reg/v_Reg = 5.72019753076995
+MS_Error = SS_Error/v_Error = 0.467677890034786
+F = MS_Reg/MS_Error = 12.2310625596273
+F_crit = MATH.ICDF.FIS(v_Reg,v_Error,0.95) = 4.45897010752421
+rejectH0 = F > F_crit = 1
+/ reject H0 and conclude that β =/= 0
+xb_1 = ARR.AVG(Time) = 72.9090909090909
+xb_2 = ARR.AVG(Temp) = 82.4
+x1_xb1 = ARR.OPEL.U(Time,xb_1,-) = OK: x1_xb1 (11[0~10])
+S11 = MATH.SUM.SQA(x1_xb1) = 36762.9090909091
+x2_xb2 = ARR.OPEL.U(Temp,xb_2,-) = OK: x2_xb2 (11[0~10])
+S22 = MATH.SUM.SQA(x2_xb2) = 686.64
+x1xb1_by_x2xb2 = ARR.OPEL.B(x1_xb1,x2_xb2,*) = OK: x1xb1_by_x2xb2 (11[0~10])
+S12 = ARR.SUM(x1xb1_by_x2xb2) = -788.599999999999
+* Std. Error
+var_ict = MS_Error*{1/n + (xb_1^2*S22 + xb_2^2*S11 - 2*xb_1*xb_2*(S12))/(S11*S22 - (S12)^2)} = 5.03322202270973
+SE_ict = Sqrt(var_ict) = 2.24348434866609
+var_slp_1 = MS_Error*S22/(S11*S22 - (S12)^2) = 1.30427856495057E-05
+SE_slp_1 = Sqrt(var_slp_1) = 0.00361147970359875
+var_slp_2 = MS_Error*S11/(S11*S22 - (S12)^2) = 0.000698314609001796
+SE_slp_2 = Sqrt(var_slp_2) = 0.0264256430196466
+* t Stat
+t_ict = ict/SE_ict = 11.1129966073963
+t_slp_1 = slp_Time/SE_slp_1 = -1.4105510063109
+t_slp_1_abs = Abs(t_slp_1) = 1.4105510063109
+t_slp_2 = slp_Temp/SE_slp_2 = 4.46035617898903
+* P-value
+pValue_ict = 2*(1-MATH.CDF.STU(0,1,v_Error,t_ict)) = 3.84046847790032E-06
+pValue_slp_1 = 2*(1-MATH.CDF.STU(0,1,v_Error,t_slp_1_abs)) = 0.19605569834919
+pValue_slp_2 = 2*(1-MATH.CDF.STU(0,1,v_Error,t_slp_2)) = 0.00211006555964199
+* Lower 95%
+ict_lower95 = ict - MATH.ICDF.STU(0,1,v_Error,0.975)*SE_ict = 19.7583497701832
+slp_1_lower95 = slp_Time - MATH.ICDF.STU(0,1,v_Error,0.975)*SE_slp_1 = -0.0134222634608872
+slp_2_lower95 = slp_Temp - MATH.ICDF.STU(0,1,v_Error,0.975)*SE_slp_2 = 0.0569301380477047
+* Upper 95%
+ict_upper95 = ict + MATH.ICDF.STU(0,1,v_Error,0.975)*SE_ict = 30.1053181407628
+slp_1_upper95 = slp_Time + MATH.ICDF.STU(0,1,v_Error,0.975)*SE_slp_1 = 0.00323391080052205
+slp_2_upper95 = slp_Temp + MATH.ICDF.STU(0,1,v_Error,0.975)*SE_slp_2 = 0.178805422205173
+# 18.17 Prediction
+n = 11 = 11
+s2 = 0.519 = 0.519
+Sxx = 686.64 = 686.64
+xb = 82.4 = 82.4
+Y_88 = 24.078 + 0.124*88.0 = 34.99
+interval_lower = Y_88 - (MATH.ICDF.STU(0,1,9,0.975))*Sqrt(s2)*Sqrt(1.0 + 1/n + (88.0-xb)^2/Sxx) = 33.2525728469661
+interval_upper = Y_88 + (MATH.ICDF.STU(0,1,9,0.975))*Sqrt(s2)*Sqrt(1.0 + 1/n + (88.0-xb)^2/Sxx) = 36.7274271530339
