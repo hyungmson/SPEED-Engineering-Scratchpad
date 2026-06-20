@@ -5,7 +5,10 @@
   - Example of Supported Param:Value pairs
   - `zoom:0.5` - 50% zoom level
   - `size:640,480` - plot size set to 640 (width), 480 (height)
-                        
+  - `fmtX:{format string, e.g., E5, G}` - set x-axis tick format in 2D plot
+  - `fmtY:{format string}` - set y-axis tick format in 2D plot
+  - `fmtCB:{format string}` - set color bar value format in 2D and 3D plot
+    
 ## 1D Scatter Plot
 - Grammar (simple): `$TS {ArrX};{ArrY};{Plot title};{X-axis title};{Y-axis title};{Marker size};{Legend position}`
   - ArrX: 1D array for X values
@@ -87,6 +90,7 @@
 - Example:
 ```
 $T0 size:800,480
+$T0 fmtCB:F2
 // Plot of X:1D, Y:1D array pair
 $M ArrX[0] {1,2,3,4,5}
 $M ArrY[0] {2,4,6,8,10}
@@ -140,6 +144,7 @@ $TZ arr3;3D isometric plot;x;y;z;30;0.8;50;JT
 - After the update, plots are shown on Plot tab:
 ```
 $T0 size:800,480 > OK
+$T0 fmtCB:F2 > OK
 // Plot of X:1D, Y:1D array pair
 $M ArrX[0] {1,2,3,4,5} > OK (5[0~4])
 $M ArrY[0] {2,4,6,8,10} > OK (5[0~4])
