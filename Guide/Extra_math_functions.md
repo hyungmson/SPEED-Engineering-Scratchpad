@@ -153,10 +153,15 @@ Following functions can be used (case-sensitive).
     - `MATH.KMV.QNT({sample size},{probability})` - returns quantile value
 
   - Simple Linear Regression
-    - `FIT.LIN.ICT({X 1D matrix name},{Y 1D matrix name})` - calculates intercept of regression line
-    - `FIT.LIN.SLP({X 1D matrix name},{Y 1D matrix name})` - calculates slope of regression line
-    - `FIT.LIN.R2({X 1D matrix name},{Y 1D matrix name})` - calculates coefficient of determination (R^2) of regression line
-  
+    - `MATH.FIT.LIN.ICT({X 1D matrix name},{Y 1D matrix name})` - calculates intercept of regression line
+    - `MATH.FIT.LIN.SLP({X 1D matrix name},{Y 1D matrix name})` - calculates slope of regression line
+    - `MATH.FIT.LIN.R2({X 1D matrix name},{Y 1D matrix name})` - calculates coefficient of determination (R^2) of regression line
+    - 
+  - Correlation
+    - `MATH.Sxx({X 1D matrix name})` - calculates squared sum of X_i - X_avg
+    - `MATH.Sxy({X 1D matrix name},{Y 1D matrix name})` - calculates sum of (X_i - X_avg)*(Y_i - Y_avg)
+    - `MATH.Rxy({X 1D matrix name},{Y 1D matrix name})` - calculates correlation coefficient
+
   - Auxilliary functions         
     - `MATH.SDVP({1D array name})` - calculates population standard deviation of 1D array
     - `MATH.SDVS({1D array name})` - calculates sample standard deviation of 1D array
