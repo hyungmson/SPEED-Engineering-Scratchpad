@@ -1,0 +1,109 @@
+# 21. Hypergeometric experiments
+# 21.2 Basics of the hypergeometric distribution
+## Example 21.1. Hypergeometric probability calculations
+nSample = 5 = 5
+nPopulation = 50 = 50
+mDefective = 10 = 10
+yDefective = 1 = 1
+Pr = MATH.PMF.HYPGEO(nPopulation,mDefective,nSample,yDefective) = 0.431337197228568
+* mean, variance, standard deviation
+mu = nSample*mDefective/nPopulation = 1
+var = mu*(nPopulation-mDefective)/nPopulation*(nPopulation-nSample)/(nPopulation-1) = 0.73469387755102
+sig = Sqrt(var) = 0.857142857142857
+# 21.3 Estimates of the proportion and number of successes
+pie = 3/12 = 0.25
+Npie = Ceiling(65*pie) = 17
+# 21.4 Tests of hypotheses
+## Example 21.2. Emergency batteries
+N = 75 = 75
+M = 25 = 25
+ns = 10 = 10
+alpha = 0.05 = 0.05
+* probability of finding y=0 or 1 defective battery
+Pr0 = MATH.PMF.HYPGEO(N,M,ns,0) = 0.0123921977245727
+Pr1 = MATH.PMF.HYPGEO(N,M,ns,1) = 0.0755621812473948
+* probability of finding more than one defective battery in sample
+PrX = 1 - Pr0 - Pr1 = 0.912045621028033
+M0 = 25 = 25
+pie = M0/N = 0.333333333333333
+rejectH0 = Pr0 < alpha = 1
+/ if y=0, reject H0 and claim fraction of defective batteries < 0.333
+PrNo1 = Pr0 + Pr1 = 0.0879543789719675
+rejectH0 = PrNo1 < alpha = 0
+/ if y=1, do not reject H0 can't claim fraction of defective batteries < 0.333
+# 21.5 Sample size considerations
+! for n = 11
+ns = 11 = 11
+* probability of finding y=0 or 1 defective battery
+Pr0 = MATH.PMF.HYPGEO(N,M,ns,0) = 0.00762596783050631
+Pr1 = MATH.PMF.HYPGEO(N,M,ns,1) = 0.0524285288347308
+PrLE1 = Pr0 + Pr1 = 0.0600544966652371
+rejectH0 = PrLE1 < alpha = 0
+/ when n = 11, we cannot support H1: M<M0 if y=1
+! for n = 12
+ns = 12 = 12
+* probability of finding y=0 or 1 defective battery
+Pr0 = MATH.PMF.HYPGEO(N,M,ns,0) = 0.0046470741467146
+Pr1 = MATH.PMF.HYPGEO(N,M,ns,1) = 0.0357467242054969
+PrLE1 = Pr0 + Pr1 = 0.0403937983522115
+rejectH0 = PrLE1 < alpha = 1
+/ when n = 12, we can support H1: M<M0 if y=0 or 1
+! Table 21.2. Hypergeometric probabilities for N = 1000 and M = 50
+N = 1000 = 1000
+M = 50 = 50
+Pr_56_0 = MATH.PMF.HYPGEO(N,M,56,0) = 0.0519905772280197
+Pr_57_0 = MATH.PMF.HYPGEO(N,M,57,0) = 0.04923683902733
+Pr_57_1 = MATH.PMF.HYPGEO(N,M,57,1) = 0.156963077436149
+Pr_89_0 = MATH.PMF.HYPGEO(N,M,89,0) = 0.00835741673473633
+Pr_89_1 = MATH.PMF.HYPGEO(N,M,89,1) = 0.0431444367396561
+Pr_90_0 = MATH.PMF.HYPGEO(N,M,90,0) = 0.0078987220731174
+Pr_90_1 = MATH.PMF.HYPGEO(N,M,90,1) = 0.0412825195458857
+Pr_90_2 = MATH.PMF.HYPGEO(N,M,90,2) = 0.104427533491671
+rejectH0 = Pr_56_0 < alpha = 0
+/ when n = 56, cannot support H1 if y = 0
+rejectH0 = Pr_57_0 < alpha = 1
+rejectH0 = (Pr_57_0 + Pr_57_1) < alpha = 0
+/ when n = 57, can support H1 if y = 0, but not if y = 1
+rejectH0 = Pr_89_0 < alpha = 1
+rejectH0 = (Pr_89_0 + Pr_89_1) < alpha = 0
+/ when n = 89, can support H1 if y = 0, but not if y = 1
+rejectH0 = (Pr_90_0 + Pr_90_1) < alpha = 1
+rejectH0 = (Pr_90_0 + Pr_90_1 + Pr_90_2) < alpha = 0
+/ when n = 90, can support H1 if y = 0 or 1, but not if y = 2
+# 21.6 Normal approximation to the hypergeometric distribution
+## Example 21.3. Cable installation
+N = 360 = 360
+ns = 100 = 100
+M = 72 = 72
+ms = 12 = 12
+alpha = 0.05 = 0.05
+mu = ns*M/N = 20
+var = mu*(N-M)/N*(N-ns)/(N-1) = 11.5877437325905
+/ since var > 9, can use normal approximation
+sd = Sqrt(var) = 3.40407751565538
+z = (ms - mu)/sd = -2.35012274638516
+z_crit = MATH.ICDF.NRM(0,1,alpha) = -1.64485362695147
+rejectH0 = z < z_crit = 1
+/ reject H0
+! Table 21.3. Hypergeometric probability calculations for Example 21.3
+arrPr = ARR.INIT1D(16,0.0) = OK: arrPr (16[0~15])
+idx = -1 = -1
+$L1 16
+idx = idx + 1 = 15
+arrPr[idx] = MATH.PMF.HYPGEO(N,M,ns,idx) = 0.0407522256363745
+$L1
+$PN "Pr(y)" > Pr(y)
+$PM arrPr > OK
+CDF = ARR.CDF(arrPr) = OK: CDF (16[0~15])
+$PN "Pr(Y<y)" > Pr(Y<y)
+$PM CDF > OK
+cdf13 = CDF[13] = 0.0252330913738487
+rejectH0 = cdf13 < alpha = 1
+/ H0 is rejected when y≤13
+z = (13-mu)/sd = -2.05635740308702
+pr = MATH.CDF.NRM(0,1,z) = 0.019874039499221
+z = (14-mu)/sd = -1.76259205978887
+pr = MATH.CDF.NRM(0,1,z) = 0.0389846586161839
+z = (15-mu)/sd = -1.46882671649073
+pr = MATH.CDF.NRM(0,1,z) = 0.0709398978280451
+/ when y = 15, neither of methods results in statistical significance
