@@ -1,0 +1,92 @@
+# 23. Poisson experiments
+# 23.3 Poisson probabilities
+(MATH.PMF.PSS(2.5,0)) = 0.0820849986238988
+(MATH.PMF.PSS(2.5,1)) = 0.205212496559747
+(MATH.PMF.PSS(2.5,2)) = 0.256515620699684
+(MATH.CDF.PSS(2.5,2)) = 0.543813115883331
+# 23.4 Applications
+## Example 23.1. Errors in message transmission
+theta = 0.01 = 0.01
+t = 10 = 10
+lam = t*theta = 0.1
+Pr0 = MATH.PMF.PSS(lam,0) = 0.90483741803596
+Pr1 = MATH.PMF.PSS(lam,1) = 0.090483741803596
+Pr2 = MATH.PMF.PSS(lam,2) = 0.0045241870901798
+* Pr more than 2
+Pr_GT2 = 1 - Pr0 - Pr1 - Pr2 = 0.000154653070264237
+## Example 23.2. Elevator failure
+* maybe typo? 0.014 -> 0.14
+theta = 0.14 = 0.14
+t = 5 = 5
+lam = t*theta = 0.7
+Pr0 = MATH.PMF.PSS(lam,0) = 0.49658530379141
+# 23.5 Parameter testing and confidence intervals
+## Example 23.3. Automobile accidents
+alpha = 0.05 = 0.05
+p = 1 - alpha = 0.95
+y = 7 = 7
+v_U = 2*(y+1) = 16
+X2 = MATH.ICDF.CHI(v_U,p) = 26.2962276048644
+lam_U = 0.5*X2 = 13.1481138024322
+rejectH0 = y > lam_U = 0
+/ do not reject H0
+## Example 23.4. False alarms
+y = 2 = 2
+p = 1 - alpha = 0.95
+v_U = 2*(y+1) = 6
+X2 = MATH.ICDF.CHI(v_U,p) = 12.591587243744
+lam_U = 0.5*X2 = 6.295793621872
+* lam_U = 7.22 as in book can be obtained by below setting
+p = 1 - alpha/2 = 0.975
+X2 = MATH.ICDF.CHI(v_U,p) = 14.4493753354479
+lam_U = 0.5*X2 = 7.22468766772395
+# 23.6 Approximations to the binomial distribution
+## Example 23.5. Failures of coating adhesions
+n = 12 = 12
+pie = 0.01 = 0.01
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.886384871716129
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.107440590511046
+* probability that at least 11 out of 12 will pass
+PrPassB = Pr0 + Pr1 = 0.993825462227175
+! apply Poisson
+applyPoisson = (n*pie) < 5 = 1
+lam = n*pie = 0.12
+Pr0 = MATH.PMF.PSS(lam,0) = 0.886920436717157
+Pr1 = MATH.PMF.PSS(lam,1) = 0.106430452406059
+* probability that at least 11 out of 12 will pass
+PrPassP = Pr0 + Pr1 = 0.993350889123216
+Diff = PrPassB - PrPassP = 0.000474573103959042
+## Example 23.6. Misprint Errors
+n = 40 = 40
+pie = 0.05 = 0.05
+lam = n*pie = 2
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.128512156565103
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.27055190855811
+Pr2 = MATH.PMF.BIN(pie,n,2) = 0.27767169562543
+! Poisson
+Pr0 = MATH.PMF.PSS(lam,0) = 0.135335283236613
+Pr1 = MATH.PMF.PSS(lam,1) = 0.270670566473225
+Pr1 = MATH.PMF.PSS(lam,2) = 0.270670566473225
+# 23.7 The normal approximation to the Poisson distribution
+arrY = ARR.INIT.LINE1D(20,0,20) = OK: arrY (21[0~20])
+arrP2 = ARR.INIT1D(21,0.0) = OK: arrP2 (21[0~20])
+arrP5 = ARR.INIT1D(21,0.0) = OK: arrP5 (21[0~20])
+arrP10 = ARR.INIT1D(21,0.0) = OK: arrP10 (21[0~20])
+idx = -1 = -1
+$L1 21
+idx = idx + 1 = 20
+y = idx = 20
+arrP2[idx] = MATH.PMF.PSS(2,y) = 5.83292419826929E-14
+arrP5[idx] = MATH.PMF.PSS(5,y) = 2.64121077492564E-07
+arrP10[idx] = MATH.PMF.PSS(10,y) = 0.00186608131399877
+$L1
+! Figure 23.1. Poisson distribution for λ = 2, 5, and 10
+$TS arrY,arrY,arrY;arrP2,arrP5,arrP10;Poisson distribution for λ = 2, 5, and 10;Y;Pr{Y};λ=2,λ=5,λ=10;2,2,2;0,0,0;UR > OK
+## Example 23.7. Power interruption
+! normal approximation
+lam = 10 = 10
+y = 16 = 16
+z = (y-lam)/Sqrt(lam) = 1.89736659610103
+Pr = MATH.CDF.NRM(0,1,z) = 0.971110214438202
+! Poisson
+Pr = MATH.CDF.PSS(lam,y) = 0.972958390215198
