@@ -1,0 +1,151 @@
+# 22. Binomial experiments
+# 22.4 Examples of binomial experiments
+## Example 22.1. Head count
+y = 6 = 6
+n = 6 = 6
+pie = 0.5 = 0.5
+Pr6 = MATH.PMF.BIN(pie,n,y) = 0.015625
+## Example 22.2 Acceptance sampling
+n = 124 = 124
+pie = 0.05 = 0.05
+* probabilty that any switch in sample is defective
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.00172872955061452
+! Table 22.1 Binomial probabilities for n=124 and pie=0.05
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.0112822349619055
+CDF1 = MATH.CDF.BIN(pie,n,1) = 0.0130109645125203
+Pr2 = MATH.PMF.BIN(pie,n,2) = 0.0365188131661664
+CDF2 = MATH.CDF.BIN(pie,n,2) = 0.0495297776786884
+CompPr2 = 1-CDF2 = 0.950470222321312
+## Example 22.3 Drug testing
+pie = 1/12 = 0.0833333333333333
+n = 12 = 12
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.351995628014137
+! Table 22.2 Binomial probabilities for n=12 and pie=0.0833
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.383995230560876
+CDF1 = MATH.CDF.BIN(pie,n,1) = 0.735990858575009
+Pr2 = MATH.PMF.BIN(pie,n,2) = 0.191997615280438
+CDF2 = MATH.CDF.BIN(pie,n,2) = 0.927988473855451
+* probability of being selected more than twice
+Pr_GT2 = 1-CDF2 = 0.072011526144549
+## Example 22.4 Sampling memory chips
+pie = 0.1 = 0.1
+n = 8 = 8
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.43046721
+! Table 22.3 Binomial probabilities for pie=0.1 and varying n
+Pr9_0 = MATH.PMF.BIN(pie,9,0) = 0.387420489
+Pr9_1 = MATH.PMF.BIN(pie,9,1) = 0.387420489
+CDF9_1 = MATH.CDF.BIN(pie,9,1) = 0.774840977999992
+Pr10_0 = MATH.PMF.BIN(pie,10,0) = 0.3486784401
+Pr10_1 = MATH.PMF.BIN(pie,10,1) = 0.387420489000001
+Pr10_2 = MATH.PMF.BIN(pie,10,2) = 0.1937102445
+CDF10_2 = MATH.CDF.BIN(pie,10,2) = 0.929809173599998
+Pr11_0 = MATH.PMF.BIN(pie,11,0) = 0.31381059609
+Pr11_1 = MATH.PMF.BIN(pie,11,1) = 0.38354628411
+Pr11_2 = MATH.PMF.BIN(pie,11,2) = 0.213081268950001
+Pr11_3 = MATH.PMF.BIN(pie,11,3) = 0.0710270896500001
+CDF11_3 = MATH.CDF.BIN(pie,11,3) = 0.981465238799999
+/ assurance may not be achived unless we buy at least 11 chips
+# 22.6 Normal approximation to the binomial
+## Example 22.5 Water impurity
+n = 63 = 63
+y = 16 = 16
+p = y/n = 0.253968253968254
+pie = 0.1 = 0.1
+var = pie*(1-pie)/n = 0.00142857142857143
+sd = Sqrt(var) = 0.0377964473009227
+z = (p - pie)/sd = 4.07361709798834
+z_crit = MATH.ICDF.NRM(0,1,0.95) = 1.64485362695147
+rejectH0 = z > z_crit = 1
+/ reject H0, claim contamination > 10%
+## Example 22.6 Mask filters
+pie = 0.05 = 0.05
+alpha = 0.05 = 0.05
+y = 1 = 1
+n = 100 = 100
+p = y/n = 0.01
+var = pie*(1-pie)/n = 0.000475
+sd = Sqrt(var) = 0.0217944947177034
+z = (p - pie)/sd = -1.83532587096449
+z_crit = MATH.ICDF.NRM(0,1,alpha) = -1.64485362695147
+rejectH0 = z < z_crit = 1
+/ reject H0
+# 22.7 Confidence interval for a proportion: Normal approximation applies
+## Example 22.7 Computer updates
+y = 7 = 7
+n = 100 = 100
+p = y/n = 0.07
+z_crit = MATH.ICDF.NRM(0,1,0.95) = 1.64485362695147
+UCL = p + z_crit*Sqrt{p*(1-p)/n} = 0.111967949540287
+# 22.8 Confidence interval for a proportion: Normal approximation does not apply
+## Example 22.8. Two-sided confidence interval for proportion
+p = 0.16 = 0.16
+alpha = 0.05 = 0.05
+n = 25 = 25
+y = 4 = 4
+dof1 = 2*(y+1) = 10
+dof2 = 2*(n-y) = 42
+p = 1-0.5*alpha = 0.975
+f1 = MATH.ICDF.FIS(dof1,dof2,p) = 2.37100590491224
+dof1 = 2*(n-y+1) = 44
+dof2 = 2*y = 8
+f2 = MATH.ICDF.FIS(dof1,dof2,p) = 3.82480094458083
+pie_U = (y+1)*f1/(n-y+(y+1)*f1) = 0.360828454459273
+pie_L = y/(y+(n-y+1)*f2) = 0.0453794523717538
+## Example 22.9. One-sided confidence interval for proportion
+p = 1 - alpha = 0.95
+dof1 = 2*(y+1) = 10
+dof2 = 2*(n-y) = 42
+f1 = MATH.ICDF.FIS(dof1,dof2,p) = 2.0649940145156
+pie_U = (y+1)*f1/(n-y+(y+1)*f1) = 0.329608298065591
+# 22.9 Confidence interval for a sample with no defects
+## Example 22.10. Contaminated wells
+n = 25 = 25
+pie_U = 1 - Exp{Ln(alpha)/n} = 0.112928145006843
+alpha = 0.1 = 0.1
+pie_U = 1 - Exp{Ln(alpha)/n} = 0.0879891606440902
+alpha = 0.2 = 0.2
+pie_U = 1 - Exp{Ln(alpha)/n} = 0.0623490459979845
+alpha = 1 - 53/100 = 0.47
+pie_U = 1 - Exp{Ln(alpha)/n} = 0.0297494126473417
+# 22.10 Sample size for political polling
+p = 0.5 = 0.5
+z_crit = MATH.ICDF.NRM(0,1,0.975) = 1.95996398454005
+$S0 AERR:1.0e-7 > OK
+$S0 NMAX:1000 > OK
+* 3% margin of error
+$SB z_crit*Sqrt(p*(1-p)/n) - 0.03 = 0;n:0.0~10000.0 > Good n:1067.06619262695 (n:19,f:8.01543904895008E-08)
+nRndUp = Ceiling(n) = 1068
+* 5% margin of error
+$SB z_crit*Sqrt(p*(1-p)/n) - 0.05 = 0;n:0.0~10000.0 > Good n:384.14478302002 (n:21,f:7.1525675569839E-08)
+nRndUp = Ceiling(n) = 385
+* 90% confidence level
+z_crit = MATH.ICDF.NRM(0,1,0.95) = 1.64485362695147
+$SB z_crit*Sqrt(p*(1-p)/n) - 0.05 = 0;n:0.0~10000.0 > Good n:270.555019378662 (n:22,f:-6.22765697275152E-08)
+nRndUp = Ceiling(n) = 271
+# 22.11 Binomial approximation to the hypergeometric distribution
+! Table 22.5. Hypergeometric and binomial probabilities compared
+ns = 10 = 10
+N = 100 = 100
+M = 25 = 25
+pie = M/N = 0.25
+* Hypergeometric distribution
+PrH0 = MATH.PMF.HYPGEO(N,M,ns,0) = 0.0478865561843905
+PrH1 = MATH.PMF.HYPGEO(N,M,ns,1) = 0.181388470395418
+PrH2 = MATH.PMF.HYPGEO(N,M,ns,2) = 0.292387385115003
+PrH3 = MATH.PMF.HYPGEO(N,M,ns,3) = 0.263721955201767
+PrH4 = MATH.PMF.HYPGEO(N,M,ns,4) = 0.147149206887943
+PrH5 = MATH.PMF.HYPGEO(N,M,ns,5) = 0.0529737144796594
+* Binomial distribution
+PrB0 = MATH.PMF.BIN(pie,ns,0) = 0.0563135147094727
+PrB1 = MATH.PMF.BIN(pie,ns,1) = 0.187711715698242
+PrB2 = MATH.PMF.BIN(pie,ns,2) = 0.281567573547363
+PrB3 = MATH.PMF.BIN(pie,ns,3) = 0.250282287597657
+PrB4 = MATH.PMF.BIN(pie,ns,4) = 0.145998001098633
+PrB5 = MATH.PMF.BIN(pie,ns,5) = 0.0583992004394531
+* Difference
+Dff0 = PrH0 - PrB0 = -0.0084269585250822
+Dff1 = PrH1 - PrB1 = -0.00632324530282399
+Dff2 = PrH2 - PrB2 = 0.01081981156764
+Dff3 = PrH3 - PrB3 = 0.01343966760411
+Dff4 = PrH4 - PrB4 = 0.00115120578930999
+Dff5 = PrH5 - PrB5 = -0.0054254859597937
