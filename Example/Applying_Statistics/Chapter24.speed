@@ -1,0 +1,122 @@
+# 24. Quality assurance
+# 24.4 Control charts for means
+## Example 24.1. Control chart for percentage of uranium in UO2 powder
+mu_target = 87.6 = 87.6
+sig = 0.06 = 0.06
+$M M[0] {87.54,87.56,87.50,87.47,87.64,87.56,87.71,87.61,87.60,87.60,87.47,87.60,87.69,87.78,87.69,87.72,87.77,87.79,87.78} > OK (19[0~18])
+UCL = mu_target + 3*sig = 87.78
+LCL = mu_target - 3*sig = 87.42
+seqNo = ARR.INIT.LINE1D(18,1,19) = OK: seqNo (19[0~18])
+arrUCL = ARR.INIT1D(19,UCL) = OK: arrUCL (19[0~18])
+arrLCL = ARR.INIT1D(19,LCL) = OK: arrLCL (19[0~18])
+arrMuTrg = ARR.INIT1D(19,mu_target) = OK: arrMuTrg (19[0~18])
+! Figure 24.1. A control chart for batches of UO2 powder (Table 24.1)
+$TS seqNo,seqNo,seqNo,seqNo;M,arrUCL,arrLCL,arrMuTrg;A control chart for batches of UO2 powder;Sequence number;Percent uranium;Table 24.1,UCL=87.78,LCL=87.42,μ_trg=87.60;0,2,2,2;10,0,0,0;MR > OK
+# 24.5 Run test for control charts
+UCL1 = mu_target + 1*sig = 87.66
+LCL1 = mu_target - 1*sig = 87.54
+UCL2 = mu_target + 2*sig = 87.72
+LCL2 = mu_target - 2*sig = 87.48
+arrUCL1 = ARR.INIT1D(19,UCL1) = OK: arrUCL1 (19[0~18])
+arrLCL1 = ARR.INIT1D(19,LCL1) = OK: arrLCL1 (19[0~18])
+arrUCL2 = ARR.INIT1D(19,UCL2) = OK: arrUCL2 (19[0~18])
+arrLCL2 = ARR.INIT1D(19,LCL2) = OK: arrLCL2 (19[0~18])
+! Figure 24.2. Figure 24.1 with σ and 2σ limits added
+$TS seqNo,seqNo,seqNo,seqNo,seqNo,seqNo,seqNo,seqNo;M,arrUCL,arrUCL2,arrUCL1,arrMuTrg,arrLCL1,arrLCL2,arrLCL;Figure 24.1 with σ and 2σ limits added;Sequence number;Percent uranium;Table 24.1,UCL=87.78,Upper 2σ,Upper 1σ,μ_trg=87.60,Lower 1σ,Lower 2σ,LCL=87.42;0,2,2,2,2,2,2,2;10,0,0,0,0,0,0,0;LR > OK
+# 24.6 Control charts for variability
+## Example 24.2. Upper control and warning limits for σ
+sig_trg = 0.06 = 0.06
+n = 10 = 10
+v = n-1 = 9
+p1 = 0.995 = 0.995
+p2 = 0.95 = 0.95
+X2_1 = MATH.ICDF.CHI(v,p1) = 23.5893507812574
+X2_2 = MATH.ICDF.CHI(v,p2) = 16.9189776046204
+* (n-1)S^2/sig^2 = X2 -> S^2 = sig^2*X2/(n-1)
+sig2_1 = sig_trg^2*X2_1/v = 0.00943574031250296
+sig2_2 = sig_trg^2*X2_2/v = 0.00676759104184816
+sig_UCL = Sqrt(sig2_1) = 0.097137738868593
+sig_UWL = Sqrt(sig2_2) = 0.0822653696390417
+$M seqNo[0] {1,25} > OK (2[0~1])
+arrSigT = ARR.INIT1D(2,sig_trg) = OK: arrSigT (2[0~1])
+arrUCL = ARR.INIT1D(2,sig_UCL) = OK: arrUCL (2[0~1])
+arrUWL = ARR.INIT1D(2,sig_UWL) = OK: arrUWL (2[0~1])
+! Figure 24.3. Control chart for standard deviation
+$TS seqNo,seqNo,seqNo;arrUCL,arrUWL,arrSigT;Control chart for standard deviation;Sequence number;Percent uranium;UCL=0.0972,UWL=0.0822,σ_target=0.06;2,2,2;0,0,0;UR > OK
+# 24.7 Control charts for attributes
+pie_trg = 0.278 = 0.278
+n = 100 = 100
+LCL = pie_trg-3*Sqrt(pie_trg*(1-pie_trg)/n) = 0.143595982202912
+UCL = pie_trg+3*Sqrt(pie_trg*(1-pie_trg)/n) = 0.412404017797088
+# 24.10 Probability calculations for the 95/95 criterion
+! Table 24.3. Selected binomial probabilities, π = 0.05
+pie = 0.05 = 0.05
+* Marginal probabilities
+n = 58 = 58
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.0510468686836033
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.155827283349949
+Pr2 = MATH.PMF.BIN(pie,n,2) = 0.233740925024925
+n = 59 = 59
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.0484945252494231
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.150588262616626
+Pr2 = MATH.PMF.BIN(pie,n,2) = 0.22984524294117
+n = 92 = 92
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.0089242491504672
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.0432121537812101
+Pr2 = MATH.PMF.BIN(pie,n,2) = 0.103481736686582
+n = 93 = 93
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.00847803669294384
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.0414977585496731
+Pr2 = MATH.PMF.BIN(pie,n,2) = 0.100468257541315
+n = 123 = 123
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.00181971531643633
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.0117802623116664
+Pr2 = MATH.PMF.BIN(pie,n,2) = 0.0378208421585095
+n = 124 = 124
+Pr0 = MATH.PMF.BIN(pie,n,0) = 0.00172872955061452
+Pr1 = MATH.PMF.BIN(pie,n,1) = 0.0112822349619055
+Pr2 = MATH.PMF.BIN(pie,n,2) = 0.0365188131661664
+* Cumulative probabilities
+n = 58 = 58
+Pr0 = MATH.CDF.BIN(pie,n,0) = 0.0510468686835969
+Pr1 = MATH.CDF.BIN(pie,n,1) = 0.206874152033519
+Pr2 = MATH.CDF.BIN(pie,n,2) = 0.440615077058594
+n = 59 = 59
+Pr0 = MATH.CDF.BIN(pie,n,0) = 0.0484945252494276
+Pr1 = MATH.CDF.BIN(pie,n,1) = 0.199082787866047
+Pr2 = MATH.CDF.BIN(pie,n,2) = 0.428928030807258
+n = 92 = 92
+Pr0 = MATH.CDF.BIN(pie,n,0) = 0.00892424915046679
+Pr1 = MATH.CDF.BIN(pie,n,1) = 0.0521364029316716
+Pr2 = MATH.CDF.BIN(pie,n,2) = 0.155618139618248
+n = 93 = 93
+Pr0 = MATH.CDF.BIN(pie,n,0) = 0.00847803669294445
+Pr1 = MATH.CDF.BIN(pie,n,1) = 0.0499757952426178
+Pr2 = MATH.CDF.BIN(pie,n,2) = 0.150444052783925
+n = 123 = 123
+Pr0 = MATH.CDF.BIN(pie,n,0) = 0.00181971531643658
+Pr1 = MATH.CDF.BIN(pie,n,1) = 0.0135999776281048
+Pr2 = MATH.CDF.BIN(pie,n,2) = 0.0514208197866181
+n = 124 = 124
+Pr0 = MATH.CDF.BIN(pie,n,0) = 0.00172872955061436
+Pr1 = MATH.CDF.BIN(pie,n,1) = 0.0130109645125203
+Pr2 = MATH.CDF.BIN(pie,n,2) = 0.0495297776786884
+# 24.11 What’s wrong with this picture?
+* probability that Y defective items will be found in a sample of size n, given that the proportion of defective items in the
+lot is π = 0.05 = 0.05
+pie = 0.05 = 0.05
+Pr0_31 = MATH.PMF.BIN(pie,31,0) = 0.20390682574579
+Pr0_34 = MATH.PMF.BIN(pie,34,0) = 0.174824614723797
+Pr0_59 = MATH.PMF.BIN(pie,59,0) = 0.0484945252494231
+Pr0_65 = MATH.PMF.BIN(pie,65,0) = 0.0356479322505602
+Pr1_31 = MATH.PMF.BIN(pie,31,1) = 0.332690084111554
+Pr1_34 = MATH.PMF.BIN(pie,34,1) = 0.31284404740048
+Pr1_59 = MATH.PMF.BIN(pie,59,1) = 0.150588262616626
+Pr2_59 = MATH.PMF.BIN(pie,59,2) = 0.22984524294117
+* probability of occurrence of each of the four events
+Pr_Ev1 = Pr0_59 = 0.0484945252494231
+Pr_Ev2 = Pr1_59*Pr0_34 = 0.0263265349938776
+Pr_Ev3 = Pr2_59*Pr0_65 = 0.00819350764848038
+Pr_Ev4 = Pr1_59*Pr1_34*Pr0_31 = 0.00960618138097685
+Pr_LotAccept = Pr_Ev1 + Pr_Ev2 + Pr_Ev3 + Pr_Ev4 = 0.0926207492727579
+Assurance = 1 - Pr_LotAccept = 0.907379250727242
