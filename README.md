@@ -41,8 +41,8 @@ Following features are currently supported.
 
 Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED) and Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz).
 - Latest version: 
-  - Windows: 1.0.26
-  - Android: Build src 102600 (see Help tab)
+  - Windows: 1.0.28
+  - Android: Build src 102800 (see Help tab)
 
 ## Repository folder structure
 - [Guide](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Guide)
@@ -81,6 +81,14 @@ Currently available for Android- [Google Play](https://play.google.com/store/app
 - M. D. Copenhaver, B. S. Holland, Multiple comparisons of simple effects in the two-way analysis of variance with fixed effects, Journal of Statistical Computation and Simulation, Vol. 30, pp. 1-15, 1988.
 - M. Abramowitz, I. A. Stegun, Handbook of Mathematical Functions, Dover publications, Inc. NY, 1970.
 - A. H. Stroud, D. Secrest, Gaussian Quadrature Formulas, Prentice-Hall, Inc, NJ, 1966.
+- F.S. Swed, C. Eisenhart, Tables for Testing Randomness of Grouping in a Sequence of Alternatives, Annals of Mathematical Statistics, Vol. 14(1), pp. 66-87, 1943.
+- F. Wilcoxon, Individual Comparison by Ranking Methods, Biometrics Bulletin, Vol. 1(6), pp.80-83, 1945.
+- M. Hollander, D.A. Wolfe, E. Chicken, Nonparametric Statistical Methods, 3rd Ed., John Willey &amp; Sons, 2014.
+- D.J. Best, D.E. Roberts, Algorithm AS 89: The Upper Tail Probabilities of Spearman's Rho, Journal of the Royal Statistical Society. Series C (Applied Statistics), Vol. 24, No. 3, pp. 377-379, 1975.
+- G.C. McBane, Programs to Compute Distribution Functions and Critical Values for Extreme Value Ratios for Outlier Detection, Journal of Statistical Software, Vol. 16(3), pp. 1-9, 2006.
+- M.P. Verma, M.C. Suarez A., DixonTest.CriticalValues: A Computer Code to Calculate Critical Values for the Dixon Statistical Data Treatment Approach, Journal of Statistical Software, Vol. 57(2), pp. 1-12, 2014.
+- GRUBBS TEST, NIST, 2023.
+  - https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/grubtest.htm (accessed June 28. 2026).
   
 ## Libraries
 - Below libraries are used without any modifications.
