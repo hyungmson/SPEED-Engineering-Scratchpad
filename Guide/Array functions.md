@@ -118,7 +118,9 @@
     - ex. `arr = ARR.FNDL.STR@output temperature@D:\output.dat`
 
 - Obtain 2D data from texts containing series of multiline data (chunk) separated by spaces
-  - `ARR.READ.STR.2D(file path, start lines, lines read per chunk, start column)`
+  - `ARR.READ.STR.2D(file path, 1D array name containing start lines, lines read per chunk, start column, field widths of individual numbers)`
+    - ex: field widths = 0 -> line will be parsed by spaces
+    - ex: field widths = 8|10|5 -> first 8 characters, next 10 characters, and next 5 characters will be converted to double and become array elements
 
 - Obtain reduced 2D data
   - `ARR.CHOP2D(2D matrix name, start row, end row, start column, end column)`
