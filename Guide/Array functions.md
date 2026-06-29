@@ -12,7 +12,8 @@
 - Variance calculation
   - `ARR.VARS2D({2D matrix name},{calculation direction: 0 - row, 1 - column})` - create 1D array where each element is row- or column-wise sample variance
 - Number of elements (ignores blank element) calculation
-  - `ARR.CNT({matrix name})`       
+  - `ARR.CNT({matrix name})`
+  - `ARR.CNT2D({2D matrix name},{calculation direction: 0 - row, 1 - column})` - create 1D array where each element is row- or column-wise count
 - Maximum value calculation
   - `ARR.MAX({matrix name})` - calculate maximum value
   - `ARR.MAX0({matrix name})` - find 1st (row) index of maximum value element
@@ -52,7 +53,11 @@
   - `ARR.DIA({row size (=col. size)},{initialization value})` - diagonal matrix creation  
   - `ARR.REM.MAX({1D array name})` - returns array with maximum value(s) removed
   - `ARR.REM.MIN({1D array name})` - returns array with minimum value(s) removed
-                        
+  - `ARR.REM.VAL({1D array name},{element value to be removed})` - returns array with specified value element(s) removed
+  - `ARR.RANK1D({1D array name})` - returns array with ranks, replace ties with their mean
+  - `ARR.RANK2D({2D array name},{ranking direction:0|1|2})` - returns array with ranks, replace ties with their mean, rank for blank elements are given 0 value
+    - ranking direction: 0: ranking for entire array, 1: ranking for each row, 2: ranking for each column
+                                   
 - Linear algebra
   - `ARR.SOLVE({2D matrix name, A},{1D matrix name, b})` - solves A*x = b for x
   - `ARR.DOT({2D matrix name, A},{1D matrix name, b})` - scalar product between A and b
@@ -61,11 +66,14 @@
   - `ARR.OPEL.B({matrix name, A},{matrix name, B},{operator})`
     - matrix A and B can be 1D, 2D or 3D matrix.
     - dimensions and shapes (# of rows, columns, or depths) of A and B should be same.
-    - allowed operator strings: + (add), - (subtract), * (multiply), / (division), ^ (power), log (logarithm with B as base value), rem (remainder of A/B)
+    - allowed operator strings: + (add), - (subtract), * (multiply), / (division), ^ (power), log (logarithm with B as base value), rem (remainder of A/B),
+      - = (comparison) : +1 for A > B, -1 for A < B, 0 for A=B
+      - > (comparison) : 1 for A > B, 0 for A < B or A=B
+      - < (comparison) : 1 for A < B, 0 for A > B or A=B
   - `ARR.OPEL.U({matrix name, A},{double value, B},{operator})`
     - same as OPEL.B, but element-wise operation is done with element of A and value B
     - additional allowed operator strings (only A value is used, enter 0 for B): 
-      - exp (exponential), ln (natural log), sin (sine), cos (cosine), tan (tangent), ! (factorial), abs (absolute)
+      - exp (exponential), ln (natural log), sin (sine), cos (cosine), tan (tangent), ! (factorial), abs (absolute), round (round to B digits)
 
 - Cumulative distribution
   - `ARR.CDF({1D matrix name})`
