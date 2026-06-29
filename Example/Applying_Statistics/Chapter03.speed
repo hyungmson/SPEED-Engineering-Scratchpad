@@ -30,4 +30,4 @@ $M Tbl35b[0] {1468.12,1469.52,1469.22,1469.26,1465.96,1470.8,1467.89,1472.28,146
 $TX Tbl35a,Tbl35b;Shipper,Receiver;Box plots of shipper's and receiver's weights of UF6 cylinders;Role;Shipment weight, in kg;Y;UL > OK
 # 3.11 The stem-and-leaf display
 ## Example 3.5 Stem-and-leaf display
-$TF Tbl34;Stem-and-leaf display for data in Table 3.4 
+$TF Tbl34;Stem-and-leaf display for data in Table 3.4  > OK
