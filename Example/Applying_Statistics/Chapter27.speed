@@ -1,0 +1,88 @@
+# 27. Simulation
+# 27.4 Evaluating definite integrals
+## Example 27.1. Evaluation of a probability by simulation
+M = 1000 = 1000
+v11 = ARR.GEN.UNI(M,-1.3,1.6) = OK: v11 (1000[0~999])
+v12 = ARR.GEN.UNI(M,0,0.5) = OK: v12 (1000[0~999])
+Fv11 = ARR.OPEL.U(v11,2,^) = OK: Fv11 (1000[0~999])
+Fv11 = ARR.OPEL.U(Fv11,-0.5,*) = OK: Fv11 (1000[0~999])
+Fv11 = ARR.OPEL.U(Fv11,0,exp) = OK: Fv11 (1000[0~999])
+one_Sq2Pi = 1.0/Sqrt(2.0*UNT.cnt.PI()) = 0.398942280401433
+Fv11 = ARR.OPEL.U(Fv11,one_Sq2Pi,*) = OK: Fv11 (1000[0~999])
+ArrC = ARR.OPEL.B(v12,Fv11,<) = OK: ArrC (1000[0~999])
+m = ARR.SUM(ArrC) = 576
+ARect = (1.6+1.3)*0.5 = 1.45
+Pr = m*ARect/M = 0.8352
+Pr_Actual = MATH.CDF.NRM(0,1,1.6) - MATH.CDF.NRM(0,1,-1.3) = 0.848400223714832
+* 2nd method
+SumFy = ARR.SUM(Fv11) = 295.880434472386
+Pr2nd = (1.6+1.3)*SumFy/M = 0.85805325996992
+# 27.5 Generation of normal variates
+## Example 27.2. Generating N(0,1) variates by sum of U(0,1) variates
+* Procedure 1
+N_0_1 = ARR.GEN.UNI(12,0,1) = OK: N_0_1 (12[0~11])
+Sum = ARR.SUM(N_0_1) = 5.38874313707202
+Set = Sum - 6 = -0.61125686292798
+* Procedure 2
+## Example 27.3. Generating normal variates using the Box-Muller transformation
+u1 = 0.7374 = 0.7374
+u2 = 0.4414 = 0.4414
+Z1 = Sqrt(-2*Ln(u1))*Cos(2*UNT.cnt.PI()*u2) = -0.728231287874617
+Z2 = Sqrt(-2*Ln(u1))*Sin(2*UNT.cnt.PI()*u2) = 0.280942659140014
+# 27.6 Generation of arbitrary variates
+! Table 27.2. Excel’s inverse function for variate generation
+* Normal
+(MATH.ICDF.NRM(0,1,0.999)) = 3.09023230616781
+(MATH.ICDF.NRM(0,1,0.5)) = 0
+(MATH.ICDF.NRM(0,1,0.1234)) = -1.15815693255271
+(MATH.ICDF.NRM(10,2,0.5)) = 10
+(MATH.ICDF.NRM(10,2,0.1234)) = 7.68368613489458
+* Chi-square
+p = 1-0.05 = 0.95
+(MATH.ICDF.CHI(1,p)) = 3.84145882069413
+p = 1-0.1234 = 0.8766
+(MATH.ICDF.CHI(7,p)) = 11.3668098085465
+* Student-t
+p = 1-0.05/2 = 0.975
+(MATH.ICDF.STU(0,1,500,p)) = 1.96471983746748
+p = 1-0.1234/2 = 0.9383
+(MATH.ICDF.STU(0,1,5,p)) = 1.8509369196745
+* F-distribution
+p = 1-0.1234 = 0.8766
+(MATH.ICDF.FIS(8,1,p)) = 38.9046708607598
+(MATH.ICDF.FIS(1,8,p)) = 2.96474569993272
+* Log-normal
+(MATH.ICDF.LOGNRM(0,1,0.1234)) = 0.314064489825254
+(MATH.ICDF.LOGNRM(2,0.5,0.1234)) = 4.14093469346742
+# 27.7 Confirmation of the central limit theorem
+## Example 27.4. Confirmation of the central limit theorem by simulation
+arrYm = ARR.INIT1D(30,0.0) = OK: arrYm (30[0~29])
+arrS2 = ARR.INIT1D(30,0.0) = OK: arrS2 (30[0~29])
+i = -1 = -1
+$L1 30
+i = i + 1 = 29
+smpl = ARR.GEN.UNI(100,0,1) = OK: smpl (100[0~99])
+arrYm[i] = ARR.AVG(smpl) = 0.45961697638216
+arrS2[i] = MATH.SDVS(smpl)^2 = 0.0866213057442522
+$L1
+avgYm = ARR.AVG(arrYm) = 0.502931886335426
+arrS2 = ARR.AVG(arrS2) = 0.083650286400273
+* test normality of sample means
+W = MATH.SWK.W(arrYm,0) = 0.957619550021868
+/ below value corresponds to following R code:
+/get_swk_quantile <- function(n, alpha = 0.05) {
+/  # Helper to pull the p-value of an engineered quantile distribution
+/  target_func <- function(gshape) {
+/    shapiro.test(qgamma((1:n)/(n+1), shape = gshape))$p.value - alpha
+/  }
+/
+/  # Find the shape parameter that yields the exact target alpha p-value
+/  root <- uniroot(target_func, interval = c(0.01, 100))$root
+/
+/  # Extract the W statistic tied to that exact alpha threshold
+/  shapiro.test(qgamma((1:n)/(n+1), shape = root))$statistic
+/}
+/get_swk_quantile(n = 30, alpha = 0.05)
+/0.930296
+W_crit = MATH.SWK.QNT(30,0.05) = 0.930295944941463
+rejectH0 = W < W_crit = 0

@@ -1,0 +1,40 @@
+# 26. Outliers
+# 26.3 Box plot procedure for outlier identification
+## Example 26.1. NIST data for outlier identification
+! Table 26.1. NIST data in ascending order of magnitude
+$M Data[0] {30,171,184,201,212,250,265,270,272,289,305,306,322,322,336,346,351,370,390,404,409,411,436,437,439,441,444,448,451,453,470,480,482,487,494,495,499,503,514,521,522,527,548,550,559,560,570,572,574,578,585,592,592,607,616,618,621,629,637,638,640,656,668,707,709,719,737,739,752,758,766,792,792,794,802,818,830,832,843,858,860,869,919,925,953,991,1000,1005,1068,1441} > OK (90[0~89])
+LQ = MATH.QRT.LWR(Data) = 433.916666666667
+UQ = MATH.QRT.UPR(Data) = 740.083333333333
+IQR = MATH.IQR(Data) = 306.166666666667
+fence_lo = LQ - 1.5*IQR = -25.3333333333335
+fence_hi = UQ + 1.5*IQR = 1199.33333333333
+! Figure 26.1. An outlier shown in a box plot
+$TX Data;0;An outlier shown in a box plot;x;Nist data;N;UR > OK
+# 26.4 Dixon’s procedure for outlier identification
+## Example 26.2. Cladding thickness
+$M THK[0] {0.0284,0.0285,0.0285,0.0285,0.0286,0.0286,0.0286,0.0289,0.0292,0.0298} > OK (10[0~9])
+cnt = ARR.CNT(THK) = 10
+Y = ARR.SORT.ASC(THK) = OK: Y (10[0~9])
+$PM Y > OK
+* test largest observation
+n = cnt-1 = 9
+n_1 = cnt-1-1 = 8
+r11 = (Y[n]-Y[n_1])/(Y[n]-Y[1]) = 0.461538461538462
+alpha = 0.05 = 0.05
+prob = 1-alpha = 0.95
+r11_crit = MATH.DXN.R(2,1,cnt,prob) = 0.477885229513049
+isOutlier = r11 > r11_crit = 0
+alpha = 0.10 = 0.1
+prob = 1-alpha = 0.9
+r11_crit = MATH.DXN.R(2,1,cnt,prob) = 0.409904737723991
+isOutlier = r11 > r11_crit = 1
+# 26.5 Grubbs’ tests for outliers
+y_bar = ARR.AVG(Y) = 0.02876
+sd = MATH.SDVS(Y) = 0.000435124503255483
+T10 = (Y[n]-y_bar)/sd = 2.39012051084001
+* value is slightly different from that of Table T-20, but consistent with qgrubbs() from outliers package of R
+* qgrubbs(0.975, 10, type = 10, rev = FALSE) = 2.289954
+T_crit = MATH.GRB.CRIT(cnt,0.025,1) = 2.28995408447965
+T_crit = MATH.GRB.CRIT(cnt,0.05,0) = 2.28995408447965
+isOutlier = T10 > T_crit = 1
+/ identify y_10 = 0.0298 as an outlier

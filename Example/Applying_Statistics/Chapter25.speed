@@ -1,0 +1,476 @@
+# 25. Nonparametric statistics
+# 25.3 Test of randomness: The runs test
+## Example 25.1. Percent of uranium in UO2 powder
+! Table 25.1. Percent of uranium in UO2 powder, in their order of collection
+$M OBS[0] {-1,-1,-1,1,1,-1,-1,-1,-1,1,1,1,1,1} > OK (14[0~13])
+n1 = MATH.CNT.VAL(OBS,1) = 7
+n2 = MATH.CNT.VAL(OBS,-1) = 7
+u = 4 = 4
+PrU4 = MATH.RUNS.P(n1,n2,4) = 0.0250582750582751
+rejectH0 = PrU4 <= (0.05/2) = 0
+/ by treating Pr as 0.025, the book states that H0 of randomness rejected at α=0.05
+## Example 25.2. Runs test for a large sample
+n1 = 12 = 12
+n2 = 13 = 13
+U = 17 = 17
+alpha = 0.05 = 0.05
+mu = 2*n1*n2/(n1+n2)+1 = 13.48
+sig = Sqrt(2*n1*n2*(2*n1*n2-n1-n2)/{(n1+n2)^2*(n1+n2-1)}) = 2.44327648865207
+z_toomany = (U-mu-0.5)/sig = 1.23604512793642
+z_toofew = (U-mu+0.5)/sig = 1.64533159414054
+z_0p025 = MATH.ICDF.NRM(0,1,0.025) = -1.95996398454005
+z_0p975 = MATH.ICDF.NRM(0,1,0.975) = 1.95996398454005
+rejectH0 = (z_toomany > z_0p975) || (z_toofew < z_0p025) = 0
+/ H0 not rejected
+# 25.4 Test of location: The sign test
+# Example 25.3. Bias in solid waste measurement
+! Table 25.2. Grams of 235U in a solid waste barrel working standard
+$M GRAM[0] {2.92,2.35,2.44,2.21,2.58,2.65,2.73,2.04,2.42,2.62,2.17,2.39} > OK (12[0~11])
+med = 2.40 = 2.4
+sign = ARR.OPEL.U(GRAM,med,=) = OK: sign (12[0~11])
+$PM sign > OK
+n = ARR.CNT(GRAM) = 12
+v = n - 1 = 11
+t = MATH.CNT.VAL(sign,1) = 7
+pie = 0.5 = 0.5
+Pr = MATH.CDF.BIN(pie,n,5) = 0.387207031250011
+rejectH0 = Pr <= (alpha/2) = 0
+/ H0 not rejected
+* assume normal distribution
+mean = ARR.AVG(GRAM) = 2.46
+sd = MATH.SDVS(GRAM) = 0.2527305428173
+t = (mean-med)/(sd/Sqrt(n)) = 0.822401972437966
+p = 1 - alpha/2 = 0.975
+t_crit = MATH.ICDF.STU(0,1,v,p) = 2.20098516009477
+rejectH0 = Abs(t) >= t_crit = 0
+/ H0 not rejected
+## Example 25.4. Normal approximation to the sign test
+n = 30 = 30
+t = 22 = 22
+z = (t-0.5-0.5*n)/(0.5*Sqrt(n)) = 2.37346441585572
+z_crit = MATH.ICDF.NRM(0,1,p) = 1.95996398454005
+rejectH0 = z > z_crit = 1
+/ scale is biased
+# 25.5 Test of location: Wilcoxon signed ranks test
+GRAMsrt = ARR.SORT.ASC(GRAM) = OK: GRAMsrt (12[0~11])
+Di = ARR.OPEL.U(GRAMsrt,med,-) = OK: Di (12[0~11])
+Di = ARR.OPEL.U(Di,-1,*) = OK: Di (12[0~11])
+DiAbs = ARR.OPEL.U(Di,0,abs) = OK: DiAbs (12[0~11])
+$PN "Di" > Di
+$PM Di > OK
+RankDiAbs = ARR.RANK1D(DiAbs) = OK: RankDiAbs (12[0~11])
+$PN "RankDiAbs" > RankDiAbs
+$PM RankDiAbs > OK
+Ri = ARR.OPEL.U(Di,0,>) = OK: Ri (12[0~11])
+Ri = ARR.OPEL.B(Ri,RankDiAbs,*) = OK: Ri (12[0~11])
+$PM "Ri" > Matrix doesn't exist
+$PM Ri > OK
+* test statistic
+n = 12 = 12
+W = ARR.SUM(Ri) = 30
+W1 = MATH.WCX.Q(12,0.05) = NaN
+W2 = n*(n+1)/2-W1 = NaN
+rejectH0 = (W > W2) || (W < W1) = NaN
+/ H0 not rejected
+# 25.6 Test of locations with two matched samples: Sign test
+## Example 25.6. Comparison of two scales
+! Table 25.4. Container weights, in kg, measured by two scales
+$M SC1[0] {25.6,21.3,21.3,28.4,29.9,30.0,23.4,29.5,27.7,21.3} > OK (10[0~9])
+$M SC2[0] {25.4,21.1,21.7,28.4,30.0,29.9,23.1,29.6,27.5,21.1} > OK (10[0~9])
+DFF = ARR.OPEL.B(SC2,SC1,-) = OK: DFF (10[0~9])
+DFF = ARR.OPEL.U(DFF,5,round) = OK: DFF (10[0~9])
+$PN "DFF" > DFF
+$PM DFF > OK
+SIGN = ARR.OPEL.U(DFF,0,=) = OK: SIGN (10[0~9])
+$PN "SIGN" > SIGN
+$PM SIGN > OK
+alpha = 0.05 = 0.05
+n = MATH.CNT.VAL(SIGN,1) + MATH.CNT.VAL(SIGN,-1) = 9
+t = MATH.CNT.VAL(SIGN,1) = 3
+Q = MATH.CDF.BIN(0.5,n,t) = 0.253906250000003
+rejectH0 = Q <= (alpha/2) = 0
+/ H0 not rejected
+# 25.7 Test of locations with two samples: Wilcoxon matched pairs test
+DFF_r = ARR.REM.VAL(DFF,0) = OK: DFF_r (9[0~8])
+RANK = ARR.RANK1D(DFF_r) = OK: RANK (9[0~8])
+$PN "RANK" > RANK
+$PM RANK > OK
+Ri = ARR.OPEL.U(DFF_r,0,>) = OK: Ri (9[0~8])
+Ri = ARR.OPEL.B(Ri,RANK,*) = OK: Ri (9[0~8])
+$PN "Ri" > Ri
+$PM Ri > OK
+W = ARR.SUM(Ri) = 24
+W1 = MATH.WCX.Q(n,0.025) = NaN
+W2 = n*(n+1)/2-W1 = NaN
+rejectH0 = (W > W2) || (W < W1) = NaN
+/ H0 not rejected
+# 25.8 Test of locations; two independent samples: Wilcoxon rank sum test
+## Example 25.7. Comparison of two batches
+! Table 25.6. Percent uranium in U02
+$M BAT[0,0] {86.4,86.8,87.5,88.2,86.0,86.9,87.7,86.8;86.2,85.8,86.1,84.8,87.1,86.5,85.7,86.7} > OK (2[0~1] × 8[0~7])
+RNK2D = ARR.RANK2D(BAT,0) = OK: RNK2D (16[0~1,0~7])
+$PN "Rank 2D" > Rank 2D
+$PM RNK2D > OK
+RNK1 = ARR.SLICE2D(RNK2D,0,0) = OK: RNK1 (8[0~7])
+W = ARR.SUM(RNK1) = 89
+m = 8 = 8
+n = 8 = 8
+W1 = MATH.WRS.Q(n,m,0.025) = NaN
+W2 = n*(n+m+1)-W1 = NaN
+rejectH0 = W > W2 = NaN
+/ reject H0
+! Table 25.8. Parametric test for Example 25.7
+BT1 = ARR.SLICE2D(BAT,0,0) = OK: BT1 (8[0~7])
+BT2 = ARR.SLICE2D(BAT,0,1) = OK: BT2 (8[0~7])
+m1 = ARR.AVG(BT1) = 87.0375
+m2 = ARR.AVG(BT2) = 86.1125
+S2_1 = MATH.SDVS(BT1)^2 = 0.516964285714287
+S2_2 = MATH.SDVS(BT2)^2 = 0.495535714285718
+n1 = ARR.CNT(BT1) = 8
+n2 = ARR.CNT(BT2) = 8
+v1 = n1-1 = 7
+v2 = n2-1 = 7
+dof = v1 + v2 = 14
+* pooled variance
+S2 = (v1*S2_1 + v2*S2_2)/(n1+n2-2) = 0.506250000000003
+m0 = 0 = 0
+t = (m1-m2-m0)/Sqrt(S2_1/n1 + S2_2/n2) = 2.60009496502732
+t_crit = MATH.ICDF.STU(0,1,dof,0.975) = 2.1447866879178
+rejectH0 = Abs(t) > t_crit = 1
+/ reject H0
+# 25.9 Test of locations with several samples: The median test
+## Example 25.8. Comparison of four production lines
+! Table 25.10. Uranium concentration (ppm)
+$M D1[0] {13,23,23,14,25,22,35,13,24,20} > OK (10[0~9])
+$M D2[0] {34,16,20,35,17,30,27,28} > OK (8[0~7])
+$M D3[0] {17,26,11,13,24,22,8,20,23} > OK (9[0~8])
+$M D4[0] {33,30,23,24,32,20,17,32} > OK (8[0~7])
+! Table 25.11. Contingency table for Example 25.8
+k = 4 = 4
+nRaw = ARR.INIT1D(k,0.0) = OK: nRaw (4[0~3])
+nGT = ARR.INIT1D(k,0.0) = OK: nGT (4[0~3])
+CT1 = ARR.OPEL.U(D1,23,=) = OK: CT1 (10[0~9])
+nGT[0] = MATH.CNT.VAL(CT1,1) = 3
+nRaw[0] = ARR.CNT(CT1) = 10
+CT2 = ARR.OPEL.U(D2,23,=) = OK: CT2 (8[0~7])
+nGT[1] = MATH.CNT.VAL(CT2,1) = 5
+nRaw[1] = ARR.CNT(CT2) = 8
+CT3 = ARR.OPEL.U(D3,23,=) = OK: CT3 (9[0~8])
+nGT[2] = MATH.CNT.VAL(CT3,1) = 2
+nRaw[2] = ARR.CNT(CT3) = 9
+CT4 = ARR.OPEL.U(D4,23,=) = OK: CT4 (8[0~7])
+nGT[3] = MATH.CNT.VAL(CT4,1) = 5
+nRaw[3] = ARR.CNT(CT4) = 8
+nGT_tot = ARR.SUM(nGT) = 15
+n_tot = ARR.SUM(nRaw) = 35
+X2 = n_tot^2/(nGT_tot*(n_tot-nGT_tot))*(nGT[0]^2/nRaw[0]+nGT[1]^2/nRaw[1]+nGT[2]^2/nRaw[2]+nGT[3]^2/nRaw[3])-n_tot*nGT_tot/(n_tot-nGT_tot) = 4.76064814814815
+v = 3 = 3
+alpha = 0.1 = 0.1
+p = 1-alpha = 0.9
+X2_crit = MATH.ICDF.CHI(v,p) = 6.25138863117032
+rejectH0 = X2 >= X2_crit = 0
+/ H0 not rejected
+* one-way ANOVA
+! Table 25.12. Excel’s output for Example 25.8
+sum = ARR.INIT1D(k,0.0) = OK: sum (4[0~3])
+sum2 = ARR.INIT1D(k,0.0) = OK: sum2 (4[0~3])
+sum[0] = ARR.SUM(D1) = 212
+sum[1] = ARR.SUM(D2) = 207
+sum[2] = ARR.SUM(D3) = 164
+sum[3] = ARR.SUM(D4) = 211
+var1 = MATH.SDVS(D1)^2 = 45.2888888888889
+var2 = MATH.SDVS(D2)^2 = 54.6964285714286
+var3 = MATH.SDVS(D3)^2 = 39.9444444444445
+var4 = MATH.SDVS(D4)^2 = 37.9821428571429
+sum2[0] = MATH.SUM.SQA(D1) = 4902
+sum2[1] = MATH.SUM.SQA(D2) = 5739
+sum2[2] = MATH.SUM.SQA(D3) = 3308
+sum2[3] = MATH.SUM.SQA(D4) = 5831
+sumY2 = ARR.SUM(sum2) = 19780
+Ybb = ARR.SUM(sum)/n_tot = 22.6857142857143
+CT = n_tot*Ybb^2 = 18012.4571428572
+* SS_total
+SSTot = sumY2 - CT = 1767.5428571428
+vTot = n_tot - 1 = 34
+SqSum = ARR.OPEL.U(sum,2,^) = OK: SqSum (4[0~3])
+CTi = ARR.OPEL.B(SqSum,nRaw,/) = OK: CTi (4[0~3])
+* SS_bet
+vBet = k - 1 = 3
+SSBet = ARR.SUM(CTi) - CT = 391.637301587198
+AdjSSi = ARR.OPEL.B(sum2,CTi,-) = OK: AdjSSi (4[0~3])
+* SS_within
+SSWith = ARR.SUM(AdjSSi) = 1375.90555555556
+vWith = n_tot - k = 31
+* MS
+MSBet = SSBet/vBet = 130.545767195733
+MSWith = SSWith/vWith = 44.3840501792116
+F = MSBet/MSWith = 2.94127657725291
+F_crit = MATH.ICDF.FIS(vBet,vWith,p) = 2.26954801976715
+rejectH0 = F > F_crit = 1
+/ H0 rejected
+# 25.10 Test of locations with several samples: The Kruskal-Wallis test
+## Example 25.9. Comparison of four production lines (continued)
+$M DT14[0,0] {13,23,23,14,25,22,35,13,24,20;34,16,20,35,17,30,27,28;17,26,11,13,24,22,8,20,23;33,30,23,24,32,20,17,32} > OK (4[0~3] × 10[0~9])
+$PN "DT14" > DT14
+$PM DT14 > OK
+RNK14 = ARR.RANK2D(DT14,0) = OK: RNK14 (40[0~3,0~9])
+SR = ARR.INIT1D(4,0.0) = OK: SR (4[0~3])
+$PN "RNK14" > RNK14
+$PM RNK14 > OK
+RNK14_1 = ARR.SLICE2D(RNK14,0,0) = OK: RNK14_1 (10[0~9])
+SR[0] = ARR.SUM(RNK14_1) = 159.5
+RNK14_2 = ARR.SLICE2D(RNK14,0,1) = OK: RNK14_2 (10[0~9])
+SR[1] = ARR.SUM(RNK14_2) = 177.5
+RNK14_3 = ARR.SLICE2D(RNK14,0,2) = OK: RNK14_3 (10[0~9])
+SR[2] = ARR.SUM(RNK14_3) = 109.5
+RNK14_4 = ARR.SLICE2D(RNK14,0,3) = OK: RNK14_4 (10[0~9])
+SR[3] = ARR.SUM(RNK14_4) = 183.5
+SSR2 = MATH.SUM.SQA(RNK14) = 14892
+c = 1/vTot*(SSR2 - n_tot*(n_tot+1)^2/4) = 104.470588235294
+arrR2 = ARR.OPEL.B(SR,SR,*) = OK: arrR2 (4[0~3])
+arrR2n = ARR.OPEL.B(arrR2,nRaw,/) = OK: arrR2n (4[0~3])
+SR2n = ARR.SUM(arrR2n) = 12023.5875
+H = 1/c*(SR2n - n_tot*(n_tot+1)^2/4) = 6.54334881756757
+H_crit = MATH.ICDF.CHI(3,0.9) = 6.25138863117032
+rejectH0 = H > H_crit = 1
+/ reject H0
+nmk = n_tot - k = 31
+t_c = MATH.ICDF.STU(0,1,nmk,0.95) = 1.69551878254586
+t_crit = t_c*Sqrt(c*(n_tot - 1 - H)/(n_tot - k)) = 16.3095718916283
+! Table 25.14. Multiple comparisons for Example 25.9
+i = 1-1 = 0
+j = 2-1 = 1
+R_n = Abs(SR[i]/nRaw[i] - SR[j]/nRaw[j]) = 6.2375
+R_crit = t_crit*Sqrt(1/nRaw[i] + 1/nRaw[j]) = 7.73630922597095
+significant = R_n > R_crit = 0
+i = 1-1 = 0
+j = 3-1 = 2
+R_n = Abs(SR[i]/nRaw[i] - SR[j]/nRaw[j]) = 3.78333333333333
+R_crit = t_crit*Sqrt(1/nRaw[i] + 1/nRaw[j]) = 7.49373113599749
+significant = R_n > R_crit = 0
+i = 1-1 = 0
+j = 4-1 = 3
+R_n = Abs(SR[i]/nRaw[i] - SR[j]/nRaw[j]) = 6.9875
+R_crit = t_crit*Sqrt(1/nRaw[i] + 1/nRaw[j]) = 7.73630922597095
+significant = R_n > R_crit = 0
+i = 2-1 = 1
+j = 3-1 = 2
+R_n = Abs(SR[i]/nRaw[i] - SR[j]/nRaw[j]) = 10.0208333333333
+R_crit = t_crit*Sqrt(1/nRaw[i] + 1/nRaw[j]) = 7.92502742713381
+significant = R_n > R_crit = 1
+i = 2-1 = 1
+j = 4-1 = 3
+R_n = Abs(SR[i]/nRaw[i] - SR[j]/nRaw[j]) = 0.75
+R_crit = t_crit*Sqrt(1/nRaw[i] + 1/nRaw[j]) = 8.15478594581415
+significant = R_n > R_crit = 0
+i = 3-1 = 2
+j = 4-1 = 3
+R_n = Abs(SR[i]/nRaw[i] - SR[j]/nRaw[j]) = 10.7708333333333
+R_crit = t_crit*Sqrt(1/nRaw[i] + 1/nRaw[j]) = 7.92502742713381
+significant = R_n > R_crit = 1
+# 25.11 Test of location for related samples: The rank ANOVA test
+## Example 25.10. Percent plutonium by weight
+$M DT15[0,0] {87.67,87.64,88.03,87.5,87.86,87.71,87.63,87.83,88.04,87.72;87.88,87.99,87.98,87.84,87.77,87.93,87.83,87.94,88.06,88.03;87.72,87.80,87.97,87.65,87.75,87.76,87.79,87.93,88.05,87.68} > OK (3[0~2] × 10[0~9])
+$PN "DT15" > DT15
+$PM DT15 > OK
+RNK15 = ARR.RANK2D(DT15,0) = OK: RNK15 (30[0~2,0~9])
+$PN "RNK15" > RNK15
+$PM RNK15 > OK
+! Table 25.16. Excel’s output for Example 25.11
+LB1 = ARR.SLICE2D(RNK15,0,0) = OK: LB1 (10[0~9])
+LB2 = ARR.SLICE2D(RNK15,0,1) = OK: LB2 (10[0~9])
+LB3 = ARR.SLICE2D(RNK15,0,2) = OK: LB3 (10[0~9])
+n1 = ARR.CNT(LB1) = 10
+s1 = ARR.SUM(LB1) = 114.5
+m1 = ARR.AVG(LB1) = 11.45
+var1 = MATH.SDVS(LB1)^2 = 99.9694444444444
+n2 = ARR.CNT(LB2) = 10
+s2 = ARR.SUM(LB2) = 211.5
+m2 = ARR.AVG(LB2) = 21.15
+var2 = MATH.SDVS(LB2)^2 = 29.8361111111111
+n3 = ARR.CNT(LB3) = 10
+s3 = ARR.SUM(LB3) = 139
+m3 = ARR.AVG(LB3) = 13.9
+var3 = MATH.SDVS(LB3)^2 = 63.1555555555555
+! ANOVA
+ARR_A = ARR.AVG2D(RNK15,0) = OK: ARR_A (3[0~2])
+ARR_B = ARR.AVG2D(RNK15,1) = OK: ARR_B (10[0~9])
+m_tot = ARR.AVG(RNK15) = 15.5
+A_m = ARR.OPEL.U(ARR_A,m_tot,-) = OK: A_m (3[0~2])
+B_m = ARR.OPEL.U(ARR_B,m_tot,-) = OK: B_m (10[0~9])
+SSJ = MATH.SUM.SQA.ADJ(RNK15) = 2245.5
+SSA = 10*MATH.SUM.SQA(A_m) = 508.85
+SSB = 3*MATH.SUM.SQA(B_m) = 1236.83333333333
+SSE = SSJ - SSA - SSB = 499.81666666667
+MSA = SSA/2 = 254.425
+MSB = SSB/9 = 137.425925925926
+MSE = SSE/18 = 27.7675925925928
+FA = MSA/MSE = 9.16265964186862
+FB = MSB/MSE = 4.94914802094098
+F_crit_A = MATH.ICDF.FIS(9,18,0.95) = 2.45628114915922
+rejectH0_A = FA > F_crit_A = 1
+/ reject H0
+# 25.12 Test of location for related samples: The Friedman test
+! Table 25.18. Data and ranks of plutonium data for the Friedman test
+RK18 = ARR.RANK2D(DT15,1) = OK: RK18 (30[0~2,0~9])
+$PN "RK18" > RK18
+$PM RK18 > OK
+RK18_1 = ARR.SLICE2D(RK18,0,0) = OK: RK18_1 (10[0~9])
+RS1 = ARR.SUM(RK18_1) = 15
+RK18_2 = ARR.SLICE2D(RK18,0,1) = OK: RK18_2 (10[0~9])
+RS2 = ARR.SUM(RK18_2) = 28
+RK18_3 = ARR.SLICE2D(RK18,0,2) = OK: RK18_3 (10[0~9])
+RS3 = ARR.SUM(RK18_3) = 17
+A = MATH.SUM.SQA(RK18) = 140
+b = 10 = 10
+k = 3 = 3
+B = (RS1^2+RS2^2+RS3^2)/b = 129.8
+F = (b-1)*(B-b*k*(k+1)^2/4)/(A-B) = 8.64705882352943
+F_crit = MATH.ICDF.FIS(2,18,0.95) = 3.55455714566177
+rejectH0_A = FA > F_crit_A = 1
+/ reject H0
+# 25.13 Test of variances with two samples: Squared ranks test
+## Example 25.8. (continued). Comparison of percent of uranium in two batches
+yb_1 = 87.04 = 87.04
+yb_2 = 86.11 = 86.11
+! Table 25.18. Data sorted and ranked for Example 25.8
+$M DT18[0,0] {86.0,86.4,86.8,86.8,86.9,87.5,87.7,88.2;84.8,85.7,85.8,86.1,86.2,86.5,86.7,87.1} > OK (2[0~1] × 8[0~7])
+DT18_1 = ARR.SLICE2D(DT18,0,0) = OK: DT18_1 (8[0~7])
+DT18_2 = ARR.SLICE2D(DT18,0,1) = OK: DT18_2 (8[0~7])
+UI18_1 = ARR.OPEL.U(DT18_1,yb_1,-) = OK: UI18_1 (8[0~7])
+UI18_1 = ARR.OPEL.U(UI18_1,0,abs) = OK: UI18_1 (8[0~7])
+UI18_2 = ARR.OPEL.U(DT18_2,yb_2,-) = OK: UI18_2 (8[0~7])
+UI18_2 = ARR.OPEL.U(UI18_2,0,abs) = OK: UI18_2 (8[0~7])
+UI18 = ARR.CAT.COL(UI18_1,UI18_2) = OK: UI18 (16[0~7,0~1])
+RK18t = ARR.RANK2D(UI18,0) = OK: RK18t (16[0~7,0~1])
+RK18 = ARR.TRN(RK18t) = OK: RK18 (16[0~1,0~7])
+$PN "RK18" > RK18
+$PM RK18 > OK
+RK18_1 = ARR.SLICE2D(RK18,0,0) = OK: RK18_1 (8[0~7])
+RK18_2 = ARR.SLICE2D(RK18,0,1) = OK: RK18_2 (8[0~7])
+SR2_1 = MATH.SUM.SQA(RK18_1) = 816.5
+SR4_1 = MATH.SUM.PWR(RK18_1,4) = 131880.125
+SR2_2 = MATH.SUM.SQA(RK18_2) = 679
+SR4_2 = MATH.SUM.PWR(RK18_2,4) = 111907
+n = 8 = 8
+m = 8 = 8
+Rb2 = 1/(n+m)*(SR2_1 + SR2_2) = 93.46875
+Rk4 = SR4_1 + SR4_2 = 243787.125
+Ts1 = (SR2_1 - n*Rb2)/Sqrt{n*m/{(n+m)*(n+m-1)}*Rk4 - n*m/(n+m-1)*Rb2^2} = 0.412821248322692
+W1 = MATH.ICDF.NRM(0,1,0.025) = -1.95996398454005
+W2 = MATH.ICDF.NRM(0,1,0.975) = 1.95996398454005
+rejectH0 = (Ts1 < W1) || (Ts1 > W2) = 0
+/ H0 not rejected
+* F-test
+VAR1 = MATH.SDVS(DT18_1)^2 = 0.516964285714282
+VAR2 = MATH.SDVS(DT18_2)^2 = 0.495535714285718
+v1 = n-1 = 7
+v2 = m-1 = 7
+f = Max(VAR1,VAR2)/Min(VAR1,VAR2) = 1.04324324324323
+f_crit = MATH.ICDF.FIS(v1,v2,0.975) = 4.99490921906325
+rejectH0 = f > f_crit = 0
+/ cannot reject H0
+# 25.14 Test of variances with several samples: The k-sample squared ranks test
+## Example 25.10(continued). Comparison of four production lines
+! Table 25.19. Ranks for Example 25.10
+$M DT19[0,0] {13,23,23,14,25,22,35,13,24,20;34,16,20,35,17,30,27,28;17,26,11,13,24,22,8,20,23;33,30,23,24,32,20,17,32} > OK (4[0~3] × 10[0~9])
+YB = ARR.AVG2D(DT19,0) = OK: YB (4[0~3])
+DT19_1 = ARR.SLICE2D(DT19,0,0) = OK: DT19_1 (10[0~9])
+DT19_2 = ARR.SLICE2D(DT19,0,1) = OK: DT19_2 (10[0~9])
+DT19_3 = ARR.SLICE2D(DT19,0,2) = OK: DT19_3 (10[0~9])
+DT19_4 = ARR.SLICE2D(DT19,0,3) = OK: DT19_4 (10[0~9])
+ni = ARR.INIT1D(4,0.0) = OK: ni (4[0~3])
+ni[0] = ARR.CNT(DT19_1) = 10
+ni[1] = ARR.CNT(DT19_2) = 8
+ni[2] = ARR.CNT(DT19_3) = 9
+ni[3] = ARR.CNT(DT19_4) = 8
+YmY1 = ARR.OPEL.U(DT19_1,YB[0],-) = OK: YmY1 (10[0~9])
+YmY1 = ARR.OPEL.U(YmY1,0,abs) = OK: YmY1 (10[0~9])
+YmY2 = ARR.OPEL.U(DT19_2,YB[1],-) = OK: YmY2 (10[0~9])
+YmY2 = ARR.OPEL.U(YmY2,0,abs) = OK: YmY2 (10[0~9])
+YmY3 = ARR.OPEL.U(DT19_3,YB[2],-) = OK: YmY3 (10[0~9])
+YmY3 = ARR.OPEL.U(YmY3,0,abs) = OK: YmY3 (10[0~9])
+YmY4 = ARR.OPEL.U(DT19_4,YB[3],-) = OK: YmY4 (10[0~9])
+YmY4 = ARR.OPEL.U(YmY4,0,abs) = OK: YmY4 (10[0~9])
+YmYt = ARR.CAT.COL(YmY1,YmY2) = OK: YmYt (20[0~9,0~1])
+YmYt = ARR.CAT.COL(YmYt,YmY3) = OK: YmYt (30[0~9,0~2])
+YmYt = ARR.CAT.COL(YmYt,YmY4) = OK: YmYt (40[0~9,0~3])
+YmY = ARR.TRN(YmYt) = OK: YmY (40[0~3,0~9])
+$PN "|y-y_b|" > |y-y_b|
+$PM YmY > OK
+RK19 = ARR.RANK2D(YmY,0) = OK: RK19 (40[0~3,0~9])
+$PN "RK19" > RK19
+$PM RK19 > OK
+SR19 = ARR.SUM2D(RK19,0) = OK: SR19 (4[0~3])
+$PN "SR19" > SR19
+$PM SR19 > OK
+SSR4 = MATH.SUM.PWR(RK19,4) = 11265387.375
+n = ARR.CNT(DT19) = 35
+v = n - 1 = 34
+SB = MATH.SUM.SQA(RK19)/n = 425.957142857143
+D2 = (SSR4-n*SB^2)/v = 144558.979726891
+RK19_1 = ARR.SLICE2D(RK19,0,0) = OK: RK19_1 (10[0~9])
+RK19_2 = ARR.SLICE2D(RK19,0,1) = OK: RK19_2 (10[0~9])
+RK19_3 = ARR.SLICE2D(RK19,0,2) = OK: RK19_3 (10[0~9])
+RK19_4 = ARR.SLICE2D(RK19,0,3) = OK: RK19_4 (10[0~9])
+SI = ARR.INIT1D(4,0.0) = OK: SI (4[0~3])
+SI[0] = MATH.SUM.SQA(RK19_1) = 3816
+SI[1] = MATH.SUM.SQA(RK19_2) = 4413
+SI[2] = MATH.SUM.SQA(RK19_3) = 3612
+SI[3] = MATH.SUM.SQA(RK19_4) = 3067.5
+S2n = ARR.OPEL.U(SI,2,^) = OK: S2n (4[0~3])
+S2n = ARR.OPEL.B(S2n,ni,/) = OK: S2n (4[0~3])
+SS2n = ARR.SUM(S2n) = 6516317.25625
+T = (SS2n - n*SB^2)/D2 = 1.14787190859935
+T_crit = MATH.ICDF.CHI(3,0.9) = 6.25138863117032
+rejectH0 = T > T_crit = 0
+/ H0 not rejected
+* Bartlett's test for homogeneity of variance
+arr_n = ARR.CNT2D(DT19,0) = OK: arr_n (4[0~3])
+arr_s = ARR.VARS2D(DT19,0) = OK: arr_s (4[0~3])
+arr_v = ARR.OPEL.U(arr_n,1,-) = OK: arr_v (4[0~3])
+s2_pool = 0.0 = 0
+idx = -1 = -1
+$L1 4
+idx = idx + 1 = 3
+s2_pool = s2_pool + (arr_n[idx]-1)*arr_s[idx] = 1375.90555555556
+$L1
+s2_pool = s2_pool/ARR.SUM(arr_v) = 44.3840501792116
+k = ARR.CNT(arr_s) = 4
+dof = k - 1 = 3
+N = ARR.SUM(arr_n) = 35
+quantile = 0.90 = 0.9
+Sig_n1lnS2 = 0 = 0
+Sig_1_n1 = 0 = 0
+idx = -1 = -1
+$L1 4
+idx = idx + 1 = 3
+Sig_n1lnS2 = Sig_n1lnS2 + (arr_n[idx]-1)*Ln(arr_s[idx]) = 117.289874098649
+Sig_1_n1 = Sig_1_n1 + 1/(arr_n[idx]-1) = 0.521825396825397
+$L1
+B = {(N-k)*Ln(s2_pool) - Sig_n1lnS2}/{1+1/(3*(k-1))*{Sig_1_n1 - 1/(N-k)}} = 0.274480570367221
+B_crit = MATH.ICDF.CHI(dof,quantile) = 6.25138863117032
+reject_H0 = B > B_crit = 0
+/ H0 not rejected
+# 25.15 Spearman’s test of independence for two populations
+W0p95_50 = MATH.ICDF.NRM(0,1,0.95)/Sqrt(50-1) = 0.234979089564496
+## Example 25.11. Solid waste barrel standards
+! Table 25.20. Data and ranks for Spearman’s correlation
+$M X[0] {12.92,12.50,12.61,12.48,12.44,12.62,12.35,12.54,12.21,12.22,12.17,12.34} > OK (12[0~11])
+$M Y[0] {9.76,10.12,10.57,10.80,9.94,10.17,10.08,9.97,10.11,10.22,9.79,9.96} > OK (12[0~11])
+RX = ARR.RANK1D(X) = OK: RX (12[0~11])
+RY = ARR.RANK1D(Y) = OK: RY (12[0~11])
+DI = ARR.OPEL.B(RX,RY,-) = OK: DI (12[0~11])
+DI2 = ARR.OPEL.U(DI,2,^) = OK: DI2 (12[0~11])
+SDI2 = ARR.SUM(DI2) = 252
+n = 12 = 12
+rs = 1 - 6*SDI2/(n*(n^2-1)) = 0.118881118881119
+W_crit = MATH.SPR.QNT(12,0.95,500000) = 0.496503496503497
+rejectH0 = rs > W_crit = 0
+/ H0 not rejected
+* calculate parameteric correlation coefficient
+Rxy = MATH.Rxy(X,Y) = 0.0190085254692404
+t = Rxy*Sqrt((n-2)/(1-Rxy^2)) = 0.0601210980244663
+t_crit = MATH.ICDF.STU(0,1,10,0.975) = 2.22813885198181
+rejectH0 = (t < -t_crit) || (t > t_crit) = 0
+/ H0 not rejected
