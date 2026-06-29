@@ -162,6 +162,13 @@ Following functions can be used (case-sensitive).
     - `MATH.Sxy({X 1D matrix name},{Y 1D matrix name})` - calculates sum of (X_i - X_avg)*(Y_i - Y_avg)
     - `MATH.Rxy({X 1D matrix name},{Y 1D matrix name})` - calculates correlation coefficient
 
+  - Outliers
+    - `MATH.DXN.R({i},{j},{number of samples, n},{probability})` - calculates Dixon's criteria for testing for extreme values
+      - ex. r_10,n=3,P=0.70 -> i=0+1=1, j=1, n=3, probability=0.70 -> `MATH.DXN.R(1,1,3,0.7)`
+      - ex. r_11,n=8,p=0.80 -> i=1+1=2, j=1, n=8, probability=0.80 -> `MATH.DXN.R(2,1,8,0.7)`
+      - ex. r_22,n=20,p=0.95 -> i=2+1=3, j=2, n=20, probability=0.95 -> `MATH.DXN.R(3,2,20,0.95)`
+    - `MATH.GRB.CRIT({number of samples},{significant level, alpha},{1:one-sided,0:two-sided})` - calculates critical value for Grubbs' T-test
+ 
   - Auxilliary functions         
     - `MATH.SDVP({1D array name})` - calculates population standard deviation of 1D array
     - `MATH.SDVS({1D array name})` - calculates sample standard deviation of 1D array
@@ -184,12 +191,22 @@ Following functions can be used (case-sensitive).
    
     - `MATH.SUM.SQA({array name})` - sum of squares
     - `MATH.SUM.CUB({array name})` - sum of cubes
+    - `MATH.SUM.PWR({array name},{power})` - sum of element value^power
     - `MATH.AVG.SQA({array name})` - average of squares
     - `MATH.AVG.CUB({array name})` - average of cubes
+    - `MATH.AVG.PWR({array name},{power})` - average of element value^power
     - `MATH.AVG.SQA.ADJ({array name})` - adjusted sum of squares (sum of squares - correction)
    
     - `MATH.CtoF({temperature in Celcius})` - converts Celcius to Fahrenheit
     - `MATH.FtoC({temperature in Fahrenheit})` - converts Fahrenheit to Celcius
+
+    - `MATH.RUNS.P({no. 1st kind object},{no. 2nd kind object},{no. distict groups, u})` - calculates proportion of arrangements yielding u or less groups by Swed-Eisenhart (1943)
+    - `MATH.CNT.VAL({array name},{value, v})` - returns count of elements with value=v
+
+    - `MATH.WCX.QNT({number},{probability})` - calculates quantiles of the Wilcoxon signed ranks test statistic
+    - `MATH.WRS.QNT({number n},{number m},{probability})` - calculates quantiles of the Wilcoxon Rank Sum (WRS) test statistic
+    - `MATH.SPR.QNT({number},{probability},{number of permutations})` - computes Spearman statistic r_s quantiles
+      - number greater than 7 based on Monte-Carlo, use more than 500,000 permutations for two‑decimal points precision        
 
 - Example:
 ```
