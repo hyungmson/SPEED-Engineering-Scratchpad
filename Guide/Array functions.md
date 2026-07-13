@@ -50,6 +50,8 @@
                         
 - Additional functions
   - `ARR.TRN({2D matrix name, A})` - transpose of A = A'
+  - `ARR.FLIP1D({1D array name})` - returns flipped array
+  - `ARR.FLIP2D({2D array name},{flip direction row axis:0|colum axis:1})` - returns flipped array
   - `ARR.DIA({row size (=col. size)},{initialization value})` - diagonal matrix creation  
   - `ARR.REM.MAX({1D array name})` - returns array with maximum value(s) removed
   - `ARR.REM.MIN({1D array name})` - returns array with minimum value(s) removed
@@ -140,6 +142,11 @@
 - Convert 2D to 3D data
   - `ARR.2DTO3D(2D matrix name, 1:collect by rows|0:by columns, collection size)`
     - collects 2D data by constant number of rows or columns and stacks to return 3D array
+      
+  - Generate interpolated data
+    - `ARR.INTP1D({X grid array name},{X array name},{Y array name})` - returns 1D linearly interpolated data
+    - `ARR.INTP2D({X grid array name},{Y grid array name},{X array name},{Y array name},{Z array name})` - returns 2D linearly interpolated data
+      - X, Y, Z arrays need to be of same lengths    
 
 - Example:
 ```
@@ -262,6 +269,16 @@ $PN "2D|2D"
 $PM resArr
 $T0 zoom:0.35
 $TH resArr,Plot of 2D heatmap,X,Y,JT
+// 2D interpolation and flip
+X = ARR.INIT.LINE1D(9,1,10)
+Y = ARR.INIT.LINE1D(9,2,20)
+Z = ARR.OPEL.B(X,Y,*)
+res2D = ARR.INTP2D(X,Y,X,Y,Z)
+$TH res;Plot of 2D heatmap;X;Y;JT
+res2D1 = ARR.FLIP2D(res2D,0)
+$TH res2D1;Plot of 2D heatmap, flip0;X;Y;JT
+res2D2 = ARR.FLIP2D(res2D,1)
+$TH res2D2;Plot of 2D heatmap, flip1;X;Y;JT
 ```
 - After the update:
 ```
@@ -383,6 +400,16 @@ $PN "2D|2D" > 2D|2D
 $PM resArr > OK
 $T0 zoom:0.35 > OK
 $TH resArr,Plot of 2D heatmap,X,Y,JT > OK
+// 2D interpolation and flip
+X = ARR.INIT.LINE1D(9,1,10) = OK: X (10[0~9])
+Y = ARR.INIT.LINE1D(9,2,20) = OK: Y (10[0~9])
+Z = ARR.OPEL.B(X,Y,*) = OK: Z (10[0~9])
+res2D = ARR.INTP2D(X,Y,X,Y,Z) = OK: res (100[0~9,0~9])
+$TH res;Plot of 2D heatmap;X;Y;JT > OK
+res2D1 = ARR.FLIP2D(res2D,0) = OK: res1 (100[0~9,0~9])
+$TH res2D1;Plot of 2D heatmap, flip0;X;Y;JT > OK
+res2D2 = ARR.FLIP2D(res2D,1) = OK: res2 (100[0~9,0~9])
+$TH res2D2;Plot of 2D heatmap, flip1;X;Y;JT > OK
 ```
 - The above example generates following in Debug window.
 ```
