@@ -98,7 +98,7 @@
 
 ## 3D isometric plot
 - Grammar 1: `$TZ {3D array name};{Plot title};{X-axis title};{Y-axis title};{Z-axis title};{Voxel size};{azimuthal angle, deg.};{transparency: 0.1-1.0};{colormap:JT}`
-- Grammar 2: $TZ {ArrDX};{ArrDY};{ArrDZ};{3D array name};{Plot title};{X-axis title};{Y-axis title};{Z-axis title};{Voxel size};{azimuthal angle, deg.};{transparency: 0.1-1.0};{colormap:JT}   
+- Grammar 2: `$TZ {ArrDX};{ArrDY};{ArrDZ};{3D array name};{Plot title};{X-axis title};{Y-axis title};{Z-axis title};{Voxel size};{azimuthal angle, deg.};{transparency: 0.1-1.0};{colormap:JT}`   
   - ArrDX: 1D array of x-direction intervals
   - ArrDY: 1D array of y-direction intervals
   - ArrDZ: 1D array of y-direction intervals
