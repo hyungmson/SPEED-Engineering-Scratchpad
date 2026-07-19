@@ -8,6 +8,10 @@
   - `fmtX:{format string, e.g., E5, G}` - set x-axis tick format in 2D plot
   - `fmtY:{format string}` - set y-axis tick format in 2D plot
   - `fmtCB:{format string}` - set color bar value format in 2D and 3D plot
+  - `axislimit:{x_start},{x_end},{y_start},{y_end}` - set x and y axis limits, set all to 0 (e.g., 0,0,0,0) for automatic fitting
+    - Not applicable to pie chart and isometric plot
+  - `colorbarlimit:{lower limit},{upper limit}` - set colorbar range, if 0,0 - automatically set
+    - Applicable to 2D heatmap, rectangle plot and isometric plot
     
 ## 1D Scatter Plot
 - Grammar (simple): `$TS {ArrX};{ArrY};{Plot title};{X-axis title};{Y-axis title};{Marker size};{Legend position}`
@@ -48,7 +52,17 @@
     - GY: Grayscale
     - TM: Thermal
     - RN: Rain
-                        
+
+## 2D Rectangle Plot 
+- Heatmap plot with varying cell sizes
+- Grammar 1: `$TR {ArrDX};{ArrDY};{Arr2D};{Plot title};{X-axis title};{Y-axis title};{Color map}`
+- Grammar 2: `$TR {ArrDX};{ArrDY};{Arr2D};{Plot title};{X-axis title};{Y-axis title};{Cell line thickness};{Cell line color};{Color map}`
+  - ArrDX: 1D array of x-direction intervals
+  - ArrDY: 1D array of y-direction intervals
+  - Arr2D: 2D array having dimension of length(ArrDY) by length(ArrDX)
+  - Cell line thickness: input between 0 and 10
+  - Cell line color: input from RED,GREEN,BLUE,MAGENTA,SKYBLUE,ORANGE,BROWN,PINK,CYAN,BLACK,WHITE,GREY
+
 ## Histogram
 - Grammar: `$TI {Arr name};{Plot title};{X-axis title};{Y-axis title};{#bins};{bar width};{min. value of X-axis};{max. value of X-axis};{border width};{stats:YN|YS|N};{distribution curve width};{Legend position}`
   - bar width: if 0, width are automatically set
@@ -132,14 +146,23 @@ $M arr[0] {100,50,20}
 $TB arr;Item1,Item2,Item3;Series1;Bar chart;Items;Values;Y;UL
 $M arr2[0,0] {1,2,3,4;2,4,6,8;3,6,9,12}
 $TB arr2;Item1,Item2,Item3,Item4;Series1,Series2,Series3;Bar chart;Items;Values;Y;UL
-// Isometric plot
+// 2D rectangle plot
+$M arrDX[0] {1,2,3,4,5}
+$M arrDY[0] {2,4,6,8}
+$M arr2D[0,0] {1,2,3,4,5;2,3,4,5,6;1,2,3,4,5;2,3,4,5,6}
+$TR arrDX;arrDY;arr2D;title;x;y;JT
+// 3D isometric plot
+$T0 COLORBARLIMIT:0,20
+$M arrDX[0] {1,2}
+$M arrDY[0] {1,2,3}
+$M arrDZ[0] {2,4,2}
 $M arr[0,0] {1,2,3;4,5,6;7,8,9;10,11,12;13,14,15;16,17,18}
 arr3 = ARR.2DTO3D(arr,1,2)
 $PN "2D"
 $PM arr
 $PN "3D"
 $PM arr3
-$TZ arr3;3D isometric plot;x;y;z;30;0.8;50;JT
+$TZ arrDX;arrDY;arrDZ;arr3;3D isometric plot;x;y;z;30;0.8;22;JT
 ```
 - After the update, plots are shown on Plot tab:
 ```
@@ -186,12 +209,21 @@ $M arr[0] {100,50,20} > OK (3[0~2])
 $TB arr;Item1,Item2,Item3;Series1;Bar chart;Items;Values;Y;UL > OK
 $M arr2[0,0] {1,2,3,4;2,4,6,8;3,6,9,12} > OK (3[0~2] × 4[0~3])
 $TB arr2;Item1,Item2,Item3,Item4;Series1,Series2,Series3;Bar chart;Items;Values;Y;UL > OK
-// Isometric plot
+// 2D rectangle plot
+$M arrDX[0] {1,2,3,4,5} > OK (5[0~4])
+$M arrDY[0] {2,4,6,8} > OK (4[0~3])
+$M arr2D[0,0] {1,2,3,4,5;2,3,4,5,6;1,2,3,4,5;2,3,4,5,6} > OK (4[0~3] × 5[0~4])
+$TR arrDX;arrDY;arr2D;title;x;y;JT > OK
+// 3D isometric plot
+$T0 COLORBARLIMIT:0,20 > OK
+$M arrDX[0] {1,2} > OK (2[0~1])
+$M arrDY[0] {1,2,3} > OK (3[0~2])
+$M arrDZ[0] {2,4,2} > OK (3[0~2])
 $M arr[0,0] {1,2,3;4,5,6;7,8,9;10,11,12;13,14,15;16,17,18} > OK (6[0~5] × 3[0~2])
 arr3 = ARR.2DTO3D(arr,1,2) = OK: arr3 (18[0~1,0~2,0~2])
 $PN "2D" > 2D
 $PM arr > OK
 $PN "3D" > 3D
 $PM arr3 > OK
-$TZ arr3;3D isometric plot;x;y;z;30;0.8;50;JT > OK
+$TZ arrDX;arrDY;arrDZ;arr3;3D isometric plot;x;y;z;30;0.8;22;JT > OK
 ```
