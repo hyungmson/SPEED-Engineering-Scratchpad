@@ -48,8 +48,9 @@ Currently available for Android- [Google Play](https://play.google.com/store/app
 - [Guide](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Guide)
   - contains user guide
 - Example
+  - contains SPEED inputs for solving examples in the textbook
   - [Applying_Statistics](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Example/Applying_Statistics)
-    - contains SPEED inputs for solving examples in the textbook
+  - [A_Heat_Transfer_Textbook](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Example/A_Heat_Transfer_Textbook)
 
 ## References
 - H.-J. Kretzschmar, W. Wagner, International Steam Tables- Properties of Water and Steam Based on the Industrial Formulation IAPWS-IF97</Bold>, 3rd Ed., Springer, 2018.
