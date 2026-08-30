@@ -144,16 +144,16 @@
     - if start row or start column is -1, it defaults to 0 (start index)
     - if end row or end column is -1, it defaults to row and column size of input 2D matrix, respectively
 
-- Convert 2D to 3D data
-  - `ARR.2DTO3D(2D matrix name, 1:collect by rows|0:by columns, collection size)`
-    - collects 2D data by constant number of rows or columns and stacks to return 3D array
-
 - Convert array to higher dimension
   - `ARR.1DTO2D({1D array name},{collection size})` 
     - converts 1D array to 2D array by stacking constant number of elements
   - `ARR.2DTO3D({2D matrix name},{1:collect by rows|0:by columns},{collection size})`
     - collects 2D data by constant number of rows or columns and stacks to return 3D array
-  
+
+- Convert array to lower dimension
+  - `ARR.2DTO1D({2D array name},{0:concatenate rows|1:by columns})`
+    - convert 2D array to 1D array by concatenating rows or columns
+ 
 - Generate interpolated data
   - `ARR.INTP1D({X grid array name},{X array name},{Y array name})` - returns 1D linearly interpolated data
   - `ARR.INTP2D({X grid array name},{Y grid array name},{X array name},{Y array name},{Z array name})` - returns 2D linearly interpolated data
@@ -311,6 +311,16 @@ arr = ARR.SET.EXC(arr1,arr2)
 $PM arr
 arr = ARR.SET.INT(arr1,arr2)
 $PM arr
+// replace 1D array data
+$M arr1Dtgr[0] {0,1,2,3,4,5,6,7,8,9}
+$M arr1Dins[0] {10,20,30}
+res1D = ARR.REPL1D(arr1Dtgr,arr1Dins,2)
+$PM res1D
+// replace 2D array data
+$M arr2Dtgr[0,0] {0,1,2,3,4;5,6,7,8,9;10,11,12,13,14}
+$M arr2Dins[0,0] {-1,-2;-3,-4}
+res2D = ARR.REPL2D(arr2Dtgr,arr2Dins,1,2)
+$PM res2D
 ```
 - After the update:
 ```
@@ -455,6 +465,16 @@ arr = ARR.SET.EXC(arr1,arr2) = OK: arr (2[0~1])
 $PM arr > OK
 arr = ARR.SET.INT(arr1,arr2) = OK: arr (3[0~2])
 $PM arr > OK
+// replace 1D array data
+$M arr1Dtgr[0] {0,1,2,3,4,5,6,7,8,9} > OK (10[0~9])
+$M arr1Dins[0] {10,20,30} > OK (3[0~2])
+res1D = ARR.REPL1D(arr1Dtgr,arr1Dins,2) = OK: res1D (10[0~9])
+$PM res1D > OK
+// replace 2D array data
+$M arr2Dtgr[0,0] {0,1,2,3,4;5,6,7,8,9;10,11,12,13,14} > OK (3[0~2] × 5[0~4])
+$M arr2Dins[0,0] {-1,-2;-3,-4} > OK (2[0~1] × 2[0~1])
+res2D = ARR.REPL2D(arr2Dtgr,arr2Dins,1,2) = OK: res2D (15[0~2,0~4])
+$PM res2D > OK
 ```
 - The above example generates following in Debug window.
 ```
@@ -537,4 +557,8 @@ A^B
 1,2,3,4,5
 1,2
 3,4,5
+0,1,10,20,30,5,6,7,8,9
+0,1,2,3,4
+5,6,-1,-2,9
+10,11,-3,-4,14
 ```
