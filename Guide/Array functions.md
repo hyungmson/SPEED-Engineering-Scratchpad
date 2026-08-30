@@ -75,7 +75,7 @@
     - dimensions and shapes (# of rows, columns, or depths) of A and B should be same.
     - allowed operator strings: + (add), - (subtract), * (multiply), / (division), ^ (power), log (logarithm with B as base value), rem (remainder of A/B),
       - = (comparison) : +1 for A > B, -1 for A < B, 0 for A=B
-      - > (comparison) : 1 for A > B, 0 for A < B or A=B
+      - `>` (comparison) : 1 for A > B, 0 for A < B or A=B
       - < (comparison) : 1 for A < B, 0 for A > B or A=B
   - `ARR.OPEL.U({matrix name, A},{double value, B},{operator})`
     - same as OPEL.B, but element-wise operation is done with element of A and value B
