@@ -12,7 +12,8 @@
     - Not applicable to pie chart and isometric plot
   - `colorbarlimit:{lower limit},{upper limit}` - set colorbar range, if 0,0 - automatically set
     - Applicable to 2D heatmap, rectangle plot and isometric plot
-    
+  - `fontsize:{title},{axis label},{axis tick},{legend},{colorbar label},{colorbar axis tick}` - set font size
+   
 ## 1D Scatter Plot
 - Grammar (simple): `$TS {ArrX};{ArrY};{Plot title};{X-axis title};{Y-axis title};{Marker size};{Legend position}`
   - ArrX: 1D array for X values
