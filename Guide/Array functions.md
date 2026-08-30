@@ -59,6 +59,11 @@
   - `ARR.RANK1D({1D array name})` - returns array with ranks, replace ties with their mean
   - `ARR.RANK2D({2D array name},{ranking direction:0|1|2})` - returns array with ranks, replace ties with their mean, rank for blank elements are given 0 value
     - ranking direction: 0: ranking for entire array, 1: ranking for each row, 2: ranking for each column
+  - `ARR.APND1D({1D array #1},{1D array #2})` - returns array #2 appended to array #1
+  - `ARR.SET.UNI({1D array #1},{1D array #2})` - returns set union
+  - `ARR.SET.DIS({1D array})` - returns set distinct (removes duplicate values)
+  - `ARR.SET.EXC({1D array #1},{1D array #2})` - returns set difference
+  - `ARR.SET.INT({1D array #1},{1D array #2})` - returns set intersection
                                    
 - Linear algebra
   - `ARR.SOLVE({2D matrix name, A},{1D matrix name, b})` - solves A*x = b for x
@@ -142,12 +147,26 @@
 - Convert 2D to 3D data
   - `ARR.2DTO3D(2D matrix name, 1:collect by rows|0:by columns, collection size)`
     - collects 2D data by constant number of rows or columns and stacks to return 3D array
-      
-  - Generate interpolated data
-    - `ARR.INTP1D({X grid array name},{X array name},{Y array name})` - returns 1D linearly interpolated data
-    - `ARR.INTP2D({X grid array name},{Y grid array name},{X array name},{Y array name},{Z array name})` - returns 2D linearly interpolated data
-      - X, Y, Z arrays need to be of same lengths    
 
+- Convert array to higher dimension
+  - `ARR.1DTO2D({1D array name},{collection size})` 
+    - converts 1D array to 2D array by stacking constant number of elements
+  - `ARR.2DTO3D({2D matrix name},{1:collect by rows|0:by columns},{collection size})`
+    - collects 2D data by constant number of rows or columns and stacks to return 3D array
+  
+- Generate interpolated data
+  - `ARR.INTP1D({X grid array name},{X array name},{Y array name})` - returns 1D linearly interpolated data
+  - `ARR.INTP2D({X grid array name},{Y grid array name},{X array name},{Y array name},{Z array name})` - returns 2D linearly interpolated data
+    - X, Y, Z arrays need to be of same lengths    
+
+- Replaces part of array data
+  - `ARR.REPL1D({target 1D array name},{insertion 1D array name},{start index, 0-based})` 
+    - replaces portion of target 1D array with value from insertion array with offset
+  - `ARR.REPL2D({target 2D array name},{insertion 2D array name},{1st dimension start index, 0-based},{2nd dimension start index, 0-based})` 
+    - replaces portion of target 2D array with value from insertion array with offset
+  - `ARR.REPL3D({target 3D array name},{insertion 3D array name},{1st dimension start index, 0-based},{2nd dimension start index, 0-based},{3rd dimension start index, 0-based})` 
+    - replaces portion of target 3D array with value from insertion array with offset
+   
 - Example:
 ```
 $M mat0[0] {1,2,3,4,5,6,7,8,9,10} 
@@ -279,6 +298,19 @@ res2D1 = ARR.FLIP2D(res2D,0)
 $TH res2D1;Plot of 2D heatmap, flip0;X;Y;JT
 res2D2 = ARR.FLIP2D(res2D,1)
 $TH res2D2;Plot of 2D heatmap, flip1;X;Y;JT
+// Array append and set functions
+$M arr1[0] {1,2,3,4,5,3}
+$M arr2[0] {3,4,5,6,7,8,8,9}
+arr = ARR.APND1D(arr1,arr2)
+$PM arr
+arr = ARR.SET.UNI(arr1,arr2)
+$PM arr
+arr = ARR.SET.DIS(arr1)
+$PM arr
+arr = ARR.SET.EXC(arr1,arr2)
+$PM arr
+arr = ARR.SET.INT(arr1,arr2)
+$PM arr
 ```
 - After the update:
 ```
@@ -410,6 +442,19 @@ res2D1 = ARR.FLIP2D(res2D,0) = OK: res1 (100[0~9,0~9])
 $TH res2D1;Plot of 2D heatmap, flip0;X;Y;JT > OK
 res2D2 = ARR.FLIP2D(res2D,1) = OK: res2 (100[0~9,0~9])
 $TH res2D2;Plot of 2D heatmap, flip1;X;Y;JT > OK
+// Array append and set functions
+$M arr1[0] {1,2,3,4,5,3} > OK (6[0~5])
+$M arr2[0] {3,4,5,6,7,8,8,9} > OK (8[0~7])
+arr = ARR.APND1D(arr1,arr2) = OK: arr (14[0~13])
+$PM arr > OK
+arr = ARR.SET.UNI(arr1,arr2) = OK: arr (9[0~8])
+$PM arr > OK
+arr = ARR.SET.DIS(arr1) = OK: arr (5[0~4])
+$PM arr > OK
+arr = ARR.SET.EXC(arr1,arr2) = OK: arr (2[0~1])
+$PM arr > OK
+arr = ARR.SET.INT(arr1,arr2) = OK: arr (3[0~2])
+$PM arr > OK
 ```
 - The above example generates following in Debug window.
 ```
@@ -487,4 +532,9 @@ A^B
 11,12,13,14,15,-1,-2,-3,-4,-5
 16,17,18,19,20,-6,-7,-8,-9,-10
 21,22,23,24,25,-11,-12,-13,-14,-15
+1,2,3,4,5,3,3,4,5,6,7,8,8,9
+1,2,3,4,5,6,7,8,9
+1,2,3,4,5
+1,2
+3,4,5
 ```
