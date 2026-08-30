@@ -13,6 +13,7 @@ Following features are currently supported.
 - Array variable supported
 - 5 level depth repetition loop
 - Text output (echo) manipulation
+  - Paraview output of 3D voxel data
 - 1D, 2D linear interpolation
 - Plotting
   - 1D scatter plot
@@ -41,8 +42,8 @@ Following features are currently supported.
 
 Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED) and Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz).
 - Latest version: 
-  - Windows: 1.0.33
-  - Android: Build src 103300 (see Help tab)
+  - Windows: 1.0.41
+  - Android: Build src 104000 (see Help tab)
 
 ## Repository folder structure
 - [Guide](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Guide)
