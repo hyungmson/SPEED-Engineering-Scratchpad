@@ -68,4 +68,16 @@ mat10
 1,2,3,4,5,6,7
 8,9,10,11,12,,
 13,14,15,16,17,,
-```  
+```
+
+- **Grammar 4**: `$PV {DX array name};{DY array name};{DZ array name};{3D data array name}`
+- Prints out legecy Paraview ASCII ouput of voxel data to Debug window. Save as 'vtk' extension and open in Paraview.
+- Put a space between command ('$PV') and semi-colon in-between each variable names                        
+- Example:
+```
+$M arrDY[0] {1,2,3}
+$M arrDZ[0] {2,4,2}
+$M arr[0,0] {1,2,3;4,5,6;7,8,9;10,11,12;13,14,15;16,17,18}
+arr3 = ARR.2DTO3D(arr,1,2)
+$PV arrDX;arrDY;arrDZ;arr3
+```
