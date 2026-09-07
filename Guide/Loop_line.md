@@ -3,7 +3,9 @@ Lines starting with '$L' becomes loop line.
 Used where lengthy repeated update is required. Currently up to **5 depth** level can be processed.
 - Grammar: lines to be repeated are situated in between start/end loop lines
 - Start loop line contains number of repetition after `$L#` sparated by a space.
-  - ex) `$L1 3` ⇽ start level 1 loop with 3 repetition
+  - ex1) `$L1 3` ⇽ start level 1 loop with 3 repetition
+  - ex2) 'cnt = 2'
+         '$L1 cnt' ⇽ start level 1 loop with 2 repetition
 - '#' is the number between 1~5, which corresponds to level of loop depth.
 - End loop line of same depth should always end with same #.
 - Higher depth loop commands (start/end) should be enclosed within lower depth loop commands.
@@ -12,6 +14,7 @@ $L# {number of repetition} ⇽ start loop line
 ... ⇽ lines to be repeated
 $L# ⇽ end loop line
 ```
+- The variable name used as repetion count shoud be defined using simple arthmetics and should not be updated within the loop.
 - Example:
 ```
 i = 0
