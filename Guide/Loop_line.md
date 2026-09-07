@@ -5,10 +5,10 @@ Used where lengthy repeated update is required. Currently up to **5 depth** leve
 - Start loop line contains number of repetition after `$L#` sparated by a space.
   - ex1) `$L1 3` ⇽ start level 1 loop with 3 repetition
   - ex2) start level 1 loop with 2 repetition
-    '''
-    cnt = 2
-    $L1 cnt
-    '''
+```
+cnt = 2
+$L1 cnt
+```
 - '#' is the number between 1~5, which corresponds to level of loop depth.
 - End loop line of same depth should always end with same #.
 - Higher depth loop commands (start/end) should be enclosed within lower depth loop commands.
