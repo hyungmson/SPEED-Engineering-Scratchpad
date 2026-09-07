@@ -150,6 +150,10 @@
   - `ARR.2DTO3D({2D matrix name},{1:collect by rows|0:by columns},{collection size})`
     - collects 2D data by constant number of rows or columns and stacks to return 3D array
 
+- Reshape array
+  - `ARR.2DTO2D({2D array name},{unit block size in 1st index},{unit block size in 2nd index},{number of unit blocks in 1st direction},{number of unit blocks in 2nd direction})`
+    - cuts a 2D array into fixed-size unit blocks and re-stack them into a new 2D array layout defined by unmber of unit blocks in each direction
+
 - Convert array to lower dimension
   - `ARR.2DTO1D({2D array name},{0:concatenate rows|1:by columns})`
     - convert 2D array to 1D array by concatenating rows or columns
@@ -321,6 +325,13 @@ $M arr2Dtgr[0,0] {0,1,2,3,4;5,6,7,8,9;10,11,12,13,14}
 $M arr2Dins[0,0] {-1,-2;-3,-4}
 res2D = ARR.REPL2D(arr2Dtgr,arr2Dins,1,2)
 $PM res2D
+// Reshape 2D data: 4 x 1 layout -> 2 x 2 layout
+$M data2D[0,0] {1,2,3,4;5,6,7,8;9,10,11,12;13,14,15,16;17,18,19,20;21,22,23,24;25,26,27,28;29,30,31,32}
+$PN "before"
+$PM data2D
+data2Dnew = ARR.2DTO2D(data2D,2,4,2,2)
+$PN "after"
+$PM data2Dnew
 ```
 - After the update:
 ```
@@ -475,6 +486,13 @@ $M arr2Dtgr[0,0] {0,1,2,3,4;5,6,7,8,9;10,11,12,13,14} > OK (3[0~2] × 5[0~4])
 $M arr2Dins[0,0] {-1,-2;-3,-4} > OK (2[0~1] × 2[0~1])
 res2D = ARR.REPL2D(arr2Dtgr,arr2Dins,1,2) = OK: res2D (15[0~2,0~4])
 $PM res2D > OK
+// Reshape 2D data: 4 x 1 layout -> 2 x 2 layout
+$M data2D[0,0] {1,2,3,4;5,6,7,8;9,10,11,12;13,14,15,16;17,18,19,20;21,22,23,24;25,26,27,28;29,30,31,32} > OK (8[0~7] × 4[0~3])
+$PN "before" > before
+$PM data2D > OK
+data2Dnew = ARR.2DTO2D(data2D,2,4,2,2) = OK: data2Dnew (32[0~3,0~7])
+$PN "after" > after
+$PM data2Dnew > OK
 ```
 - The above example generates following in Debug window.
 ```
@@ -561,4 +579,18 @@ A^B
 0,1,2,3,4
 5,6,-1,-2,9
 10,11,-3,-4,14
+before
+1,2,3,4
+5,6,7,8
+9,10,11,12
+13,14,15,16
+17,18,19,20
+21,22,23,24
+25,26,27,28
+29,30,31,32
+after
+1,2,3,4,9,10,11,12
+5,6,7,8,13,14,15,16
+17,18,19,20,25,26,27,28
+21,22,23,24,29,30,31,32
 ```
