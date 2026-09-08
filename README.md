@@ -40,7 +40,8 @@ Following features are currently supported.
 - Extensive unit conversion factors
 - Other useful functions
 
-Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED) and Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz).
+Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED), Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz),
+and Mac (only supports Apple Silicon)[Link](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Apple).
 - Latest version: 
   - Windows: 1.0.44
   - Android: Build src 104400 (see Help tab)
