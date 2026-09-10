@@ -44,8 +44,8 @@ Currently available for Android- [Google Play](https://play.google.com/store/app
 and Mac (only supports Apple Silicon)- [Link](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/releases/tag/R0104500MAC).
 - Latest version: 
   - Windows: 1.0.44
-  - Android: Build src 104500 (see Help tab)
-  - Mac: Build src 104500 (see Help tab)
+  - Android: Build src 104500
+  - Mac: Build src 104501MAC
 
 ## Repository folder structure
 - [Guide](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Guide)
