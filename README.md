@@ -41,11 +41,12 @@ Following features are currently supported.
 - Other useful functions
 
 Currently available for Android- [Google Play](https://play.google.com/store/apps/details?id=com.blogspot.inherentsafety.SPEED), Windows- [Microsoft Store](https://apps.microsoft.com/detail/9p9jxs45whvz),
-and Mac (only supports Apple Silicon)- [Link](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/releases/tag/R0104500MAC).
+and iPad- [App Store](https://apps.apple.com/us/app/speed-engineering-scratchpad/id6811684234), Mac (only supports Apple Silicon)- [Link](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/releases/tag/R0104500MAC).
 - Latest version: 
   - Windows: 1.0.44
   - Android: Build src 104500
   - Mac: Build src 104502IOS
+  - iPad: Build src 104502IOS
 
 ## Repository folder structure
 - [Guide](https://github.com/hyungmson/SPEED-Engineering-Scratchpad/tree/main/Guide)
